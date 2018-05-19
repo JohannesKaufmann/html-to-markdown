@@ -3,12 +3,9 @@ package md
 import (
 	"bytes"
 	"flag"
-	"fmt"
 	"io/ioutil"
 	"path/filepath"
 	"testing"
-
-	blackfriday "gopkg.in/russross/blackfriday.v2"
 )
 
 var update = flag.Bool("update", false, "update .golden files")
@@ -176,14 +173,90 @@ func TestFromString(t *testing.T) {
 			name: "escape unordered list",
 			html: `<p>- Not List</p>`,
 		},
+		{
+			name: "pre tag",
+			html: `
+			<div>
+				<p>Who ate the most donuts this week?</p>
+				<pre><code class="language-foo+bar">Jeff  15
+Sam   11
+Robin  6</code></pre>
+			</div>
+			`,
+		},
+		{
+			name: "code tag",
+			html: `
+			<p>When <code>x = 3</code>, that means <code>x + 2 = 5</code></p>
+			`,
+		},
+		{
+			name: "hr",
+			html: `
+			<p>Some Content</p>
+			<hr>
+			</p>Other Content</p>
+			`,
+		},
+		{
+			name: "blockquote",
+			html: `
+<blockquote>
+Some Quote
+Next Line
+</blockquote>
+			`,
+		},
+		{
+			name: "large blockquote",
+			html: `
+			<blockquote>
+				<p>Allowing an unimportant mistake to pass without comment is a wonderful social grace.</p>
+				<p>Ideological differences are no excuse for rudeness.</p>
+			</blockquote>
+			`,
+		},
+
+		{
+			name: "turndown demo",
+			html: `
+			<h1>Turndown Demo</h1>
+
+			<p>This demonstrates <a href="https://github.com/domchristie/turndown">turndown</a> – an HTML to Markdown converter in JavaScript.</p>
+
+			<h2>Usage</h2>
+
+			<pre><code class="language-js">var turndownService = new TurndownService()
+console.log(
+  turndownService.turndown('&lt;h1&gt;Hello world&lt;/h1&gt;')
+)</code></pre>
+
+			<hr />
+
+			<p>It aims to be <a href="http://commonmark.org/">CommonMark</a>
+			 compliant, and includes options to style the output. These options include:</p>
+
+			<ul>
+			  <li>headingStyle (setext or atx)</li>
+			  <li>horizontalRule (*, -, or _)</li>
+			  <li>bullet (*, -, or +)</li>
+			  <li>codeBlockStyle (indented or fenced)</li>
+			  <li>fence</li>
+			  <li>emDelimiter (_ or *)</li>
+			  <li>strongDelimiter (** or __)</li>
+			  <li>linkStyle (inlined or referenced)</li>
+			  <li>linkReferenceStyle (full, collapsed, or shortcut)</li>
+			</ul>
+						`,
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			markdown, err := FromString(test.domain, test.html)
 			data := []byte(markdown)
 
-			output := blackfriday.Run(data)
-			fmt.Println(string(output))
+			// output := blackfriday.Run(data)
+			// fmt.Println(string(output))
 
 			gp := filepath.Join("testdata", t.Name()+".golden")
 			if *update {

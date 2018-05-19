@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/JohannesKaufmann/html-to-markdown/escape"
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -60,9 +61,14 @@ func IsBlockElement(e string) bool {
 	}
 	return false
 }
+func String(text string) *string {
+	return &text
+}
 
 type Options struct {
 	StrongDelimiter string
+	Fence           string
+	HR              string
 }
 
 type Rule struct {
@@ -84,17 +90,19 @@ var newlinesR = regexp.MustCompile(`\n+`)
 var tabR = regexp.MustCompile(`\t+`)
 var indentR = regexp.MustCompile(`(?m)\n`)
 
-var strongItalicR = strings.NewReplacer(
-	`*`, `\*`,
-	`_`, `\_`,
-)
-var orderedListR = regexp.MustCompile(`(?m)^(\d+)\.`)
-var unorderedListR = regexp.MustCompile(`(?m)^-\s`)
+// var strongItalicR = strings.NewReplacer(
+// 	`*`, `\*`,
+// 	`_`, `\_`,
+// )
+// var orderedListR = regexp.MustCompile(`(?m)^(\d+)\.`)
+// var unorderedListR = regexp.MustCompile(`(?m)^-\s`)
 
 func EscapeMarkdownCharacters(text string) string {
-	text = strongItalicR.Replace(text)
-	text = orderedListR.ReplaceAllString(text, `$1\.`)
-	text = unorderedListR.ReplaceAllString(text, `\- `)
+	// text = strongItalicR.Replace(text)
+	// text = orderedListR.ReplaceAllString(text, `$1\.`)
+	// text = unorderedListR.ReplaceAllString(text, `\- `)
+
+	text = escape.Markdown(text)
 	return text
 }
 func initCommonmarkRules() {
@@ -102,11 +110,12 @@ func initCommonmarkRules() {
 		Rule{
 			Filter: []string{"ul", "ol"},
 			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
-				fmt.Printf("ul/ol -> '%s' \n", content)
+				// fmt.Printf("ul/ol -> '%s' \n", content)
 
 				parent := selec.Parent()
-				if parent.Is("li") {
-					content = "\n" + content
+				if parent.Is("li") && parent.Children().Last().IsSelection(selec) {
+					// content = "\n" + content
+					// panic("ul&li -> parent is li & something")
 				} else {
 					content = "\n\n" + content + "\n\n"
 				}
@@ -125,14 +134,19 @@ func initCommonmarkRules() {
 				} else {
 					prefix = "- "
 				}
+				// remove leading newlines
 				content = leadingNewlinesR.ReplaceAllString(content, "")
+				// replace trailing newlines with just a single one
 				content = trailingNewlinesR.ReplaceAllString(content, "\n")
-
-				// content = strings.TrimSpace(content)
+				// indent
 				content = indentR.ReplaceAllString(content, "\n    ")
 
-				text := prefix + content + "\n"
-				return &text
+				// var r = regexp.MustCompile(`\n+`)
+				// content = r.ReplaceAllString(content, "\n")
+				// fmt.Printf("LI -> '%s' \n", content)
+				// content = strings.TrimSpace(content)
+
+				return String(prefix + content + "\n")
 			},
 		},
 		Rule{
@@ -142,10 +156,10 @@ func initCommonmarkRules() {
 				if trimmed := strings.TrimSpace(text); trimmed == "" {
 					return nil
 				}
-				text = EscapeMarkdownCharacters(text)
-
-				text = newlinesR.ReplaceAllString(text, "")
+				// text = newlinesR.ReplaceAllString(text, "")
 				text = tabR.ReplaceAllString(text, " ")
+
+				text = EscapeMarkdownCharacters(text)
 				return &text
 			},
 		},
@@ -190,7 +204,11 @@ func initCommonmarkRules() {
 			Filter: []string{"img"},
 			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 				alt := selec.AttrOr("alt", "")
-				src := selec.AttrOr("src", "")
+				src, ok := selec.Attr("src")
+				if !ok {
+					return String("")
+				}
+
 				text := fmt.Sprintf("![%s](%s)", alt, src)
 				return &text
 			},
@@ -200,6 +218,51 @@ func initCommonmarkRules() {
 			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 				href := selec.AttrOr("href", "")
 				text := fmt.Sprintf("[%s](%s)", content, href)
+				return &text
+			},
+		},
+		Rule{
+			Filter: []string{"code"},
+			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+				text := "`" + content + "`"
+				return &text
+			},
+		},
+		Rule{
+			Filter: []string{"pre"},
+			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+				language := selec.Find("code").AttrOr("class", "")
+				language = strings.Replace(language, "language-", "", 1)
+
+				text := "\n\n" + opt.Fence + language + "\n" +
+					selec.Find("code").Text() +
+					"\n" + opt.Fence + "\n\n"
+				return &text
+			},
+		},
+		Rule{
+			Filter: []string{"hr"},
+			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+				text := "\n\n" + opt.HR + "\n\n"
+				return &text
+			},
+		},
+		Rule{
+			Filter: []string{"blockquote"},
+			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+				// content = strings.Replace(content, "\n", "\n> ->", -1)
+				// fmt.Printf("blockquote: '%s' \n\n", content)
+
+				// var r = regexp.MustCompile(`^\n+|\n+$`)
+				// content = r.ReplaceAllString(content, "")
+
+				content = strings.TrimSpace(content)
+				content = multipleNewLinesRegex.ReplaceAllString(content, "\n\n")
+
+				var beginningR = regexp.MustCompile(`(?m)^`)
+				content = beginningR.ReplaceAllString(content, "> ")
+
+				text := "\n\n" + content + "\n\n"
 				return &text
 			},
 		},
@@ -230,7 +293,9 @@ func SelecToMD(domain string, selec *goquery.Selection, opt *Options) string {
 		if !ok {
 			content := SelecToMD(domain, s, opt)
 			res := DefaultRule(content, s, opt)
-			fmt.Println(name, "\t-> default rule")
+			if name != "html" && name != "body" && name != "head" {
+				fmt.Println(name, "\t-> default rule")
+			}
 
 			builder.WriteString(res)
 			return

@@ -26,7 +26,7 @@ func DomainFromURL(rawURL string) string {
 	return u.String()
 }
 
-var newLineRegex = regexp.MustCompile(`[\n]{2,}`)
+var multipleNewLinesRegex = regexp.MustCompile(`[\n]{2,}`)
 
 // FromSelection returns the content from a goquery selection.
 // If you have a goquery document just pass in doc.Selection.
@@ -36,11 +36,13 @@ func FromSelection(domain string, selec *goquery.Selection) string {
 
 	opt := &Options{
 		StrongDelimiter: "**",
+		Fence:           "```",
+		HR:              "* * *",
 	}
 	markdown := SelecToMD(domain, selec, opt)
 
 	markdown = strings.TrimSpace(markdown)
-	markdown = newLineRegex.ReplaceAllString(markdown, "\n\n")
+	markdown = multipleNewLinesRegex.ReplaceAllString(markdown, "\n\n")
 
 	return markdown
 }
