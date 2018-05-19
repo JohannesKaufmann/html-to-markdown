@@ -2,11 +2,16 @@ package md
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 )
+
+func IsInlineElement(name string) bool {
+	return true
+}
 
 type Options struct {
 	StrongDelimiter string
@@ -24,12 +29,29 @@ func init() {
 	initCommonmarkRules()
 }
 
+var leadingNewlinesR = regexp.MustCompile(`^\n+`)
+var trailingNewlinesR = regexp.MustCompile(`\n+$`)
+var indentR = regexp.MustCompile(`(?m)\n`)
+
 func initCommonmarkRules() {
 	AddRules(
 		Rule{
+			Filter: []string{"ul", "ol"},
+			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+				fmt.Printf("ul/ol -> '%s' \n", content)
+
+				parent := selec.Parent()
+				if parent.Is("li") {
+					content = "\n" + content
+				} else {
+					content = "\n\n" + content + "\n\n"
+				}
+				return &content
+			},
+		},
+		Rule{
 			Filter: []string{"li"},
 			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
-				next := goquery.NodeName(selec.Next())
 				parent := selec.Parent()
 				index := selec.Index()
 
@@ -39,15 +61,14 @@ func initCommonmarkRules() {
 				} else {
 					prefix = "- "
 				}
+				content = strings.TrimSpace(content)
+				content = indentR.ReplaceAllString(content, "\n  ")
 
+				fmt.Printf("li -> '%s' \n", content)
+
+				// content = leadingNewlinesR.ReplaceAllString(content, "")
+				// content = trailingNewlinesR.ReplaceAllString(content, "\n")
 				text := prefix + content + "\n"
-				if next == "" {
-					text += "\n\n"
-				}
-
-				// fmt.Println("index:", selec.Index(), name)
-
-				// text := "\n\n- " + content + "\n\n"
 				return &text
 			},
 		},
@@ -65,10 +86,26 @@ func initCommonmarkRules() {
 		Rule{
 			Filter: []string{"p"},
 			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
-				// fmt.Println("index:", selec.Index())
-				// fmt.Println("next:", selec.Next().Text())
+				parent := goquery.NodeName(selec.Parent())
+				if IsInlineElement(parent) {
+					content += "\n"
+					return &content
+				}
 
-				text := "\n\n" + content + "\n\n"
+				content = "\n\n" + content + "\n\n"
+				return &content
+			},
+		},
+		Rule{
+			Filter: []string{"h1", "h2", "h3", "h4", "h5", "h6"},
+			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+				node := goquery.NodeName(selec)
+				level, err := strconv.Atoi(node[1:])
+				if err != nil {
+					panic(err)
+				}
+				prefix := strings.Repeat("#", level)
+				text := "\n\n" + prefix + " " + content + "\n\n"
 				return &text
 			},
 		},
@@ -111,7 +148,8 @@ func SelecToMD(domain string, selec *goquery.Selection, opt *Options) string {
 			// log.Fatal("rule not found for", name)
 			content := SelecToMD(domain, s, opt)
 			res := DefaultRule(content, s, opt)
-			fmt.Printf("default_rule for %s:'%s' \n", name, res)
+			// fmt.Printf("default_rule for %s:'%s' \n", name, res)
+			fmt.Println(name, "\t-> default rule")
 
 			builder.WriteString(res)
 			return
@@ -122,11 +160,12 @@ func SelecToMD(domain string, selec *goquery.Selection, opt *Options) string {
 			content := SelecToMD(domain, s, opt)
 			res := rule(content, s, opt)
 			if res != nil {
+				// fmt.Println(name, "\t-> not nil")
 				// fmt.Printf("'%s' \n", *res)
 				builder.WriteString(*res)
 				return
 			}
-			fmt.Println(name, "was nil")
+			// fmt.Println(name, "\t-> nil")
 		}
 
 		// fmt.Println(i, s.Text(), val, ok, name)

@@ -3,6 +3,7 @@ package md
 import (
 	"net/http"
 	"net/url"
+	"regexp"
 	"strings"
 	"time"
 
@@ -25,7 +26,7 @@ func DomainFromURL(rawURL string) string {
 	return u.String()
 }
 
-// var newLinesR = regexp.MustCompile(``)
+var newLineRegex = regexp.MustCompile(`[\n]{2,}`)
 
 // FromSelection returns the content from a goquery selection.
 // If you have a goquery document just pass in doc.Selection.
@@ -34,6 +35,9 @@ func FromSelection(domain string, selec *goquery.Selection) string {
 		StrongDelimiter: "**",
 	}
 	markdown := SelecToMD(domain, selec, opt)
+
+	markdown = strings.TrimSpace(markdown)
+	markdown = newLineRegex.ReplaceAllString(markdown, "\n\n")
 
 	return markdown
 }
