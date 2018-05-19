@@ -1,8 +1,6 @@
 package md
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -27,39 +25,39 @@ func DomainFromURL(rawURL string) string {
 	return u.String()
 }
 
+// var newLinesR = regexp.MustCompile(``)
+
 // FromSelection returns the content from a goquery selection.
 // If you have a goquery document just pass in doc.Selection.
-func FromSelection(domain string, selec *goquery.Selection) (string, []*Element) {
-	elements := SelecToElem(domain, false, selec, nil)
+func FromSelection(domain string, selec *goquery.Selection) string {
+	opt := &Options{
+		StrongDelimiter: "**",
+	}
+	markdown := SelecToMD(domain, selec, opt)
 
-	data, _ := json.Marshal(elements)
-	fmt.Println(string(data))
-
-	return ElemToMD(Root, elements), elements
+	return markdown
 }
 
 // FromString returns the content from a html string. If you
 // already have a goquery selection use `FromSelection`.
-func FromString(domain, html string) (string, []*Element, error) {
+func FromString(domain, html string) (string, error) {
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 	if err != nil {
-		return "", nil, nil
+		return "", nil
 	}
-	markdown, elements := FromSelection(domain, doc.Selection)
-	return markdown, elements, nil
+	return FromSelection(domain, doc.Selection), nil
 }
 
 // FromURL returns the content from the page with that url.
-func FromURL(url string) (string, []*Element, error) {
+func FromURL(url string) (string, error) {
 	// not using goquery.NewDocument directly because of the timeout
 	resp, err := netClient.Get(url)
 	if err != nil {
-		return "", nil, nil
+		return "", nil
 	}
 	doc, err := goquery.NewDocumentFromResponse(resp)
 	if err != nil {
-		return "", nil, nil
+		return "", nil
 	}
-	markdown, elements := FromSelection(DomainFromURL(url), doc.Selection)
-	return markdown, elements, nil
+	return FromSelection(DomainFromURL(url), doc.Selection), nil
 }
