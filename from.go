@@ -31,6 +31,9 @@ var newLineRegex = regexp.MustCompile(`[\n]{2,}`)
 // FromSelection returns the content from a goquery selection.
 // If you have a goquery document just pass in doc.Selection.
 func FromSelection(domain string, selec *goquery.Selection) string {
+
+	// md.WithOptions().FromString(html string, domain string, options Options)
+
 	opt := &Options{
 		StrongDelimiter: "**",
 	}

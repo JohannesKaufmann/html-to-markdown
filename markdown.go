@@ -9,8 +9,56 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func IsInlineElement(name string) bool {
-	return true
+var blockElements = []string{
+	"address",
+	"article",
+	"aside",
+	"audio",
+	"video",
+	"blockquote",
+	"canvas",
+	"dd",
+	"div",
+	"dl",
+	"fieldset",
+	"figcaption",
+	"figure",
+	"footer",
+	"form",
+	"h1", "h2", "h3", "h4", "h5", "h6",
+	"header",
+	"hgroup",
+	"hr",
+	"noscript",
+	"ol", "ul",
+	"output",
+	"p",
+	"pre",
+	"section",
+	"table", "tfoot",
+}
+var inlineElements = []string{ // -> https://developer.mozilla.org/de/docs/Web/HTML/Inline_elemente
+	"b", "big", "i", "small", "tt",
+	"abbr", "acronym", "cite", "code", "dfn", "em", "kbd", "strong", "samp", "var",
+	"a", "bdo", "br", "img", "map", "object", "q", "script", "span", "sub", "sup",
+	"button", "input", "label", "select", "textarea",
+}
+
+func IsInlineElement(e string) bool {
+	for _, element := range inlineElements {
+		if element == e {
+			return true
+		}
+	}
+	return false
+}
+func IsBlockElement(e string) bool {
+	for _, element := range blockElements {
+		if element == e {
+			return true
+		}
+	}
+	return false
 }
 
 type Options struct {
@@ -31,8 +79,24 @@ func init() {
 
 var leadingNewlinesR = regexp.MustCompile(`^\n+`)
 var trailingNewlinesR = regexp.MustCompile(`\n+$`)
+
+var newlinesR = regexp.MustCompile(`\n+`)
+var tabR = regexp.MustCompile(`\t+`)
 var indentR = regexp.MustCompile(`(?m)\n`)
 
+var strongItalicR = strings.NewReplacer(
+	`*`, `\*`,
+	`_`, `\_`,
+)
+var orderedListR = regexp.MustCompile(`(?m)^(\d+)\.`)
+var unorderedListR = regexp.MustCompile(`(?m)^-\s`)
+
+func EscapeMarkdownCharacters(text string) string {
+	text = strongItalicR.Replace(text)
+	text = orderedListR.ReplaceAllString(text, `$1\.`)
+	text = unorderedListR.ReplaceAllString(text, `\- `)
+	return text
+}
 func initCommonmarkRules() {
 	AddRules(
 		Rule{
@@ -61,13 +125,12 @@ func initCommonmarkRules() {
 				} else {
 					prefix = "- "
 				}
-				content = strings.TrimSpace(content)
-				content = indentR.ReplaceAllString(content, "\n  ")
+				content = leadingNewlinesR.ReplaceAllString(content, "")
+				content = trailingNewlinesR.ReplaceAllString(content, "\n")
 
-				fmt.Printf("li -> '%s' \n", content)
+				// content = strings.TrimSpace(content)
+				content = indentR.ReplaceAllString(content, "\n    ")
 
-				// content = leadingNewlinesR.ReplaceAllString(content, "")
-				// content = trailingNewlinesR.ReplaceAllString(content, "\n")
 				text := prefix + content + "\n"
 				return &text
 			},
@@ -76,10 +139,13 @@ func initCommonmarkRules() {
 			Filter: []string{"#text"},
 			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 				text := selec.Text()
-
 				if trimmed := strings.TrimSpace(text); trimmed == "" {
 					return nil
 				}
+				text = EscapeMarkdownCharacters(text)
+
+				text = newlinesR.ReplaceAllString(text, "")
+				text = tabR.ReplaceAllString(text, " ")
 				return &text
 			},
 		},
@@ -87,8 +153,8 @@ func initCommonmarkRules() {
 			Filter: []string{"p"},
 			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 				parent := goquery.NodeName(selec.Parent())
-				if IsInlineElement(parent) {
-					content += "\n"
+				if IsInlineElement(parent) || parent == "li" {
+					content = "\n" + content + "\n"
 					return &content
 				}
 
@@ -120,6 +186,23 @@ func initCommonmarkRules() {
 				return &trimmed
 			},
 		},
+		Rule{
+			Filter: []string{"img"},
+			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+				alt := selec.AttrOr("alt", "")
+				src := selec.AttrOr("src", "")
+				text := fmt.Sprintf("![%s](%s)", alt, src)
+				return &text
+			},
+		},
+		Rule{
+			Filter: []string{"a"},
+			Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+				href := selec.AttrOr("href", "")
+				text := fmt.Sprintf("[%s](%s)", content, href)
+				return &text
+			},
+		},
 	)
 }
 
@@ -145,10 +228,8 @@ func SelecToMD(domain string, selec *goquery.Selection, opt *Options) string {
 		name := goquery.NodeName(s)
 		r, ok := rules[name]
 		if !ok {
-			// log.Fatal("rule not found for", name)
 			content := SelecToMD(domain, s, opt)
 			res := DefaultRule(content, s, opt)
-			// fmt.Printf("default_rule for %s:'%s' \n", name, res)
 			fmt.Println(name, "\t-> default rule")
 
 			builder.WriteString(res)
@@ -160,27 +241,10 @@ func SelecToMD(domain string, selec *goquery.Selection, opt *Options) string {
 			content := SelecToMD(domain, s, opt)
 			res := rule(content, s, opt)
 			if res != nil {
-				// fmt.Println(name, "\t-> not nil")
-				// fmt.Printf("'%s' \n", *res)
 				builder.WriteString(*res)
 				return
 			}
-			// fmt.Println(name, "\t-> nil")
 		}
-
-		// fmt.Println(i, s.Text(), val, ok, name)
-
-		// content := SelecToMD(domain, s)
-		// if name == "head" {
-		// 	return
-		// }
-		// if name == "html" || name == "body" || name == "ul" {
-		// 	SelecToMD(domain, s)
-		// 	return
-		// }
-		// fmt.Println("name:", name)
-		// res := Commonmark.Paragraph.Replacement(s.Text(), s, Options{})
-		// fmt.Printf("'%s'", res)
 	})
 	return builder.String()
 }

@@ -3,9 +3,12 @@ package md
 import (
 	"bytes"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"path/filepath"
 	"testing"
+
+	blackfriday "gopkg.in/russross/blackfriday.v2"
 )
 
 var update = flag.Bool("update", false, "update .golden files")
@@ -85,6 +88,26 @@ func TestFromString(t *testing.T) {
 			`,
 		},
 		{
+			name: "nested list",
+			html: `
+			<ul>
+				<li>foo
+					<ul>
+						<li>bar
+							<ul>
+								<li>baz
+									<ul>
+										<li>boo</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			`,
+		},
+		{
 			name: "ul in ol",
 			html: `
 			<ol>
@@ -99,11 +122,68 @@ func TestFromString(t *testing.T) {
 			</ol>
 			`,
 		},
+		{
+			name: "empty list item",
+			html: `
+			<ul>
+				<li>foo</li>
+				<li></li>
+				<li>bar</li>
+			</ul>
+			`,
+		},
+		{
+			name: "sup element",
+			html: `
+			<p>One of the most common equations in all of physics is
+			<var>E</var>=<var>m</var><var>c</var><sup>2</sup>.<p>
+			`,
+		},
+		{
+			name: "sup element in list",
+			html: `
+			<p>The ordinal number "fifth" can be abbreviated in various languages as follows:</p>
+			<ul>
+				<li>English: 5<sup>th</sup></li>
+				<li>French: 5<sup>ème</sup></li>
+			</ul>
+			`,
+		},
+		{
+			name: "image",
+			html: `<img alt="website favicon" src="http://commonmark.org/help/images/favicon.png" />`,
+		},
+		{
+			name: "link",
+			html: `<a href="http://commonmark.org/">Link</a>`,
+		},
+		{
+			name: "escape strong",
+			html: `<p>**Not Strong**
+			**Still Not
+			Strong**</p>`,
+		},
+		{
+			name: "escape italic",
+			html: `<p>_Not Italic_</p>`,
+		},
+		{
+			name: "escape ordered list",
+			html: `<p>1. Not List 1. Not List
+			1. Not List</p>`,
+		},
+		{
+			name: "escape unordered list",
+			html: `<p>- Not List</p>`,
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			markdown, err := FromString(test.domain, test.html)
 			data := []byte(markdown)
+
+			output := blackfriday.Run(data)
+			fmt.Println(string(output))
 
 			gp := filepath.Join("testdata", t.Name()+".golden")
 			if *update {
@@ -113,10 +193,9 @@ func TestFromString(t *testing.T) {
 				}
 			}
 
-			t.Logf("Result:\n'%s'\n", markdown)
-
 			g, err := ioutil.ReadFile(gp)
 			if err != nil {
+				t.Logf("Result:\n'%s'\n", markdown)
 				t.Fatalf("failed reading .golden: %s", err)
 			}
 
