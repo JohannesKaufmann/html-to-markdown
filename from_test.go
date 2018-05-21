@@ -5,7 +5,10 @@ import (
 	"flag"
 	"io/ioutil"
 	"path/filepath"
+	"sync"
 	"testing"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 var update = flag.Bool("update", false, "update .golden files")
@@ -252,7 +255,11 @@ console.log(
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			markdown, err := FromString(test.domain, test.html)
+			converter := NewConverter(test.domain, true, nil)
+			markdown, err := converter.ConvertString(test.html)
+			if err != nil {
+				t.Error(err)
+			}
 			data := []byte(markdown)
 
 			// output := blackfriday.Run(data)
@@ -277,4 +284,36 @@ console.log(
 			}
 		})
 	}
+}
+
+func BenchmarkFromString(b *testing.B) {
+	converter := NewConverter("www.google.com", true, nil)
+
+	strongRule := Rule{
+		Filter: []string{"strong"},
+		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			return nil
+		},
+	}
+
+	var wg sync.WaitGroup
+	convert := func(html string) {
+		defer wg.Done()
+		_, err := converter.ConvertString(html)
+		if err != nil {
+			b.Error(err)
+		}
+	}
+	add := func() {
+		defer wg.Done()
+		converter.AddRules(strongRule)
+	}
+
+	for n := 0; n < b.N; n++ {
+		wg.Add(2)
+		go add()
+		go convert("<strong>Bold</strong>")
+	}
+
+	wg.Wait()
 }
