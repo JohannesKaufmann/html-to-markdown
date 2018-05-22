@@ -252,10 +252,20 @@ console.log(
 			</ul>
 						`,
 		},
+		{
+			name: "keep tag",
+			html: `<keep-tag><p>Content</p></keep-tag>`,
+		},
+		{
+			name: "remove tag",
+			html: `<remove-tag><p>Content</p></remove-tag>`,
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			converter := NewConverter(test.domain, true, nil)
+			converter.Keep("keep-tag").Remove("remove-tag")
+
 			markdown, err := converter.ConvertString(test.html)
 			if err != nil {
 				t.Error(err)

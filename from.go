@@ -19,7 +19,9 @@ type RuleFunc func(content string, selec *goquery.Selection, options *Options) *
 
 type Converter struct {
 	sync.RWMutex
-	rules map[string][]RuleFunc
+	rules  map[string][]RuleFunc
+	keep   map[string]interface{}
+	remove map[string]interface{}
 
 	domain  string
 	options Options
@@ -29,6 +31,8 @@ func NewConverter(domain string, enableCommonmark bool, options *Options) *Conve
 	c := &Converter{
 		domain: domain,
 		rules:  make(map[string][]RuleFunc),
+		keep:   make(map[string]interface{}),
+		remove: make(map[string]interface{}),
 	}
 
 	if enableCommonmark {
@@ -63,6 +67,13 @@ func (c *Converter) getRuleFuncs(tag string) []RuleFunc {
 
 	r, ok := c.rules[tag]
 	if !ok || len(r) == 0 {
+		if _, keep := c.keep[tag]; keep {
+			return []RuleFunc{KeepRule}
+		}
+		if _, remove := c.remove[tag]; remove {
+			return nil // TODO:
+		}
+
 		return []RuleFunc{DefaultRule}
 	}
 
@@ -80,6 +91,23 @@ func (c *Converter) AddRules(rules ...Rule) *Converter {
 		}
 	}
 
+	return c
+}
+func (c *Converter) Keep(tags ...string) *Converter {
+	c.Lock()
+	defer c.Unlock()
+
+	for _, tag := range tags {
+		c.keep[tag] = 1 // TODO:
+	}
+	return c
+}
+func (c *Converter) Remove(tags ...string) *Converter {
+	c.Lock()
+	defer c.Unlock()
+	for _, tag := range tags {
+		c.remove[tag] = 1 // TODO:
+	}
 	return c
 }
 

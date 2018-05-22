@@ -1,10 +1,12 @@
 package md
 
 import (
+	"bytes"
 	"regexp"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
+	"golang.org/x/net/html"
 )
 
 var blockElements = []string{
@@ -82,6 +84,17 @@ var indentR = regexp.MustCompile(`(?m)\n`)
 
 func DefaultRule(content string, selec *goquery.Selection, opt *Options) *string {
 	return &content
+}
+func KeepRule(content string, selec *goquery.Selection, opt *Options) *string {
+	element := selec.Get(0)
+
+	var buf bytes.Buffer
+	err := html.Render(&buf, element)
+	if err != nil {
+		panic(err)
+	}
+
+	return String(buf.String())
 }
 
 func (c *Converter) selecToMD(domain string, selec *goquery.Selection, opt *Options) string {
