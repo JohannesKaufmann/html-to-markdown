@@ -89,6 +89,8 @@ var commonmark = []Rule{
 				panic(err)
 			}
 			prefix := strings.Repeat("#", level)
+			content = strings.Replace(content, "\n", " ", -1)
+			content = strings.Replace(content, "\r", " ", -1)
 			text := "\n\n" + prefix + " " + content + "\n\n"
 			return &text
 		},

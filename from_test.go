@@ -133,6 +133,16 @@ func TestFromString(t *testing.T) {
 			`,
 		},
 		{
+			name: "list items ending with a space",
+			html: `
+<ul>
+	<li>List items </li>
+	<li>Ending with </li>
+	<li>A space </li>
+</ul>
+			`,
+		},
+		{
 			name: "sup element",
 			html: `
 			<p>One of the most common equations in all of physics is
@@ -259,6 +269,26 @@ console.log(
 		{
 			name: "remove tag",
 			html: `<remove-tag><p>Content</p></remove-tag>`,
+		},
+		{
+			/*
+				When a header (eg. <h3>) contains any new lines in its body, it will split the header contents
+				over multiple lines, breaking the header in Markdown (because in Markdown, a header just
+				starts with #'s and anything on the next line is not part of the header). Since in HTML
+				and Markdown all white space is treated the same, I chose to replace line endings with spaces.
+				-> https://github.com/lunny/html2md/pull/6
+			*/
+			name: "strip newlines from header",
+			html: `
+<h3>
+
+Header
+Containing
+
+Newlines
+
+</h3>
+			`,
 		},
 	}
 	for _, test := range tests {
