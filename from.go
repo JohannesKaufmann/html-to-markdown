@@ -18,10 +18,15 @@ import (
 type RuleFunc func(content string, selec *goquery.Selection, options *Options) *string
 
 type Converter struct {
-	sync.RWMutex
+	m      sync.RWMutex
 	rules  map[string][]RuleFunc
 	keep   map[string]interface{}
 	remove map[string]interface{}
+
+	dom      *goquery.Selection
+	leading  []string
+	trailing []string
+	// Plugin -> ReportError, ... (not public)
 
 	domain  string
 	options Options
@@ -62,8 +67,8 @@ func NewConverter(domain string, enableCommonmark bool, options *Options) *Conve
 	return c
 }
 func (c *Converter) getRuleFuncs(tag string) []RuleFunc {
-	c.RLock()
-	defer c.RUnlock()
+	c.m.RLock()
+	defer c.m.RUnlock()
 
 	r, ok := c.rules[tag]
 	if !ok || len(r) == 0 {
@@ -80,8 +85,8 @@ func (c *Converter) getRuleFuncs(tag string) []RuleFunc {
 	return r
 }
 func (c *Converter) AddRules(rules ...Rule) *Converter {
-	c.Lock()
-	defer c.Unlock()
+	c.m.Lock()
+	defer c.m.Unlock()
 
 	for _, rule := range rules {
 		for _, filter := range rule.Filter {
@@ -94,8 +99,8 @@ func (c *Converter) AddRules(rules ...Rule) *Converter {
 	return c
 }
 func (c *Converter) Keep(tags ...string) *Converter {
-	c.Lock()
-	defer c.Unlock()
+	c.m.Lock()
+	defer c.m.Unlock()
 
 	for _, tag := range tags {
 		c.keep[tag] = 1 // TODO:
@@ -103,8 +108,8 @@ func (c *Converter) Keep(tags ...string) *Converter {
 	return c
 }
 func (c *Converter) Remove(tags ...string) *Converter {
-	c.Lock()
-	defer c.Unlock()
+	c.m.Lock()
+	defer c.m.Unlock()
 	for _, tag := range tags {
 		c.remove[tag] = 1 // TODO:
 	}
@@ -112,6 +117,31 @@ func (c *Converter) Remove(tags ...string) *Converter {
 }
 
 // TODO: naming -> Run, Proccess, ...
+
+type Plugin func(conv *Converter) []Rule
+
+func (c *Converter) Use(plugins ...Plugin) *Converter {
+	for _, plugin := range plugins {
+		rules := plugin(c)
+		c.AddRules(rules...) // TODO: for better perfomance only use one lock for all plugins
+	}
+	return c
+}
+
+func (c *Converter) Find(selector string) *goquery.Selection {
+	return c.dom.Find(selector)
+}
+func (c *Converter) ReportError(err error) *Converter {
+	// TODO: or maybe channel???
+	return c
+}
+func (c *Converter) AddLeading(text string) *Converter {
+	c.m.Lock()
+	defer c.m.Unlock()
+
+	c.leading = append(c.leading, text)
+	return c
+}
 
 // Timeout for the http client
 var Timeout = time.Second * 10
@@ -134,19 +164,25 @@ var multipleNewLinesRegex = regexp.MustCompile(`[\n]{2,}`)
 // Convert returns the content from a goquery selection.
 // If you have a goquery document just pass in doc.Selection.
 func (c *Converter) Convert(selec *goquery.Selection) string {
-	c.RLock() // DONT NEED THIS?
+	c.m.Lock() // DONT NEED THIS?
+	c.dom = selec
+
 	domain := c.domain
 	options := c.options
 	l := len(c.rules)
 	if l == 0 {
 		panic("you have added no rules. either enable commonmark or add you own.")
 	}
-	c.RUnlock()
+	c.m.Unlock()
 
 	markdown := c.selecToMD(domain, selec, &options)
 
 	markdown = strings.TrimSpace(markdown)
 	markdown = multipleNewLinesRegex.ReplaceAllString(markdown, "\n\n")
+
+	c.m.RLock()
+	markdown = strings.Join(c.leading, "\n") + "\n" + markdown + "\n" + "trailing"
+	c.m.RUnlock()
 
 	return markdown
 }

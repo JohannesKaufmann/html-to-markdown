@@ -24,6 +24,10 @@ func main() {
 	converter.AddRules(plugin.TaskListItems...)
 	converter.AddRules(plugin.Table...)
 	converter.AddRules(strongRule)
+	converter.AddRules(plugin.Youtube...)
+
+	// converter.Use(plugin.VimeoEmbed(plugin.VimeoWithTitle))
+	converter.Use(plugin.VimeoEmbed(plugin.VimeoWithDescription))
 
 	convert := func(html string) {
 		markdown, err := converter.ConvertString(html)
@@ -32,6 +36,8 @@ func main() {
 		}
 		fmt.Println("\tmd ->", markdown)
 	}
+	go convert(`<iframe id="youtube-9742" frameborder="0" allowfullscreen="1" allow="autoplay; encrypted-media" title="Player for Code+Design Camp Berlin 04/2017" width="640" height="360" src="https://www.youtube.com/embed/xGk1PpIbisU?autoplay=0&amp;controls=0&amp;rel=0&amp;showinfo=0&amp;iv_load_policy=3&amp;cc_load_policy=0&amp;cc_lang_pref=en&amp;wmode=transparent&amp;modestbranding=1&amp;disablekb=1&amp;origin=https%3A%2F%2Fcode.design&amp;enablejsapi=1&amp;widgetid=1" tabindex="-1"></iframe>`)
+	go convert(`<iframe src="http://player.vimeo.com/video/47387431?title=0&amp;byline=0&amp;portrait=0&amp;autoplay=0" width="1600" height="900" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>`)
 	go convert("<p>Hi</p>")
 	go convert("<strong>Important</strong>")
 	go convert("<del>Not Important</del>")
