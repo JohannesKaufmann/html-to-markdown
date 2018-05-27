@@ -5,6 +5,7 @@
 
 Convert HTML into Markdown with Go.
 
+TODO: properly use options, list of features, document ConvertX functions
 
 ## Installation
 

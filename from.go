@@ -21,6 +21,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -53,6 +54,49 @@ type Converter struct {
 // TODO: some STATE -> naming???
 // TODO: should Plugin be called on every convert
 
+func validate(val string, possible ...string) error {
+	for _, e := range possible {
+		if e == val {
+			return nil
+		}
+	}
+	return fmt.Errorf("field must be one of %v but got %s", possible, val)
+}
+func validateOptions(opt Options) error {
+	if err := validate(opt.HeadingStyle, "setext", "atx"); err != nil {
+		return err
+	}
+	if strings.Count(opt.HorizontalRule, "*") < 3 &&
+		strings.Count(opt.HorizontalRule, "_") < 3 &&
+		strings.Count(opt.HorizontalRule, "-") < 3 {
+		return errors.New("HorizontalRule must be at least 3 characters of '*', '_' or '-' but got " + opt.HorizontalRule)
+	}
+
+	if err := validate(opt.BulletListMarker, "-", "+", "*"); err != nil {
+		return err
+	}
+	if err := validate(opt.CodeBlockStyle, "indented", "fenced"); err != nil {
+		return err
+	}
+	if err := validate(opt.Fence, "```", "~~~"); err != nil {
+		return err
+	}
+	if err := validate(opt.EmDelimiter, "_", "*"); err != nil {
+		return err
+	}
+	if err := validate(opt.StrongDelimiter, "**", "__"); err != nil {
+		return err
+	}
+	if err := validate(opt.LinkStyle, "inlined", "referenced"); err != nil {
+		return err
+	}
+	if err := validate(opt.LinkReferenceStyle, "full", "collapsed", "shortcut"); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // NewConverter initializes a new converter and holds all the rules.
 // - `domain` is used for links and images to convert relative urls ("/image.png") to absolute urls.
 // - CommonMark is the default set of rules. Set enableCommonmark to false if you want
@@ -76,21 +120,39 @@ func NewConverter(domain string, enableCommonmark bool, options *Options) *Conve
 	if options == nil {
 		options = &Options{}
 	}
-	if options.StrongDelimiter == "" {
-		options.StrongDelimiter = "**"
+	if options.HeadingStyle == "" {
+		options.HeadingStyle = "atx"
+	}
+	if options.HorizontalRule == "" {
+		options.HorizontalRule = "* * *"
+	}
+	if options.BulletListMarker == "" {
+		options.BulletListMarker = "-"
+	}
+	if options.CodeBlockStyle == "" {
+		options.CodeBlockStyle = "indented"
 	}
 	if options.Fence == "" {
 		options.Fence = "```"
 	}
-	if options.HR == "" {
-		options.HR = "* * *"
-	} else {
-		fmt.Println("count *", strings.Count(options.HR, "*"))
-		// validateOptions()
+	if options.EmDelimiter == "" {
+		options.EmDelimiter = "_"
+	}
+	if options.StrongDelimiter == "" {
+		options.StrongDelimiter = "**"
+	}
+	if options.LinkStyle == "" {
+		options.LinkStyle = "inlined"
+	}
+	if options.LinkReferenceStyle == "" {
+		options.LinkReferenceStyle = "full"
 	}
 
 	c.options = *options
-	// ...
+	err := validateOptions(c.options)
+	if err != nil {
+		fmt.Println("markdown options is not valid:", err)
+	}
 
 	return c
 }
@@ -216,14 +278,22 @@ func (c *Converter) Convert(selec *goquery.Selection) string {
 	}
 	c.m.RUnlock()
 
-	markdown := c.selecToMD(domain, selec, &options)
+	selec.Find("a[href]").Each(func(i int, s *goquery.Selection) {
+		s.SetAttr("data-index", strconv.Itoa(i+1))
+	})
+
+	res := c.selecToMD(domain, selec, &options)
+	markdown := res.Markdown
+
+	if res.Header != "" {
+		markdown = res.Header + "\n\n" + markdown
+	}
+	if res.Footer != "" {
+		markdown += "\n\n" + res.Footer
+	}
 
 	markdown = strings.TrimSpace(markdown)
 	markdown = multipleNewLinesRegex.ReplaceAllString(markdown, "\n\n")
-
-	// c.m.RLock()
-	// markdown = strings.Join(c.leading, "\n") + "\n" + markdown + "\n" + "trailing"
-	// c.m.RUnlock()
 
 	return markdown
 }

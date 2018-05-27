@@ -1,13 +1,13 @@
 The Go Programming Language
 ...
-[The Go Programming Language](/)[Go](/)[▽](#)[Documents](/doc/)[Packages](/pkg/)[The Project](/project/)[Help](/help/)[Blog](/blog/)[Play](http://play.golang.org/)submit search[Run]()[Format]()[Share]()[Pop-out]()Try Go
+[The Go Programming Language](/)[Go](/)[▽](#)[Documents](/doc/)[Packages](/pkg/)[The Project](/project/)[Help](/help/)[Blog](/blog/)[Play](http://play.golang.org/ "Show Go Playground")submit searchTry Go
 
 ```
 Hello, 世界
 
 ```
 
-[Run](#)[Share](#)[Tour](//tour.golang.org/)Hello, World!Conway's Game of LifeFibonacci ClosurePeano IntegersConcurrent piConcurrent Prime SievePeg Solitaire SolverTree Comparison
+[Run](# "Run this code [shift-enter]")[Share](# "Share this code")[Tour](//tour.golang.org/ "Learn Go from your browser")Hello, World!Conway's Game of LifeFibonacci ClosurePeano IntegersConcurrent piConcurrent Prime SievePeg Solitaire SolverTree Comparison
 Go is an open source programming language that makes it easy to build
 simple, reliable, and efficient software.
 [Download Go

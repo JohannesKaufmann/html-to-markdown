@@ -86,9 +86,41 @@ func String(text string) *string {
 // Options to customize the output. You can change stuff like
 // the character that is used for strong text.
 type Options struct {
+	// "setext" or "atx"
+	// default: "atx"
+	HeadingStyle string
+
+	// Any Thematic break
+	// default: "* * *"
+	HorizontalRule string
+
+	// "-", "+", or "*"
+	// default: "-"
+	BulletListMarker string
+
+	// "indented" or "fenced"
+	// default: "indented"
+	CodeBlockStyle string
+
+	// ``` or ~~~
+	// default: ```
+	Fence string
+
+	// _ or *
+	// default: _
+	EmDelimiter string
+
+	// ** or __
+	// default: **
 	StrongDelimiter string
-	Fence           string
-	HR              string
+
+	// inlined or referenced
+	// default: inlined
+	LinkStyle string
+
+	// full, collapsed, or shortcut
+	// default: full
+	LinkReferenceStyle string
 }
 
 type AdvancedResult struct {
@@ -121,7 +153,9 @@ var newlinesR = regexp.MustCompile(`\n+`)
 var tabR = regexp.MustCompile(`\t+`)
 var indentR = regexp.MustCompile(`(?m)\n`)
 
-func (c *Converter) selecToMD(domain string, selec *goquery.Selection, opt *Options) string {
+func (c *Converter) selecToMD(domain string, selec *goquery.Selection, opt *Options) AdvancedResult {
+	var result AdvancedResult
+
 	var builder strings.Builder
 	selec.Contents().Each(func(i int, s *goquery.Selection) {
 		name := goquery.NodeName(s)
@@ -129,10 +163,22 @@ func (c *Converter) selecToMD(domain string, selec *goquery.Selection, opt *Opti
 
 		for i := len(rules) - 1; i >= 0; i-- {
 			rule := rules[i]
-			content := c.selecToMD(domain, s, opt)
-			res, skip := rule(content, s, opt)
 
-			// TODO: use Footer & Header
+			content := c.selecToMD(domain, s, opt)
+			if content.Header != "" {
+				result.Header += content.Header
+			}
+			if content.Footer != "" {
+				result.Footer += content.Footer
+			}
+
+			res, skip := rule(content.Markdown, s, opt)
+			if res.Header != "" {
+				result.Header += res.Header + "\n"
+			}
+			if res.Footer != "" {
+				result.Footer += res.Footer + "\n"
+			}
 
 			if !skip {
 				builder.WriteString(res.Markdown)
@@ -140,5 +186,6 @@ func (c *Converter) selecToMD(domain string, selec *goquery.Selection, opt *Opti
 			}
 		}
 	})
-	return builder.String()
+	result.Markdown = builder.String()
+	return result
 }

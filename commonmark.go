@@ -36,7 +36,7 @@ var commonmark = []Rule{
 			if parent.Is("ol") {
 				prefix = strconv.Itoa(index+1) + ". "
 			} else {
-				prefix = "- "
+				prefix = opt.BulletListMarker + " "
 			}
 			// remove leading newlines
 			content = leadingNewlinesR.ReplaceAllString(content, "")
@@ -86,6 +86,17 @@ var commonmark = []Rule{
 			if err != nil {
 				panic(err)
 			}
+
+			if opt.HeadingStyle == "setext" && level < 3 {
+				line := "-"
+				if level == 1 {
+					line = "="
+				}
+
+				underline := strings.Repeat(line, len(content))
+				return String("\n\n" + content + "\n" + underline + "\n\n")
+			}
+
 			prefix := strings.Repeat("#", level)
 			content = strings.Replace(content, "\n", " ", -1)
 			content = strings.Replace(content, "\r", " ", -1)
@@ -119,15 +130,47 @@ var commonmark = []Rule{
 	},
 	Rule{
 		Filter: []string{"a"},
-		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
-			href := selec.AttrOr("href", "")
-			text := fmt.Sprintf("[%s](%s)", content, href)
-			return &text
+		AdvancedReplacement: func(content string, selec *goquery.Selection, opt *Options) (AdvancedResult, bool) {
+			href, ok := selec.Attr("href")
+			if !ok {
+				return AdvancedResult{}, true
+			}
+
+			var title string
+			if t, ok := selec.Attr("title"); ok {
+				title = fmt.Sprintf(` "%s"`, t)
+			}
+
+			if opt.LinkStyle == "inlined" {
+				return AdvancedResult{
+					Markdown: fmt.Sprintf("[%s](%s%s)", content, href, title),
+				}, false
+			}
+
+			var replacement string
+			var reference string
+
+			switch opt.LinkReferenceStyle {
+			case "collapsed":
+
+				replacement = "[" + content + "][]"
+				reference = "[" + content + "]: " + href + title
+			case "shortcut":
+				replacement = "[" + content + "]"
+				reference = "[" + content + "]: " + href + title
+
+			default:
+				id := selec.AttrOr("data-index", "")
+				replacement = "[" + content + "][" + id + "]"
+				reference = "[" + id + "]: " + href + title
+			}
+			return AdvancedResult{Markdown: replacement, Footer: reference}, false
 		},
 	},
 	Rule{
 		Filter: []string{"code"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			// TODO: configure delimeter in options?
 			text := "`" + content + "`"
 			return &text
 		},
@@ -153,7 +196,7 @@ var commonmark = []Rule{
 	Rule{
 		Filter: []string{"hr"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
-			text := "\n\n" + opt.HR + "\n\n"
+			text := "\n\n" + opt.HorizontalRule + "\n\n"
 			return &text
 		},
 	},
