@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width">
+  <meta name="theme-color" content="#375EAB">
+  <title>Godoc: documenting Go code - The Go Blog</title>
+  <link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
+  <link type="text/css" rel="stylesheet" href="/fonts.css">
+  <link rel="alternate" type="application/atom+xml" title="blog.golang.org - Atom Feed" href="https://blog.golang.org/feed.atom"
+  />
+  <script type="text/javascript">window.initFuncs = [];</script>
+  <style>
+    #sidebar {
+      float: right;
+      padding-left: 20px;
+      width: 40%;
+      max-width: 250px;
+      background: #F3F3F3;
+      margin: 20px 0 20px 20px;
+    }
+
+    #sidebar ul {
+      padding: 0;
+    }
+
+    #sidebar li {
+      list-style-type: none;
+    }
+
+    #content .author {
+      font-style: italic;
+    }
+
+    #content .article {
+      margin-bottom: 50px;
+    }
+
+    #content .date {
+      color: #999;
+    }
+
+    #content .tags {
+      color: #999;
+      font-size: smaller;
+    }
+
+    #content .iframe,
+    #content .image {
+      margin: 20px;
+    }
+
+    #content .title {
+      margin: 20px 0;
+    }
+
+    #content img {
+      max-width: 100%;
+    }
+
+    .article[data-slug='/go-fonts'] {
+      font-family: Go, sans-serif;
+    }
+
+    .article[data-slug='/go-fonts'] pre,
+    .article[data-slug='/go-fonts'] code {
+      font-family: Go Mono, monospace;
+    }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-11222381-3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", "UA-11222381-3");
+    gtag("config", "UA-49880327-6");
+  </script>
+</head>
+
+<body>
+
+  <div id="topbar">
+    <div class="container">
+
+      <div class="top-heading" id="heading-wide">
+        <a href="//golang.org/">The Go Programming Language</a>
+      </div>
+      <div class="top-heading" id="heading-narrow">
+        <a href="//golang.org/">Go</a>
+      </div>
+      <a href="#" id="menu-button">
+        <span id="menu-button-arrow">&#9661;</span>
+      </a>
+      <form method="GET" action="//golang.org/search">
+        <div id="menu">
+          <a href="//golang.org/doc/">Documents</a>
+          <a href="//golang.org/pkg/">Packages</a>
+          <a href="//golang.org/project/">The Project</a>
+          <a href="//golang.org/help/">Help</a>
+          <a href="/">Blog</a>
+          <span class="search-box">
+            <input type="search" id="search" name="q" placeholder="Search" aria-label="Search" required>
+            <button type="submit">
+              <span>
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                  <title>submit search</title>
+                  <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                  />
+                  <path d="M0 0h24v24H0z" fill="none" />
+                </svg>
+              </span>
+            </button>
+          </span>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <div id="page">
+    <div class="container">
+
+      <div id="sidebar">
+
+
+        <h4>Next article</h4>
+        <p>
+          <a href="/introducing-gofix">Introducing Gofix</a>
+        </p>
+
+
+
+        <h4>Previous article</h4>
+        <p>
+          <a href="/gobs-of-data">Gobs of data</a>
+        </p>
+
+
+
+        <h4>Links</h4>
+        <ul>
+          <li>
+            <a href='//golang.org/'>golang.org</a>
+          </li>
+          <li>
+            <a href='//golang.org/doc/install.html'>Install Go</a>
+          </li>
+          <li>
+            <a href='//tour.golang.org/'>A Tour of Go</a>
+          </li>
+          <li>
+            <a href='//golang.org/doc/'>Go Documentation</a>
+          </li>
+          <li>
+            <a href='//groups.google.com/group/golang-nuts'>Go Mailing List</a>
+          </li>
+          <li>
+            <a href='//plus.google.com/101406623878176903605'>Go on Google+</a>
+          </li>
+          <li>
+            <a href='//plus.google.com/communities/114112804251407510571'>Go+ Community</a>
+          </li>
+          <li>
+            <a href='//twitter.com/golang'>Go on Twitter</a>
+          </li>
+        </ul>
+
+        <p>
+          <a href="/index">Blog index</a>
+        </p>
+      </div>
+
+      <div id="content">
+        <h1>
+          <a href="/">The Go Blog</a>
+        </h1>
+
+
+        <div class="article" data-slug="/godoc-documenting-go-code">
+          <h3 class="title">
+            <a href="/godoc-documenting-go-code">Godoc: documenting Go code</a>
+          </h3>
+          <p class="date">31 March 2011</p>
+
+
+
+
+
+
+
+
+          <p>
+            The Go project takes documentation seriously. Documentation is a huge part of making software accessible and maintainable.
+            Of course it must be well-written and accurate, but it also must be easy to write and to maintain. Ideally, it
+            should be coupled to the code itself so the documentation evolves along with the code. The easier it is for programmers
+            to produce good documentation, the better for everyone.
+          </p>
+
+
+
+
+
+          <p>
+            To that end, we have developed the
+            <a href="https://golang.org/cmd/godoc/" target="_blank">godoc</a> documentation tool. This article describes godoc&#39;s approach to documentation, and explains how
+            you can use our conventions and tools to write good documentation for your own projects.
+          </p>
+
+
+
+
+
+          <p>
+            Godoc parses Go source code - including comments - and produces documentation as HTML or plain text. The end result is documentation
+            tightly coupled with the code it documents. For example, through godoc&#39;s web interface you can navigate from
+            a function&#39;s
+            <a href="https://golang.org/pkg/strings/#HasPrefix" target="_blank">documentation</a> to its
+            <a href="https://golang.org/src/pkg/strings/strings.go#L493" target="_blank">implementation</a> with one click.
+          </p>
+
+
+
+
+
+          <p>
+            Godoc is conceptually related to Python&#39;s
+            <a href="http://www.python.org/dev/peps/pep-0257/" target="_blank">Docstring</a> and Java&#39;s
+            <a href="http://www.oracle.com/technetwork/java/javase/documentation/index-jsp-135444.html" target="_blank">Javadoc</a>, but its design is simpler. The comments read by godoc are not language constructs (as with Docstring)
+            nor must they have their own machine-readable syntax (as with Javadoc). Godoc comments are just good comments,
+            the sort you would want to read even if godoc didn&#39;t exist.
+          </p>
+
+
+
+
+
+          <p>
+            The convention is simple: to document a type, variable, constant, function, or even a package, write a regular comment directly
+            preceding its declaration, with no intervening blank line. Godoc will then present that comment as text alongside
+            the item it documents. For example, this is the documentation for the
+            <code>fmt</code> package&#39;s
+            <a href="https://golang.org/pkg/fmt/#Fprint" target="_blank">
+              <code>Fprint</code>
+            </a> function:
+          </p>
+
+
+
+
+
+          <div class="code">
+            <pre>// Fprint formats using the default formats for its operands and writes to w.
+// Spaces are added between operands when neither is a string.
+// It returns the number of bytes written and any write error encountered.
+func Fprint(w io.Writer, a ...interface{}) (n int, err error) {</pre>
+          </div>
+
+
+
+
+
+          <p>
+            Notice this comment is a complete sentence that begins with the name of the element it describes. This important convention
+            allows us to generate documentation in a variety of formats, from plain text to HTML to UNIX man pages, and makes
+            it read better when tools truncate it for brevity, such as when they extract the first line or sentence.
+          </p>
+
+
+
+
+
+          <p>
+            Comments on package declarations should provide general package documentation. These comments can be short, like the
+            <a href="https://golang.org/pkg/sort/" target="_blank">
+              <code>sort</code>
+            </a> package&#39;s brief description:
+          </p>
+
+
+
+
+
+          <div class="code">
+            <pre>// Package sort provides primitives for sorting slices and user-defined
+// collections.
+package sort</pre>
+          </div>
+
+
+
+
+
+          <p>
+            They can also be detailed like the
+            <a href="https://golang.org/pkg/encoding/gob/" target="_blank">gob package</a>&#39;s overview. That package uses another convention for packages that need large amounts of
+            introductory documentation: the package comment is placed in its own file,
+            <a href="https://golang.org/src/pkg/encoding/gob/doc.go" target="_blank">doc.go</a>, which contains only those comments and a package clause.
+          </p>
+
+
+
+
+
+          <p>
+            When writing package comments of any size, keep in mind that their first sentence will appear in godoc&#39;s
+            <a href="https://golang.org/pkg/" target="_blank">package list</a>.
+          </p>
+
+
+
+
+
+          <p>
+            Comments that are not adjacent to a top-level declaration are omitted from godoc&#39;s output, with one notable exception.
+            Top-level comments that begin with the word
+            <code>&#34;BUG(who)”</code> are recognized as known bugs, and included in the &#34;Bugs” section of the package documentation. The &#34;who”
+            part should be the user name of someone who could provide more information. For example, this is a known issue
+            from the
+            <a href="https://golang.org/pkg/bytes/#pkg-note-BUG" target="_blank">bytes package</a>:
+          </p>
+
+
+
+
+
+          <div class="code">
+            <pre>// BUG(r): The rule Title uses for word boundaries does not handle Unicode punctuation properly.</pre>
+          </div>
+
+
+
+
+
+          <p>
+            Sometimes a struct field, function, type, or even a whole package becomes redundant or unnecessary, but must be kept for
+            compatibility with existing programs. To signal that an identifier should not be used, add a paragraph to its
+            doc comment that begins with &#34;Deprecated:&#34; followed by some information about the deprecation. There
+            are a few examples
+            <a href="https://golang.org/search?q=Deprecated:" target="_blank">in the standard library</a>.
+          </p>
+
+
+
+
+
+          <p>
+            There are a few formatting rules that Godoc uses when converting comments to HTML:
+          </p>
+
+
+
+
+          <ul>
+
+            <li>Subsequent lines of text are considered part of the same paragraph; you must leave a blank line to separate paragraphs.</li>
+
+          </ul>
+
+
+
+          <ul>
+
+            <li>Pre-formatted text must be indented relative to the surrounding comment text (see gob&#39;s
+              <a href="https://golang.org/src/pkg/encoding/gob/doc.go" target="_blank">doc.go</a> for an example).</li>
+
+          </ul>
+
+
+
+          <ul>
+
+            <li>URLs will be converted to HTML links; no special markup is necessary.</li>
+
+          </ul>
+
+
+
+
+          <p>
+            Note that none of these rules requires you to do anything out of the ordinary.
+          </p>
+
+
+
+
+
+          <p>
+            In fact, the best thing about godoc&#39;s minimal approach is how easy it is to use. As a result, a lot of Go code, including
+            all of the standard library, already follows the conventions.
+          </p>
+
+
+
+
+
+          <p>
+            Your own code can present good documentation just by having comments as described above. Any Go packages installed inside
+            <code>$GOROOT/src/pkg</code> and any
+            <code>GOPATH</code> work spaces will already be accessible via godoc&#39;s command-line and HTTP interfaces, and you can specify
+            additional paths for indexing via the
+            <code>-path</code> flag or just by running
+            <code>&#34;godoc .&#34;</code> in the source directory. See the
+            <a href="https://golang.org/cmd/godoc/" target="_blank">godoc documentation</a> for more details.
+          </p>
+
+
+
+
+
+
+
+
+          <p class="author">By Andrew Gerrand</p>
+
+        </div>
+
+
+        <h2>Related articles</h2>
+        <ul>
+
+          <li>
+            <a href="/h2push">HTTP/2 Server Push</a>
+          </li>
+
+          <li>
+            <a href="/http-tracing">Introducing HTTP Tracing</a>
+          </li>
+
+          <li>
+            <a href="/examples">Testable Examples in Go</a>
+          </li>
+
+          <li>
+            <a href="/generate">Generating code</a>
+          </li>
+
+          <li>
+            <a href="/race-detector">Introducing the Go Race Detector</a>
+          </li>
+
+          <li>
+            <a href="/go-maps-in-action">Go maps in action</a>
+          </li>
+
+          <li>
+            <a href="/go-fmt-your-code">go fmt your code</a>
+          </li>
+
+          <li>
+            <a href="/organizing-go-code">Organizing Go code</a>
+          </li>
+
+          <li>
+            <a href="/debugging-go-programs-with-gnu-debugger">Debugging Go programs with the GNU Debugger</a>
+          </li>
+
+          <li>
+            <a href="/go-imagedraw-package">The Go image/draw package</a>
+          </li>
+
+          <li>
+            <a href="/go-image-package">The Go image package</a>
+          </li>
+
+          <li>
+            <a href="/laws-of-reflection">The Laws of Reflection</a>
+          </li>
+
+          <li>
+            <a href="/error-handling-and-go">Error handling and Go</a>
+          </li>
+
+          <li>
+            <a href="/first-class-functions-in-go-and-new-go">&#34;First Class Functions in Go&#34;</a>
+          </li>
+
+          <li>
+            <a href="/profiling-go-programs">Profiling Go Programs</a>
+          </li>
+
+          <li>
+            <a href="/gif-decoder-exercise-in-go-interfaces">A GIF decoder: an exercise in Go interfaces</a>
+          </li>
+
+          <li>
+            <a href="/introducing-gofix">Introducing Gofix</a>
+          </li>
+
+          <li>
+            <a href="/gobs-of-data">Gobs of data</a>
+          </li>
+
+          <li>
+            <a href="/c-go-cgo">C? Go? Cgo!</a>
+          </li>
+
+          <li>
+            <a href="/json-and-go">JSON and Go</a>
+          </li>
+
+          <li>
+            <a href="/go-slices-usage-and-internals">Go Slices: usage and internals</a>
+          </li>
+
+          <li>
+            <a href="/go-concurrency-patterns-timing-out-and">Go Concurrency Patterns: Timing out, moving on</a>
+          </li>
+
+          <li>
+            <a href="/defer-panic-and-recover">Defer, Panic, and Recover</a>
+          </li>
+
+          <li>
+            <a href="/share-memory-by-communicating">Share Memory By Communicating</a>
+          </li>
+
+          <li>
+            <a href="/json-rpc-tale-of-interfaces">JSON-RPC: a tale of interfaces</a>
+          </li>
+
+        </ul>
+
+
+      </div>
+
+      <div id="footer">
+        <p>
+          Except as
+          <a href="https://developers.google.com/site-policies#restrictions">noted</a>, the content of this page is licensed under the Creative Commons Attribution 3.0 License,
+          <br> and code is licensed under a
+          <a href="//golang.org/LICENSE">BSD license</a>.
+          <br>
+          <a href="//golang.org/doc/tos.html">Terms of Service</a> |
+          <a href="//www.google.com/intl/en/policies/privacy/">Privacy Policy</a> |
+          <a href="https://go.googlesource.com/blog/">View the source code</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+<script src="/lib/godoc/jquery.js"></script>
+<script src="/lib/godoc/playground.js"></script>
+<script src="/lib/godoc/play.js"></script>
+<script src="/lib/godoc/godocs.js"></script>
+<script>
+  $(function () {
+
+    $('.playground > pre.numbers, .code > pre.numbers').each(function () {
+      var $spans = $(this).find('> span');
+
+
+      var max = 0;
+      $spans.each(function () {
+        var n = $(this).attr('num') * 1;
+        if (n > max) max = n;
+      });
+      var width = 2;
+      while (max > 10) {
+        max = max / 10;
+        width++;
+      }
+
+
+      $spans.each(function () {
+        var n = $(this).attr('num') + ' ';
+        while (n.length < width) n = ' ' + n;
+        $('<span class="number">').text(n).insertBefore(this);
+      });
+    });
+
+    initPlayground(new HTTPTransport());
+  });
+</script>
+
+</html>
