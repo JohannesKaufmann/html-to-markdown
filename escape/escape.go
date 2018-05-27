@@ -1,3 +1,5 @@
+// Package escape escapes characters that are commonly used in
+// markdown like the * for strong/italic.
 package escape
 
 import (

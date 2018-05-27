@@ -6,10 +6,10 @@ import (
 )
 
 // TODO: maybe something like TableCompat for environments
-// where only commonmark markdown markdown is supported.
+// where only commonmark markdown is supported.
 
-// Table converts a html table to markdown.
-var Table = []md.Rule{
+// EXPERIMENTAL_Table converts a html table to markdown.
+var EXPERIMENTAL_Table = []md.Rule{
 	md.Rule{ // TableCell
 		Filter: []string{"th", "td"},
 		Replacement: func(content string, selec *goquery.Selection, opt *md.Options) *string {

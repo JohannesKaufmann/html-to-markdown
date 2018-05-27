@@ -9,6 +9,23 @@ import (
 	"golang.org/x/net/html"
 )
 
+var (
+	ruleDefault = func(content string, selec *goquery.Selection, opt *Options) *string {
+		return &content
+	}
+	ruleKeep = func(content string, selec *goquery.Selection, opt *Options) *string {
+		element := selec.Get(0)
+
+		var buf bytes.Buffer
+		err := html.Render(&buf, element)
+		if err != nil {
+			panic(err)
+		}
+
+		return String(buf.String())
+	}
+)
+
 var blockElements = []string{
 	"address",
 	"article",
@@ -60,19 +77,41 @@ func IsBlockElement(e string) bool {
 	}
 	return false
 }
+
+// String is a helper function to return a pointer.
 func String(text string) *string {
 	return &text
 }
 
+// Options to customize the output. You can change stuff like
+// the character that is used for strong text.
 type Options struct {
 	StrongDelimiter string
 	Fence           string
 	HR              string
 }
 
+type AdvancedResult struct {
+	Header   string
+	Markdown string
+	Footer   string
+}
+
+// Rule to convert certain html tags to markdown.
+//  md.Rule{
+//    Filter: []string{"del", "s", "strike"},
+//    Replacement: func(content string, selec *goquery.Selection, opt *md.Options) *string {
+//      // You need to return a pointer to a string (md.String is just a helper function).
+//      // If you return nil the next function for that html element
+//      // will be picked. For example you could only convert an element
+//      // if it has a certain class name and fallback if not.
+//      return md.String("~" + content + "~")
+//    },
+//  }
 type Rule struct {
-	Filter      []string
-	Replacement func(content string, selec *goquery.Selection, options *Options) *string
+	Filter              []string
+	Replacement         func(content string, selec *goquery.Selection, options *Options) *string
+	AdvancedReplacement func(content string, selec *goquery.Selection, options *Options) (res AdvancedResult, skip bool)
 }
 
 var leadingNewlinesR = regexp.MustCompile(`^\n+`)
@@ -82,45 +121,21 @@ var newlinesR = regexp.MustCompile(`\n+`)
 var tabR = regexp.MustCompile(`\t+`)
 var indentR = regexp.MustCompile(`(?m)\n`)
 
-func DefaultRule(content string, selec *goquery.Selection, opt *Options) *string {
-	return &content
-}
-func KeepRule(content string, selec *goquery.Selection, opt *Options) *string {
-	element := selec.Get(0)
-
-	var buf bytes.Buffer
-	err := html.Render(&buf, element)
-	if err != nil {
-		panic(err)
-	}
-
-	return String(buf.String())
-}
-
 func (c *Converter) selecToMD(domain string, selec *goquery.Selection, opt *Options) string {
 	var builder strings.Builder
-	// TODO: selec.Contents() Children
-	// TODO: Text() or DirectText()
 	selec.Contents().Each(func(i int, s *goquery.Selection) {
 		name := goquery.NodeName(s)
 		rules := c.getRuleFuncs(name)
-		// r, ok := rules[name]
-		// if !ok {
-		// 	content := c.selecToMD(domain, s, opt)
-		// 	res := DefaultRule(content, s, opt)
-		// 	if name != "html" && name != "body" && name != "head" {
-		// 		fmt.Println(name, "\t-> default rule")
-		// 	}
-		// 	builder.WriteString(*res)
-		// 	return
-		// }
 
 		for i := len(rules) - 1; i >= 0; i-- {
 			rule := rules[i]
 			content := c.selecToMD(domain, s, opt)
-			res := rule(content, s, opt)
-			if res != nil {
-				builder.WriteString(*res)
+			res, skip := rule(content, s, opt)
+
+			// TODO: use Footer & Header
+
+			if !skip {
+				builder.WriteString(res.Markdown)
 				return
 			}
 		}

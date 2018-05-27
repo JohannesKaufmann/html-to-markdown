@@ -10,12 +10,12 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+var multipleSpacesR = regexp.MustCompile(`  +`)
+
 var commonmark = []Rule{
 	Rule{
 		Filter: []string{"ul", "ol"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
-			// fmt.Printf("ul/ol -> '%s' \n", content)
-
 			parent := selec.Parent()
 			if parent.Is("li") && parent.Children().Last().IsSelection(selec) {
 				// content = "\n" + content
@@ -45,11 +45,6 @@ var commonmark = []Rule{
 			// indent
 			content = indentR.ReplaceAllString(content, "\n    ")
 
-			// var r = regexp.MustCompile(`\n+`)
-			// content = r.ReplaceAllString(content, "\n")
-			// fmt.Printf("LI -> '%s' \n", content)
-			// content = strings.TrimSpace(content)
-
 			return String(prefix + content + "\n")
 		},
 	},
@@ -58,10 +53,13 @@ var commonmark = []Rule{
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			text := selec.Text()
 			if trimmed := strings.TrimSpace(text); trimmed == "" {
-				return nil
+				return String("")
 			}
-			// text = newlinesR.ReplaceAllString(text, "")
 			text = tabR.ReplaceAllString(text, " ")
+
+			// replace multiple spaces by one space: dont accidentally make
+			// normal text be indented and thus be a code block.
+			text = multipleSpacesR.ReplaceAllString(text, " ")
 
 			text = escape.Markdown(text)
 			return &text
@@ -137,11 +135,17 @@ var commonmark = []Rule{
 	Rule{
 		Filter: []string{"pre"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
-			language := selec.Find("code").AttrOr("class", "")
+			codeElement := selec.Find("code")
+			language := codeElement.AttrOr("class", "")
 			language = strings.Replace(language, "language-", "", 1)
 
+			code := codeElement.Text()
+			if codeElement.Length() == 0 {
+				code = selec.Text()
+			}
+
 			text := "\n\n" + opt.Fence + language + "\n" +
-				selec.Find("code").Text() +
+				code +
 				"\n" + opt.Fence + "\n\n"
 			return &text
 		},
@@ -156,12 +160,6 @@ var commonmark = []Rule{
 	Rule{
 		Filter: []string{"blockquote"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
-			// content = strings.Replace(content, "\n", "\n> ->", -1)
-			// fmt.Printf("blockquote: '%s' \n\n", content)
-
-			// var r = regexp.MustCompile(`^\n+|\n+$`)
-			// content = r.ReplaceAllString(content, "")
-
 			content = strings.TrimSpace(content)
 			content = multipleNewLinesRegex.ReplaceAllString(content, "\n\n")
 

@@ -48,15 +48,15 @@ type vimeoVideo struct {
 
 var vimeoID = regexp.MustCompile(`video\/(\d*)`)
 
-type VimeoVariation int
+type vimeoVariation int
 
 const (
-	VimeoOnlyThumbnail VimeoVariation = iota
+	VimeoOnlyThumbnail vimeoVariation = iota
 	VimeoWithTitle
 	VimeoWithDescription
 )
 
-func VimeoEmbed(variation VimeoVariation) md.Plugin {
+func EXPERIMENTAL_VimeoEmbed(variation vimeoVariation) md.Plugin {
 	return func(c *md.Converter) []md.Rule {
 		getVimeoData := func(id string) (*vimeoVideo, error) {
 			u := fmt.Sprintf("http://vimeo.com/api/oembed.json?url=https://vimeo.com/%s", id)

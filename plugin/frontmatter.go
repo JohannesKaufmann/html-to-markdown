@@ -4,17 +4,33 @@ import (
 	"fmt"
 
 	"github.com/JohannesKaufmann/html-to-markdown"
-	"github.com/PuerkitoBio/goquery"
+	yaml "gopkg.in/yaml.v2"
 )
 
-type FrontMatterCallback func(selec *goquery.Selection) map[string]interface{}
+// type frontMatterCallback func(selec *goquery.Selection) map[string]interface{}
 
 // TODO: automatically convert to formats (look at hugo)
 
-func FrontMatter(format string) md.Plugin {
+func EXPERIMENTAL_FrontMatter(format string) md.Plugin {
 	return func(c *md.Converter) []md.Rule {
+		data := make(map[string]interface{})
 
-		title := c.Find("head title").Text()
+		d, err := yaml.Marshal(data)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println(string(d))
+		/*
+			add rule for `head`
+				- get title
+				- return AdvancedResult{ Header: formated_yaml }, skip
+						-> added to head
+						-> others rules can apply
+
+		*/
+
+		title := "" // c.Find("head title").Text()
 
 		var text string
 		switch format {
@@ -40,7 +56,8 @@ title: %s
 			panic("unknown format")
 		}
 
-		c.AddLeading(text)
+		_ = text
+		// c.AddLeading(text)
 		return nil
 	}
 }

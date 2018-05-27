@@ -290,6 +290,73 @@ Newlines
 </h3>
 			`,
 		},
+		{
+			name: "text with whitespace",
+			html: `
+						<div id="sport_single_post-2" class="widget sport_single_post">
+			<h1 class="widget-title">Aktuelles</h1>
+			
+			<!-- featured image -->
+			<div class="mosaic-block fade"><a href="http://www.bonnerruderverein.de/wp-content/uploads/2015/09/BRV-abend.jpg" class="mosaic-overlay fancybox" title="BRV-abend"></a><div class="mosaic-backdrop"><div class="corner-date">25 Mai</div><img src="http://www.bonnerruderverein.de/wp-content/uploads/2015/09/BRV-abend.jpg" alt="" /></div></div>
+			<!-- title -->
+			<h3 class="title"><a href="http://www.bonnerruderverein.de/bonner-nachtlauf/">9. Bonner Nachtlauf - Einschränkungen am Bootshaus</a></h3>
+
+            <!-- excerpt -->
+            am Mittwoch, dem 30. Mai 2018 findet am Bonner Rheinufer der 9. ...
+            <a href="http://www.bonnerruderverein.de/bonner-nachtlauf/" class="more">More</a>
+
+
+
+			</div>
+
+			<hr />
+			
+		<div>
+			<h1 class="widget-title">Aktuelles</h1>
+			<h3 class="title"><a href="some_url">Title</a></h3>
+
+						<!-- excerpt -->
+						Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Vestibulum id ligula porta felis euismod semper.
+						<a href="other_url" class="more">More</a>
+
+		</div>
+`,
+		},
+		{
+			name: "pre tag without code tag",
+			html: `
+<div class="code"><pre>// Fprint formats using the default formats for its operands and writes to w.
+// Spaces are added between operands when neither is a string.
+// It returns the number of bytes written and any write error encountered.
+func Fprint(w io.Writer, a ...interface{}) (n int, err error) {</pre></div>
+`,
+		},
+		{
+			name: "p tag with lots of whitespace",
+			html: `
+<p>
+	Sometimes a struct field, function, type, or even a whole package becomes
+
+
+	redundant or unnecessary, but must be kept for compatibility with existing
+
+
+	programs.
+
+
+	To signal that an identifier should not be used, add a paragraph to its doc
+
+
+	comment that begins with "Deprecated:" followed by some information about the
+
+
+	deprecation.
+
+
+	There are a few examples <a href="https://golang.org/search?q=Deprecated:" target="_blank">in the standard library</a>.
+</p>
+`,
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
@@ -356,4 +423,159 @@ func BenchmarkFromString(b *testing.B) {
 	}
 
 	wg.Wait()
+}
+
+func TestAddRules_ChangeContent(t *testing.T) {
+	expected := "Some other Content"
+
+	var wasCalled bool
+	rule := Rule{
+		Filter: []string{"p"},
+		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			wasCalled = true
+
+			if content != "Some Content" {
+				t.Errorf("got wrong `content`: '%s'", content)
+			}
+			if !selec.Is("p") {
+				t.Error("selec is not p")
+			}
+			return String(expected)
+		},
+	}
+
+	conv := NewConverter("", true, nil)
+	conv.AddRules(rule)
+	md, err := conv.ConvertString(`<p>Some Content</p>`)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if md != expected {
+		t.Errorf("wanted '%s' but got '%s'", expected, md)
+	}
+	if !wasCalled {
+		t.Error("rule was not called")
+	}
+}
+
+func TestAddRules_Fallback(t *testing.T) {
+	// firstExpected := "Some other Content"
+	expected := "Totally different Content"
+
+	var firstWasCalled bool
+	var secondWasCalled bool
+	firstRule := Rule{
+		Filter: []string{"p"},
+		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			firstWasCalled = true
+			if secondWasCalled {
+				t.Error("expected first rule to be called before second rule. second is already called")
+			}
+
+			if content != "Some Content" {
+				t.Errorf("got wrong `content`: '%s'", content)
+			}
+			if !selec.Is("p") {
+				t.Error("selec is not p")
+			}
+
+			return nil
+		},
+	}
+	secondRule := Rule{
+		Filter: []string{"p"},
+		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			secondWasCalled = true
+			if !firstWasCalled {
+				t.Error("expected first rule to be called before second rule. first is not called yet")
+			}
+
+			if content != "Some Content" {
+				t.Errorf("got wrong `content`: '%s'", content)
+			}
+			if !selec.Is("p") {
+				t.Error("selec is not p")
+			}
+			return String(expected)
+		},
+	}
+
+	conv := NewConverter("", true, nil)
+	conv.AddRules(secondRule, firstRule)
+	md, err := conv.ConvertString(`<p>Some Content</p>`)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if md != expected {
+		t.Errorf("wanted '%s' but got '%s'", expected, md)
+	}
+	if !firstWasCalled {
+		t.Error("first rule was not called")
+	}
+	if !secondWasCalled {
+		t.Error("second rule was not called")
+	}
+}
+func TestWholeSite(t *testing.T) {
+	var tests = []struct {
+		name   string
+		domain string
+
+		file string
+	}{
+		{
+			name: "golang.org",
+
+			domain: "golang.org",
+		},
+		{
+			name:   "bonnerruderverein.de",
+			domain: "bonnerruderverein.de",
+		},
+		{
+			name:   "blog.golang.org",
+			domain: "blog.golang.org",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			converter := NewConverter(test.domain, true, nil)
+
+			htmlData, err := ioutil.ReadFile(
+				filepath.Join("testdata", t.Name()+".html"),
+			)
+			if err != nil {
+				t.Error(err)
+			}
+
+			markdownData, err := converter.ConvertBytes(htmlData)
+			if err != nil {
+				t.Error(err)
+			}
+
+			// output := blackfriday.Run(data)
+			// fmt.Println(string(output))
+
+			gp := filepath.Join("testdata", t.Name()+".md")
+			if *update {
+				t.Log("update golden file")
+				if err := ioutil.WriteFile(gp, markdownData, 0644); err != nil {
+					t.Fatalf("failed to update golden file: %s", err)
+				}
+			}
+
+			g, err := ioutil.ReadFile(gp)
+			if err != nil {
+				t.Logf("Result:\n'%s'\n", string(markdownData))
+				t.Fatalf("failed reading .golden: %s", err)
+			}
+
+			if !bytes.Equal(markdownData, g) {
+				t.Errorf("written json does not match .golden file \nexpected:\n'%s'\nbut got:\n'%s'", string(g), string(markdownData))
+			}
+		})
+	}
 }
