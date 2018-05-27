@@ -5,8 +5,6 @@
 
 Convert HTML into Markdown with Go.
 
-TODO: properly use options, list of features, document ConvertX functions
-
 ## Installation
 
 ```
@@ -33,6 +31,22 @@ If you are already using [goquery](https://github.com/PuerkitoBio/goquery) you c
 ```go
 markdown, err := converter.Convert(selec)
 ```
+
+## Options
+
+The third parameter to `md.NewConverter` is `*md.Options`.
+
+For example you can change the character that is around a bold text ("`**`") to a different one (for example "`__`") by changing the value of `StrongDelimiter`.
+
+```go
+opt := &md.Options{
+  StrongDelimiter: "__", // default: **
+  // ...
+}
+converter := md.NewConverter("", true, opt)
+```
+
+For all the possible options look at [godocs](https://godoc.org/github.com/JohannesKaufmann/html-to-markdown/#Options) and for a example look at the [example](/examples/options/main.go).
 
 ## Adding Rules
 
