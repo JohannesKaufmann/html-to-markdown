@@ -215,7 +215,7 @@ func TestFromString(t *testing.T) {
 			html: `<a href="http://commonmark.org/" title="Some Text">Link</a>`,
 		},
 		{
-			name: "reference link: full",
+			name: "reference link full",
 			html: `
 <a href="http://commonmark.org/first">First Link</a>
 
@@ -227,7 +227,7 @@ func TestFromString(t *testing.T) {
 			},
 		},
 		{
-			name: "reference link: collapsed",
+			name: "reference link collapsed",
 			html: `<a href="http://commonmark.org/">Link</a>`,
 			options: &Options{
 				LinkStyle:          "referenced",
@@ -235,7 +235,7 @@ func TestFromString(t *testing.T) {
 			},
 		},
 		{
-			name: "reference link: shortcut",
+			name: "reference link shortcut",
 			html: `<a href="http://commonmark.org/">Link</a>`,
 			options: &Options{
 				LinkStyle:          "referenced",
