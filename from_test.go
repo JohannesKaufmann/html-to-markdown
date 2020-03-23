@@ -5,6 +5,7 @@ import (
 	"flag"
 	"io/ioutil"
 	"path/filepath"
+	"strings"
 	"sync"
 	"testing"
 
@@ -449,7 +450,7 @@ func Fprint(w io.Writer, a ...interface{}) (n int, err error) {</pre></div>
 			// output := blackfriday.Run(data)
 			// fmt.Println(string(output))
 
-			gp := filepath.Join("testdata", t.Name()+".golden")
+			gp := filepath.Join("testdata", strings.ReplaceAll(t.Name(), ":", "")+".golden")
 			if *update {
 				t.Log("update golden file")
 				if err := ioutil.WriteFile(gp, data, 0644); err != nil {
