@@ -3,7 +3,7 @@ package plugin
 import (
 	"testing"
 
-	"github.com/JohannesKaufmann/html-to-markdown"
+	md "github.com/JohannesKaufmann/html-to-markdown"
 )
 
 func TestStrikethroughDefault(t *testing.T) {
@@ -49,6 +49,80 @@ func TestTaskListItems(t *testing.T) {
 	`
 	expected := `- [x] Checked!
 - [ ] Check Me!`
+	markdown, err := conv.ConvertString(input)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if markdown != expected {
+		t.Errorf("got '%s' but wanted '%s'", markdown, expected)
+	}
+}
+
+func TestTable_simple(t *testing.T) {
+	conv := md.NewConverter("", true, nil)
+	conv.AddRules(EXPERIMENTAL_Table...)
+
+	input := `
+<table style="width:100%">
+	<tr>
+		<th>Firstname</th>
+		<th>Lastname</th>
+		<th>Age</th>
+	</tr>
+	<tr>
+		<td>Jill</td>
+		<td>Smith</td>
+		<td>50</td>
+	</tr>
+	<tr>
+		<td>Eve</td>
+		<td>Jackson</td>
+		<td>94</td>
+	</tr>
+</table> 
+	`
+	expected := `| Firstname | Lastname | Age |
+| --- | --- | --- |
+| Jill | Smith | 50 |
+| Eve | Jackson | 94 |`
+	markdown, err := conv.ConvertString(input)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if markdown != expected {
+		t.Errorf("got '%s' but wanted '%s'", markdown, expected)
+	}
+}
+
+func TestTable_escape_pipe(t *testing.T) {
+	conv := md.NewConverter("", true, nil)
+	conv.AddRules(EXPERIMENTAL_Table...)
+
+	input := `
+<table style="width:100%">
+	<tr>
+		<th>Firstname</th>
+		<th>With | Character</th>
+		<th>Age</th>
+	</tr>
+	<tr>
+		<td>Jill</td>
+		<td>Smith</td>
+		<td>50</td>
+	</tr>
+	<tr>
+		<td>Eve</td>
+		<td>Jackson</td>
+		<td>94</td>
+	</tr>
+</table> 
+	`
+	expected := `| Firstname | With \| Character | Age |
+| --- | --- | --- |
+| Jill | Smith | 50 |
+| Eve | Jackson | 94 |`
 	markdown, err := conv.ConvertString(input)
 	if err != nil {
 		t.Error(err)

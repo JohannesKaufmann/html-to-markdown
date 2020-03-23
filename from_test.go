@@ -15,27 +15,6 @@ import (
 var update = flag.Bool("update", false, "update .golden files")
 
 func TestFromString(t *testing.T) {
-	/*
-		type rule struct {
-			Before func()
-
-			After func() AdvancedResult
-		}
-
-		type X struct {
-			f func(*X)
-			i int
-		}
-		x := X{
-			f: func(x *X) {
-				x.i = 5
-			},
-		}
-		fmt.Println("before", x.i)
-		x.f(&x)
-		fmt.Println("after", x.i)
-	*/
-
 	var tests = []struct {
 		name string
 
@@ -406,6 +385,10 @@ Newlines
 // It returns the number of bytes written and any write error encountered.
 func Fprint(w io.Writer, a ...interface{}) (n int, err error) {</pre></div>
 `,
+		},
+		{
+			name: "escape pipe characters because of the use in tables",
+			html: `<p>With | Character<p>`,
 		},
 		/*
 					{ // TODO: not working yet

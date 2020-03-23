@@ -61,7 +61,7 @@ var commonmark = []Rule{
 			// normal text be indented and thus be a code block.
 			text = multipleSpacesR.ReplaceAllString(text, " ")
 
-			text = escape.Markdown(text)
+			text = escape.MarkdownCharacters(text)
 			return &text
 		},
 	},

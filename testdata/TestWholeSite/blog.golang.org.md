@@ -170,6 +170,6 @@ By Andrew Gerrand
  [noted](https://developers.google.com/site-policies#restrictions), the content of this page is licensed under the Creative Commons Attribution 3.0 License,
   and code is licensed under a
  [BSD license](//golang.org/LICENSE).
- [Terms of Service](//golang.org/doc/tos.html) |
- [Privacy Policy](//www.google.com/intl/en/policies/privacy/) |
+ [Terms of Service](//golang.org/doc/tos.html) \|
+ [Privacy Policy](//www.google.com/intl/en/policies/privacy/) \|
  [View the source code](https://go.googlesource.com/blog/)

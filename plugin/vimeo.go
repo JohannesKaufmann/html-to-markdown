@@ -9,7 +9,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/JohannesKaufmann/html-to-markdown"
+	md "github.com/JohannesKaufmann/html-to-markdown"
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -17,10 +17,6 @@ var Timeout = time.Second * 10
 var netClient = &http.Client{
 	Timeout: Timeout,
 }
-
-// GODEBUG=netdns=go
-// GODEBUG=netdns=cgo
-// -> auto, go, cgo
 
 type vimeoVideo struct {
 	Type                       string `json:"type"`

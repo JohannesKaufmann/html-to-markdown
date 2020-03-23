@@ -19,9 +19,13 @@ var replacer = strings.NewReplacer(
 	`*`, `\*`,
 	`_`, `\_`,
 	"`", "\\`",
+	`|`, `\|`,
 )
 
-func Markdown(text string) string {
+// MarkdownCharacters escapes common markdown characters so that
+// `<p>**Not Bold**</p> ends up as correct markdown `\*\*Not Strong\*\*`.
+// No worry, the escaped characters will display fine, just without the formatting.
+func MarkdownCharacters(text string) string {
 	// Escape backslash escapes!
 	text = backslash.ReplaceAllString(text, `\\$1`)
 
