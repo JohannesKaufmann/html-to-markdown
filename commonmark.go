@@ -116,6 +116,17 @@ var commonmark = []Rule{
 		},
 	},
 	Rule{
+		Filter: []string{"i", "em"},
+		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			trimmed := strings.TrimSpace(content)
+			if trimmed == "" {
+				return &trimmed
+			}
+			trimmed = opt.EmDelimiter + trimmed + opt.EmDelimiter
+			return &trimmed
+		},
+	},
+	Rule{
 		Filter: []string{"img"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			alt := selec.AttrOr("alt", "")
@@ -198,6 +209,12 @@ var commonmark = []Rule{
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			text := "\n\n" + opt.HorizontalRule + "\n\n"
 			return &text
+		},
+	},
+	Rule{
+		Filter: []string{"br"},
+		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			return String("\n")
 		},
 	},
 	Rule{

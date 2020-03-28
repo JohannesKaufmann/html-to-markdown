@@ -90,7 +90,9 @@ Im Mittelpunkt der Aktivitäten steht der Breitensport mit nahezu täglichen Rud
 ### Kontakt
 
 Bonner Ruder-Verein 1882 e.V.
+
 Wilhelm-Spiritusufer 2
+
 53113 Bonn
 
 Tel. 0176 322 888 97
@@ -98,15 +100,19 @@ Tel. 0176 322 888 97
 Email: [info@bonnerruderverein.de ](mailto:info@bonnerruderverein.de)
 
 Bankverbindung:
+
 IBAN DE15370501980031027535
+
 BIC COLSDE33
+
 Sparkasse Köln/Bonn
 
 ### Informationen
 
 [Rhein Pegel Bonn vom WSA Köln](http://www.bafg.de/php/BONNRHEINW.htm)
 
-[alle Rhein Pegel auf ELWIS ](https://www.elwis.de/DE/dynamisch/gewaesserkunde/wasserstaende/index.php?target=2&gw=RHEIN) Für uns ist die Hochwassermarke II am Pegel Oberwinter maßgeblich
+[alle Rhein Pegel auf ELWIS ](https://www.elwis.de/DE/dynamisch/gewaesserkunde/wasserstaende/index.php?target=2&gw=RHEIN)
+ Für uns ist die Hochwassermarke II am Pegel Oberwinter maßgeblich
 
 [Siegpegel Eitorf ](http://luadb.it.nrw.de/LUA/hygon/pegel.php?stationsname=Eitorf&yAchse=Standard&nachSuche=&hoehe=468&breite=724&datum=2016-07-17&progn=&meindatum=17.07.2016&yAchse=Standard&ersteWoche=7-Tageslinie&meifocus=&neuname=)
 
