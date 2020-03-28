@@ -48,6 +48,14 @@ func TestFromString(t *testing.T) {
 			html: "<p> Some <strong> Text </strong></p>",
 		},
 		{
+			name: "em in p tag",
+			html: "<p>Some <em>Text</em></p>",
+		},
+		{
+			name: "em in p tag with whitespace",
+			html: "<p> Some <em> Text </em></p>",
+		},
+		{
 			name: "h1",
 			html: "<h1>Header</h1>",
 		},
@@ -389,6 +397,18 @@ func Fprint(w io.Writer, a ...interface{}) (n int, err error) {</pre></div>
 		{
 			name: "escape pipe characters because of the use in tables",
 			html: `<p>With | Character<p>`,
+		},
+		{
+			name: "<br> adds new line break",
+			html: `<p>1. xxx <br/>2. xxxx<br/>3. xxx</p><p><span class="img-wrap"><img src="xxx"></span><br>4. golang<br>a. xx<br>b. xx</p>`,
+		},
+		{
+			name: "<br> does not add new line inside header",
+			html: `<h1>Heading<br/> <br/>One</h1>`,
+		},
+		{
+			name: "dont escape too much",
+			html: `jmap –histo[:live]`,
 		},
 		/*
 					{ // TODO: not working yet
