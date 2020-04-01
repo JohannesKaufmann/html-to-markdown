@@ -267,6 +267,12 @@ Robin  6</code></pre>
 			`,
 		},
 		{
+			name: "code tag",
+			html: `
+			<code>last_30_days</code>
+			`,
+		},
+		{
 			name: "hr",
 			html: `
 			<p>Some Content</p>
