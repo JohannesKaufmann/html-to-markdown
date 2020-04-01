@@ -84,7 +84,8 @@ var commonmark = []Rule{
 			node := goquery.NodeName(selec)
 			level, err := strconv.Atoi(node[1:])
 			if err != nil {
-				panic(err)
+				fmt.Println("[JohannesKaufmann/html-to-markdown] 'h' tag with unknown level:", err)
+				level = 6
 			}
 
 			if opt.HeadingStyle == "setext" && level < 3 {
@@ -180,7 +181,9 @@ var commonmark = []Rule{
 	},
 	Rule{
 		Filter: []string{"code"},
-		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+		Replacement: func(_ string, selec *goquery.Selection, opt *Options) *string {
+			content := selec.Text()
+
 			// TODO: configure delimeter in options?
 			text := "`" + content + "`"
 			return &text
