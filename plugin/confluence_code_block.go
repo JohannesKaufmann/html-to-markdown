@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	md "github.com/JohannesKaufmann/html-to-markdown"
 	"github.com/PuerkitoBio/goquery"
-	md "github.com/arangodb-managed/html-to-markdown"
 )
 
 // ConfluenceCodeBlock converts `<ac:structured-macro>` elements
