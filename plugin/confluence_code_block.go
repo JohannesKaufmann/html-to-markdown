@@ -8,7 +8,8 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-// ConfluenceCodeBlock converts `<ac:structured-macro>` elements
+// ConfluenceCodeBlock converts `<ac:structured-macro>` elements that are used in Atlassian’s Wiki “Confluence”.
+// [Contributed by @Skarlso]
 func ConfluenceCodeBlock() md.Plugin {
 	return func(c *md.Converter) []md.Rule {
 		character := "```"
