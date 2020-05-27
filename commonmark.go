@@ -217,7 +217,7 @@ var commonmark = []Rule{
 	Rule{
 		Filter: []string{"br"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
-			return String("\n")
+			return String("\n\n")
 		},
 	},
 	Rule{

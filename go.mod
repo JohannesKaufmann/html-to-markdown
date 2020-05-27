@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/PuerkitoBio/goquery v1.5.1
+	github.com/rogpeppe/go-internal v1.6.0 // indirect
 	golang.org/x/net v0.0.0-20200320220750-118fecf932d8
 	gopkg.in/yaml.v2 v2.2.8
 )

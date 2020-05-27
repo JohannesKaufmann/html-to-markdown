@@ -21,5 +21,6 @@ Except as [noted](https://developers.google.com/site-policies#restrictions),
 the content of this page is licensed under the
 Creative Commons Attribution 3.0 License,
 and code is licensed under a [BSD license](/LICENSE).
+
 [Terms of Service](/doc/tos.html) \|
 [Privacy Policy](http://www.google.com/intl/en/policies/privacy/)

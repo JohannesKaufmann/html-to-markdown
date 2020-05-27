@@ -3,7 +3,9 @@ package md
 import (
 	"bytes"
 	"flag"
+	"fmt"
 	"io/ioutil"
+	"net/url"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -203,7 +205,7 @@ func TestFromString(t *testing.T) {
 			html: `<a href="http://commonmark.org/" title="Some Text">Link</a>`,
 		},
 		{
-			name: "reference link: full",
+			name: "reference link full",
 			html: `
 <a href="http://commonmark.org/first">First Link</a>
 
@@ -215,7 +217,7 @@ func TestFromString(t *testing.T) {
 			},
 		},
 		{
-			name: "reference link: collapsed",
+			name: "reference link collapsed",
 			html: `<a href="http://commonmark.org/">Link</a>`,
 			options: &Options{
 				LinkStyle:          "referenced",
@@ -223,7 +225,7 @@ func TestFromString(t *testing.T) {
 			},
 		},
 		{
-			name: "reference link: shortcut",
+			name: "reference link shortcut",
 			html: `<a href="http://commonmark.org/">Link</a>`,
 			options: &Options{
 				LinkStyle:          "referenced",
@@ -261,7 +263,7 @@ Robin  6</code></pre>
 			`,
 		},
 		{
-			name: "code tag",
+			name: "code tag inside p",
 			html: `
 			<p>When <code>x = 3</code>, that means <code>x + 2 = 5</code></p>
 			`,
@@ -405,11 +407,11 @@ func Fprint(w io.Writer, a ...interface{}) (n int, err error) {</pre></div>
 			html: `<p>With | Character<p>`,
 		},
 		{
-			name: "<br> adds new line break",
+			name: "br adds new line break",
 			html: `<p>1. xxx <br/>2. xxxx<br/>3. xxx</p><p><span class="img-wrap"><img src="xxx"></span><br>4. golang<br>a. xx<br>b. xx</p>`,
 		},
 		{
-			name: "<br> does not add new line inside header",
+			name: "br does not add new line inside header",
 			html: `<h1>Heading<br/> <br/>One</h1>`,
 		},
 		{
@@ -456,10 +458,14 @@ func Fprint(w io.Writer, a ...interface{}) (n int, err error) {</pre></div>
 			}
 			data := []byte(markdown)
 
-			// output := blackfriday.Run(data)
-			// fmt.Println(string(output))
+			name := strings.Replace(test.name, " ", "_", -1)
+			if url.QueryEscape(name) != name {
+				fmt.Printf("'%s' is not a safe path", name)
+			}
+			name = url.QueryEscape(name) // for safety
+			name = filepath.Join("TestFromString", name)
 
-			gp := filepath.Join("testdata", strings.ReplaceAll(t.Name(), ":", "")+".golden")
+			gp := filepath.Join("testdata", name+".golden")
 			if *update {
 				t.Log("update golden file")
 				if err := ioutil.WriteFile(gp, data, 0644); err != nil {
