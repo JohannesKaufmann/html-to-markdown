@@ -132,3 +132,35 @@ func TestTable_escape_pipe(t *testing.T) {
 		t.Errorf("got '%s' but wanted '%s'", markdown, expected)
 	}
 }
+
+func TestConfluenceCodeBlock(t *testing.T) {
+	conv := md.NewConverter("", true, nil)
+	conv.Use(ConfluenceCodeBlock())
+
+	input := `<ac:structured-macro ac:name="code" ac:schema-version="1" ac:macro-id="150db472-e155-47c7-a195-c581bf891af5"><ac:plain-text-body><![CDATA[FOR stuff IN imdb_vertices
+	FILTER LIKE(stuff.description, "%good%vs%evil%", true)
+  RETURN stuff.description]]></ac:plain-text-body></ac:structured-macro>
+some other stuff
+<ac:structured-macro ac:name="code" ac:schema-version="1" ac:macro-id="150db472-e155-47c7-a195-c581bf891af5"><ac:parameter ac:name="language">sql</ac:parameter><ac:plain-text-body><![CDATA[FOR stuff IN imdb_vertices
+	FILTER LIKE(stuff.description, "%good%vs%evil%", true)
+  RETURN stuff.description]]></ac:plain-text-body></ac:structured-macro>`
+	expected := "```" + `
+FOR stuff IN imdb_vertices
+	FILTER LIKE(stuff.description, "%good%vs%evil%", true)
+  RETURN stuff.description
+` + "```" + `
+some other stuff
+` + "```sql" + `
+FOR stuff IN imdb_vertices
+	FILTER LIKE(stuff.description, "%good%vs%evil%", true)
+  RETURN stuff.description
+` + "```"
+	markdown, err := conv.ConvertString(input)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if markdown != expected {
+		t.Errorf("got '%s' but wanted '%s'", markdown, expected)
+	}
+}
