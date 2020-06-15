@@ -29,6 +29,10 @@ var commonmark = []Rule{
 	Rule{
 		Filter: []string{"li"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			if strings.TrimSpace(content) == "" {
+				return nil
+			}
+
 			parent := selec.Parent()
 			index := selec.Index()
 
@@ -147,6 +151,10 @@ var commonmark = []Rule{
 			if !ok {
 				return AdvancedResult{}, true
 			}
+
+			// having multiline content inside a link is a bit tricky
+			content = strings.TrimSpace(content)
+			content = strings.Replace(content, "\n", `\`+"\n", -1)
 
 			var title string
 			if t, ok := selec.Attr("title"); ok {

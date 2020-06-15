@@ -2,7 +2,7 @@ Bonner Ruder-Verein 1882 e.V.[![Logo](https://www.bonnerruderverein.de/wp-conten
 
 # Bonner Ruder-Verein 1882 e.V.
 
-[ Menu ](#)
+[Menu](#)
 
 - [](#)
 
@@ -28,9 +28,6 @@ Bonner Ruder-Verein 1882 e.V.[![Logo](https://www.bonnerruderverein.de/wp-conten
 - [Termine/Veranstaltungen](http://www.bonnerruderverein.de/termine)
 - [Nützliche Links](http://www.bonnerruderverein.de/partner/)
 - [BRV-Intern](http://www.bonnerruderverein.de/mitglieder/)
-
-- 
-- 
 
 * * *
 
@@ -97,7 +94,7 @@ Wilhelm-Spiritusufer 2
 
 Tel. 0176 322 888 97
 
-Email: [info@bonnerruderverein.de ](mailto:info@bonnerruderverein.de)
+Email: [info@bonnerruderverein.de](mailto:info@bonnerruderverein.de)
 
 Bankverbindung:
 
@@ -111,11 +108,11 @@ Sparkasse Köln/Bonn
 
 [Rhein Pegel Bonn vom WSA Köln](http://www.bafg.de/php/BONNRHEINW.htm)
 
-[alle Rhein Pegel auf ELWIS ](https://www.elwis.de/DE/dynamisch/gewaesserkunde/wasserstaende/index.php?target=2&gw=RHEIN)
+[alle Rhein Pegel auf ELWIS](https://www.elwis.de/DE/dynamisch/gewaesserkunde/wasserstaende/index.php?target=2&gw=RHEIN)
 
  Für uns ist die Hochwassermarke II am Pegel Oberwinter maßgeblich
 
-[Siegpegel Eitorf ](http://luadb.it.nrw.de/LUA/hygon/pegel.php?stationsname=Eitorf&yAchse=Standard&nachSuche=&hoehe=468&breite=724&datum=2016-07-17&progn=&meindatum=17.07.2016&yAchse=Standard&ersteWoche=7-Tageslinie&meifocus=&neuname=)
+[Siegpegel Eitorf](http://luadb.it.nrw.de/LUA/hygon/pegel.php?stationsname=Eitorf&yAchse=Standard&nachSuche=&hoehe=468&breite=724&datum=2016-07-17&progn=&meindatum=17.07.2016&yAchse=Standard&ersteWoche=7-Tageslinie&meifocus=&neuname=)
 
 [Impressum & Datenschutzerklärung](http://www.bonnerruderverein.de/impressum/)
 
