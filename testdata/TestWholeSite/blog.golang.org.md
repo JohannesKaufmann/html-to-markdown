@@ -1,4 +1,10 @@
-Godoc: documenting Go code - The Go Blog[The Go Programming Language](//golang.org/)[Go](//golang.org/)[▽](#)[Documents](//golang.org/doc/)[Packages](//golang.org/pkg/)[The Project](//golang.org/project/)[Help](//golang.org/help/)[Blog](/)submit search
+Godoc: documenting Go code - The Go Blog
+
+[The Go Programming Language](//golang.org/)
+
+[Go](//golang.org/)
+
+[Documents](//golang.org/doc/)[Packages](//golang.org/pkg/)[The Project](//golang.org/project/)[Help](//golang.org/help/)[Blog](/)submit search
 
 #### Next article
 

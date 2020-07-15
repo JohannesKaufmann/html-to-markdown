@@ -123,6 +123,8 @@ type Options struct {
 	// full, collapsed, or shortcut
 	// default: full
 	LinkReferenceStyle string
+
+	domain string
 }
 
 type AdvancedResult struct {

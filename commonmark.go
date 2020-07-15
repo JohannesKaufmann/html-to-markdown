@@ -2,6 +2,7 @@ package md
 
 import (
 	"fmt"
+	"net/url"
 	"regexp"
 	"strconv"
 	"strings"
@@ -70,7 +71,7 @@ var commonmark = []Rule{
 		},
 	},
 	Rule{
-		Filter: []string{"p"},
+		Filter: []string{"p", "div"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			parent := goquery.NodeName(selec.Parent())
 			if IsInlineElement(parent) || parent == "li" {
@@ -85,6 +86,16 @@ var commonmark = []Rule{
 	Rule{
 		Filter: []string{"h1", "h2", "h3", "h4", "h5", "h6"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			content = strings.Replace(content, "\n", " ", -1)
+			content = strings.Replace(content, "\r", " ", -1)
+			content = strings.Replace(content, `#`, `\#`, -1)
+
+			insideLink := selec.ParentsFiltered("a").Length() > 0
+			if insideLink {
+				text := opt.StrongDelimiter + content + opt.StrongDelimiter
+				return &text
+			}
+
 			node := goquery.NodeName(selec)
 			level, err := strconv.Atoi(node[1:])
 			if err != nil {
@@ -103,8 +114,6 @@ var commonmark = []Rule{
 			}
 
 			prefix := strings.Repeat("#", level)
-			content = strings.Replace(content, "\n", " ", -1)
-			content = strings.Replace(content, "\r", " ", -1)
 			text := "\n\n" + prefix + " " + content + "\n\n"
 			return &text
 		},
@@ -140,7 +149,18 @@ var commonmark = []Rule{
 				return String("")
 			}
 
-			text := fmt.Sprintf("![%s](%s)", alt, src)
+			u, err := url.Parse(src)
+			if err != nil {
+				fmt.Println("error could not parse the url:", err)
+			}
+			if u.Scheme == "" {
+				u.Scheme = "http"
+			}
+			if u.Host == "" {
+				u.Host = opt.domain
+			}
+
+			text := fmt.Sprintf("![%s](%s)", alt, u.String())
 			return &text
 		},
 	},
@@ -148,7 +168,7 @@ var commonmark = []Rule{
 		Filter: []string{"a"},
 		AdvancedReplacement: func(content string, selec *goquery.Selection, opt *Options) (AdvancedResult, bool) {
 			href, ok := selec.Attr("href")
-			if !ok {
+			if !ok || strings.TrimSpace(href) == "" || strings.TrimSpace(href) == "#" {
 				return AdvancedResult{}, true
 			}
 

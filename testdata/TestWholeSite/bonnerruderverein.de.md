@@ -1,10 +1,8 @@
-Bonner Ruder-Verein 1882 e.V.[![Logo](https://www.bonnerruderverein.de/wp-content/uploads/2014/12/Logo-BRV_120.png)](http://www.bonnerruderverein.de)
+Bonner Ruder-Verein 1882 e.V.
+
+[![Logo](https://www.bonnerruderverein.de/wp-content/uploads/2014/12/Logo-BRV_120.png)](http://www.bonnerruderverein.de)
 
 # Bonner Ruder-Verein 1882 e.V.
-
-[Menu](#)
-
-- [](#)
 
 - [Startseite](http://www.bonnerruderverein.de/)
 - [Über uns](http://www.bonnerruderverein.de/ueber-uns/informationen/)- [Allgemeine Informationen](http://www.bonnerruderverein.de/ueber-uns/informationen/)
@@ -45,7 +43,11 @@ Im Mittelpunkt der Aktivitäten steht der Breitensport mit nahezu täglichen Rud
 
 # Aktuelles
 
-[](http://www.bonnerruderverein.de/wp-content/uploads/2015/09/BRV-abend.jpg "BRV-abend")25 Mai![](http://www.bonnerruderverein.de/wp-content/uploads/2015/09/BRV-abend.jpg)
+[](http://www.bonnerruderverein.de/wp-content/uploads/2015/09/BRV-abend.jpg "BRV-abend")
+
+25 Mai
+
+![](http://www.bonnerruderverein.de/wp-content/uploads/2015/09/BRV-abend.jpg)
 
 ### [9\. Bonner Nachtlauf - Einschränkungen am Bootshaus](http://www.bonnerruderverein.de/bonner-nachtlauf/)
 
@@ -56,16 +58,24 @@ Im Mittelpunkt der Aktivitäten steht der Breitensport mit nahezu täglichen Rud
 
 1. #### [Fronleichnamsfahrt](http://www.bonnerruderverein.de/termin/fronleichnamsfahrt-2/)
     
+    
     26\. Mai \- 3\. Juni
+    
 2. #### [“Anfängerfahrt” auf der Lahn](http://www.bonnerruderverein.de/termin/anfaenger-wanderfahrt-2/)
     
+    
     8\. Juni \- 10\. Juni
+    
 3. #### [Oste-Marathon](http://www.bonnerruderverein.de/termin/oste-marathon-2/)
     
+    
     15\. Juni \- 17\. Juni
+    
 4. #### [Vorstandssitzung Juni](http://www.bonnerruderverein.de/termin/vorstandssitzung/)
     
+    
     15\. Juni @ 19:00 \- 22:00
+    
 
 [Alle Veranstaltungen anzeigen](http://www.bonnerruderverein.de/termine/)
 
@@ -74,7 +84,45 @@ Im Mittelpunkt der Aktivitäten steht der Breitensport mit nahezu täglichen Rud
 
 ##### Eindrücke
 
-[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Vilaine.jpg "Rudern auf der Vilaine in Frankreich")![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Vilaine-900x600.jpg)[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Oberkassel-2.jpg "Abends am Strand in Oberkassel")![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Oberkassel-2-900x600.jpg)[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Neckarschleuse.jpg "Neckarschleuse in Heilbronn")![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Neckarschleuse-900x600.jpg)[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Main.jpg "Auf dem Main")![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Main-900x600.jpg)[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Hochwasser.jpg "Hochwasser")![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Hochwasser-900x600.jpg)[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Heeg.jpg "Rudern in Friesland")![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Heeg-900x600.jpg)[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Haenger.jpg "Gepackt für die Wanderfahrt")![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Haenger-900x600.jpg)[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Elfsteden.jpg "Karo Dame in Leeuwarden")![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Elfsteden-900x600.jpg)[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Comer-see.jpg "Rudern auf dem Comer See")![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Comer-see-900x600.jpg)[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Abend.jpg "Abends auf dem Rhein")![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Abend-900x600.jpg)
+[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Vilaine.jpg "Rudern auf der Vilaine in Frankreich")
+
+![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Vilaine-900x600.jpg)
+
+[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Oberkassel-2.jpg "Abends am Strand in Oberkassel")
+
+![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Oberkassel-2-900x600.jpg)
+
+[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Neckarschleuse.jpg "Neckarschleuse in Heilbronn")
+
+![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Neckarschleuse-900x600.jpg)
+
+[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Main.jpg "Auf dem Main")
+
+![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Main-900x600.jpg)
+
+[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Hochwasser.jpg "Hochwasser")
+
+![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Hochwasser-900x600.jpg)
+
+[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Heeg.jpg "Rudern in Friesland")
+
+![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Heeg-900x600.jpg)
+
+[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Haenger.jpg "Gepackt für die Wanderfahrt")
+
+![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Haenger-900x600.jpg)
+
+[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Elfsteden.jpg "Karo Dame in Leeuwarden")
+
+![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Elfsteden-900x600.jpg)
+
+[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Comer-see.jpg "Rudern auf dem Comer See")
+
+![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Comer-see-900x600.jpg)
+
+[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Abend.jpg "Abends auf dem Rhein")
+
+![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Abend-900x600.jpg)
 
 - [](http://www.bonnerruderverein.de)
 
@@ -82,7 +130,7 @@ Im Mittelpunkt der Aktivitäten steht der Breitensport mit nahezu täglichen Rud
 
 ### Anfahrt
 
-[![Klicken, um eine größere Karte zu öffnen](//maps.googleapis.com/maps/api/staticmap?key=AIzaSyBgMsrXWkCAcRhjd7DVQ9PQQB1ZqSjRhI4&scale=1&format=png&zoom=13&size=250x250&language=en&maptype=roadmap&markers=size%3Adefault%7Ccolor%3A0xff0000%7Clabel%3AA%7CBonner+Ruder-Verein+1882+e.V.+%2C+Wilhelm-Spiritusufer+2%2C+53113+Bonn+&center=Bonner+Ruder-Verein+1882+e.V.+%2C+Wilhelm-Spiritusufer+2%2C+53113+Bonn+)](#gmw-dialog-googlemapswidget-2 "Klicken, um eine größere Karte zu öffnen")
+[![Klicken, um eine größere Karte zu öffnen](http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyBgMsrXWkCAcRhjd7DVQ9PQQB1ZqSjRhI4&scale=1&format=png&zoom=13&size=250x250&language=en&maptype=roadmap&markers=size%3Adefault%7Ccolor%3A0xff0000%7Clabel%3AA%7CBonner+Ruder-Verein+1882+e.V.+%2C+Wilhelm-Spiritusufer+2%2C+53113+Bonn+&center=Bonner+Ruder-Verein+1882+e.V.+%2C+Wilhelm-Spiritusufer+2%2C+53113+Bonn+)](#gmw-dialog-googlemapswidget-2 "Klicken, um eine größere Karte zu öffnen")
 
 ### Kontakt
 

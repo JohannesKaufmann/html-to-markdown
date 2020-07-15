@@ -148,6 +148,9 @@ func NewConverter(domain string, enableCommonmark bool, options *Options) *Conve
 		options.LinkReferenceStyle = "full"
 	}
 
+	// for now, store it in the options
+	options.domain = domain
+
 	c.options = *options
 	err := validateOptions(c.options)
 	if err != nil {
@@ -264,7 +267,11 @@ func DomainFromURL(rawURL string) string {
 	return u.String()
 }
 
+// Reduce many newline characters `\n` to at most 2 new line characters.
 var multipleNewLinesRegex = regexp.MustCompile(`[\n]{2,}`)
+
+// The same as above, but applies to escaped new lines inside a link `\n\`
+var multipleNewLinesInLinkRegex = regexp.MustCompile(`(\n\\){1,}`) // `([\n\r\s]\\)`
 
 // Convert returns the content from a goquery selection.
 // If you have a goquery document just pass in doc.Selection.
@@ -294,6 +301,7 @@ func (c *Converter) Convert(selec *goquery.Selection) string {
 
 	markdown = strings.TrimSpace(markdown)
 	markdown = multipleNewLinesRegex.ReplaceAllString(markdown, "\n\n")
+	markdown = multipleNewLinesInLinkRegex.ReplaceAllString(markdown, "\n\\\n\\")
 
 	return markdown
 }
