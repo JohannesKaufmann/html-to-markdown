@@ -43,7 +43,7 @@ Im Mittelpunkt der Aktivitäten steht der Breitensport mit nahezu täglichen Rud
 
 # Aktuelles
 
-[](http://www.bonnerruderverein.de/wp-content/uploads/2015/09/BRV-abend.jpg "BRV-abend")
+[BRV-abend](http://www.bonnerruderverein.de/wp-content/uploads/2015/09/BRV-abend.jpg "BRV-abend")
 
 25 Mai
 
@@ -84,43 +84,43 @@ am Mittwoch, dem 30. Mai 2018 findet am Bonner Rheinufer der 9. ...
 
 ##### Eindrücke
 
-[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Vilaine.jpg "Rudern auf der Vilaine in Frankreich")
+[Rudern auf der Vilaine in Frankreich](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Vilaine.jpg "Rudern auf der Vilaine in Frankreich")
 
 ![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Vilaine-900x600.jpg)
 
-[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Oberkassel-2.jpg "Abends am Strand in Oberkassel")
+[Abends am Strand in Oberkassel](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Oberkassel-2.jpg "Abends am Strand in Oberkassel")
 
 ![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Oberkassel-2-900x600.jpg)
 
-[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Neckarschleuse.jpg "Neckarschleuse in Heilbronn")
+[Neckarschleuse in Heilbronn](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Neckarschleuse.jpg "Neckarschleuse in Heilbronn")
 
 ![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Neckarschleuse-900x600.jpg)
 
-[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Main.jpg "Auf dem Main")
+[Auf dem Main](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Main.jpg "Auf dem Main")
 
 ![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Main-900x600.jpg)
 
-[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Hochwasser.jpg "Hochwasser")
+[Hochwasser](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Hochwasser.jpg "Hochwasser")
 
 ![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Hochwasser-900x600.jpg)
 
-[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Heeg.jpg "Rudern in Friesland")
+[Rudern in Friesland](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Heeg.jpg "Rudern in Friesland")
 
 ![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Heeg-900x600.jpg)
 
-[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Haenger.jpg "Gepackt für die Wanderfahrt")
+[Gepackt für die Wanderfahrt](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Haenger.jpg "Gepackt für die Wanderfahrt")
 
 ![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Haenger-900x600.jpg)
 
-[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Elfsteden.jpg "Karo Dame in Leeuwarden")
+[Karo Dame in Leeuwarden](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Elfsteden.jpg "Karo Dame in Leeuwarden")
 
 ![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Elfsteden-900x600.jpg)
 
-[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Comer-see.jpg "Rudern auf dem Comer See")
+[Rudern auf dem Comer See](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Comer-see.jpg "Rudern auf dem Comer See")
 
 ![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Comer-see-900x600.jpg)
 
-[](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Abend.jpg "Abends auf dem Rhein")
+[Abends auf dem Rhein](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Abend.jpg "Abends auf dem Rhein")
 
 ![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Abend-900x600.jpg)
 

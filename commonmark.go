@@ -185,6 +185,12 @@ var commonmark = []Rule{
 				title = fmt.Sprintf(` "%s"`, t)
 			}
 
+			// if there is no link content (for example because it contains an svg)
+			// the 'title' or 'aria-label' attribute is used instead.
+			if strings.TrimSpace(content) == "" {
+				content = selec.AttrOr("title", selec.AttrOr("aria-label", ""))
+			}
+
 			if opt.LinkStyle == "inlined" {
 				return AdvancedResult{
 					Markdown: fmt.Sprintf("[%s](%s%s)", content, href, title),

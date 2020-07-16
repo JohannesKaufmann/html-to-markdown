@@ -328,6 +328,53 @@ func TestFromString(t *testing.T) {
 </a>`,
 		},
 		{
+			name: "link with svg inlined",
+			html: `
+<a aria-label="Homepage" title="GitHub" href="https://github.com">
+	<svg height="24" viewBox="0 0 16 16" version="1.1" width="24" aria-hidden="true"><path fill-rule="evenodd" d="..."></path></svg>
+</a>
+			`,
+			options: &Options{
+				LinkStyle: "inlined",
+			},
+		},
+		{
+			name: "link with svg reference link full",
+			html: `
+<a aria-label="Homepage" title="GitHub" href="https://github.com">
+	<svg height="24" viewBox="0 0 16 16" version="1.1" width="24" aria-hidden="true"><path fill-rule="evenodd" d="..."></path></svg>
+</a>
+			`,
+			options: &Options{
+				LinkStyle:          "referenced",
+				LinkReferenceStyle: "full",
+			},
+		},
+		{
+			name: "link with svg reference link collapsed",
+			html: `
+<a aria-label="Homepage" title="GitHub" href="https://github.com">
+	<svg height="24" viewBox="0 0 16 16" version="1.1" width="24" aria-hidden="true"><path fill-rule="evenodd" d="..."></path></svg>
+</a>
+			`,
+			options: &Options{
+				LinkStyle:          "referenced",
+				LinkReferenceStyle: "collapsed",
+			},
+		},
+		{
+			name: "link with svg reference link shortcut",
+			html: `
+<a aria-label="Homepage" title="GitHub" href="https://github.com">
+	<svg height="24" viewBox="0 0 16 16" version="1.1" width="24" aria-hidden="true"><path fill-rule="evenodd" d="..."></path></svg>
+</a>
+			`,
+			options: &Options{
+				LinkStyle:          "referenced",
+				LinkReferenceStyle: "shortcut",
+			},
+		},
+		{
 			name: "tweet",
 			html: `
 <div class="tweet" data-attrs="{&quot;url&quot;:&quot;https://twitter.com/kroger/status/1271516803756425218&quot;,&quot;full_text&quot;:&quot;As a company, it’s our responsibility to better support our Black associates, customers and allies. We know there is more work to do and will keep you updated on our progress, this is only the beginning. Black Lives Matter. &quot;,&quot;username&quot;:&quot;kroger&quot;,&quot;name&quot;:&quot;Kroger&quot;,&quot;date&quot;:&quot;Fri Jun 12 18:56:44 +0000 2020&quot;,&quot;photos&quot;:[{&quot;img_url&quot;:&quot;https://pbs.substack.com/media/EaVVy4aXsAglkCk.jpg&quot;,&quot;link_url&quot;:&quot;https://t.co/DxScre83q4&quot;}],&quot;quoted_tweet&quot;:{},&quot;retweet_count&quot;:17,&quot;like_count&quot;:93,&quot;expanded_url&quot;:{}}">
