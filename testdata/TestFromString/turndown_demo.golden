@@ -14,7 +14,7 @@ console.log(
 * * *
 
 It aims to be [CommonMark](http://commonmark.org/)
- compliant, and includes options to style the output. These options include:
+compliant, and includes options to style the output. These options include:
 
 - headingStyle (setext or atx)
 - horizontalRule (\*, -, or \_)

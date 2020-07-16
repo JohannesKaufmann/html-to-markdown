@@ -51,8 +51,8 @@ Im Mittelpunkt der Aktivitäten steht der Breitensport mit nahezu täglichen Rud
 
 ### [9\. Bonner Nachtlauf - Einschränkungen am Bootshaus](http://www.bonnerruderverein.de/bonner-nachtlauf/)
 
- am Mittwoch, dem 30. Mai 2018 findet am Bonner Rheinufer der 9. ...
- [More](http://www.bonnerruderverein.de/bonner-nachtlauf/)
+am Mittwoch, dem 30. Mai 2018 findet am Bonner Rheinufer der 9. ...
+[More](http://www.bonnerruderverein.de/bonner-nachtlauf/)
 
 # Kommende Veranstaltungen…
 
@@ -158,7 +158,7 @@ Sparkasse Köln/Bonn
 
 [alle Rhein Pegel auf ELWIS](https://www.elwis.de/DE/dynamisch/gewaesserkunde/wasserstaende/index.php?target=2&gw=RHEIN)
 
- Für uns ist die Hochwassermarke II am Pegel Oberwinter maßgeblich
+Für uns ist die Hochwassermarke II am Pegel Oberwinter maßgeblich
 
 [Siegpegel Eitorf](http://luadb.it.nrw.de/LUA/hygon/pegel.php?stationsname=Eitorf&yAchse=Standard&nachSuche=&hoehe=468&breite=724&datum=2016-07-17&progn=&meindatum=17.07.2016&yAchse=Standard&ersteWoche=7-Tageslinie&meifocus=&neuname=)
 

@@ -79,6 +79,9 @@ var commonmark = []Rule{
 				return &content
 			}
 
+			// remove unnecessary spaces to have clean markdown
+			content = TrimpLeadingSpaces(content)
+
 			content = "\n\n" + content + "\n\n"
 			return &content
 		},
