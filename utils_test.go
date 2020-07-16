@@ -102,3 +102,47 @@ This is a normal paragraph:
 	}
 
 }
+
+func TestTrimTrailingSpaces(t *testing.T) {
+	var tests = []struct {
+		Name   string
+		Text   string
+		Expect string
+	}{
+		{
+			Name: "trim after normal text",
+			Text: `
+1\. xxx 
+
+2\. xxxx	
+			`,
+			Expect: `
+1\. xxx
+
+2\. xxxx
+`,
+		},
+		{
+			Name:   "dont trim inside normal text",
+			Text:   "When `x = 3`, that means `x + 2 = 5`",
+			Expect: "When `x = 3`, that means `x + 2 = 5`",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.Name, func(t *testing.T) {
+			output := TrimTrailingSpaces(test.Text)
+
+			if output != test.Expect {
+				dmp := diffmatchpatch.New()
+				diffs := dmp.DiffMain(test.Expect, output, false)
+
+				fmt.Println(dmp.DiffToDelta(diffs))
+				fmt.Println(dmp.DiffPrettyText(diffs))
+
+				t.Errorf("expected '%s' but got '%s'", test.Expect, output)
+			}
+		})
+	}
+
+}

@@ -303,6 +303,9 @@ func (c *Converter) Convert(selec *goquery.Selection) string {
 	markdown = multipleNewLinesRegex.ReplaceAllString(markdown, "\n\n")
 	markdown = multipleNewLinesInLinkRegex.ReplaceAllString(markdown, "\n\\\n\\")
 
+	// remove unnecessary trailing spaces to have clean markdown
+	markdown = TrimTrailingSpaces(markdown)
+
 	return markdown
 }
 

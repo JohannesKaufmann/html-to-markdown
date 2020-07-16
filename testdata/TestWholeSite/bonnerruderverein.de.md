@@ -12,15 +12,15 @@ Bonner Ruder-Verein 1882 e.V.
         - [Die 60er und 70er Jahre](http://www.bonnerruderverein.de/die-sechziger-und-siebziger-jahre/)
         - [Nachkriegszeit](http://www.bonnerruderverein.de/die-20er-und-30er-jahre/)
         - [1882-1934](http://www.bonnerruderverein.de/bootshaus/veranstaltungsort/)
-        
-    
+
+
 - [Alles zum Rudern](http://www.bonnerruderverein.de/alles-zum-rudern/ruderbetrieb/)- [Allgemeiner Ruderbetrieb](http://www.bonnerruderverein.de/alles-zum-rudern/ruderbetrieb/)
     - [Wanderrudern](http://www.bonnerruderverein.de/alles-zum-rudern/wanderrudern/)
     - [Langstreckenrudern](http://www.bonnerruderverein.de/termine/kategorie/langstreckenrudern/)
     - [Das Blaue Band](http://www.bonnerruderverein.de/das-blaue-band/)
     - [Jugendriege](http://www.bonnerruderverein.de/alles-zum-rudern/jugendriege/)
     - [Anfängerausbildung](http://www.bonnerruderverein.de/alles-zum-rudern/anfaengerausbildung/)
-    
+
 - [Unser Bootshaus](http://www.bonnerruderverein.de/bootshaus/unser-bootshaus/)
 - [Aktuelles](http://www.bonnerruderverein.de/aktuelles/)
 - [Termine/Veranstaltungen](http://www.bonnerruderverein.de/termine)
@@ -57,25 +57,25 @@ am Mittwoch, dem 30. Mai 2018 findet am Bonner Rheinufer der 9. ...
 # Kommende Veranstaltungen…
 
 1. #### [Fronleichnamsfahrt](http://www.bonnerruderverein.de/termin/fronleichnamsfahrt-2/)
-    
-    
+
+
     26\. Mai \- 3\. Juni
-    
+
 2. #### [“Anfängerfahrt” auf der Lahn](http://www.bonnerruderverein.de/termin/anfaenger-wanderfahrt-2/)
-    
-    
+
+
     8\. Juni \- 10\. Juni
-    
+
 3. #### [Oste-Marathon](http://www.bonnerruderverein.de/termin/oste-marathon-2/)
-    
-    
+
+
     15\. Juni \- 17\. Juni
-    
+
 4. #### [Vorstandssitzung Juni](http://www.bonnerruderverein.de/termin/vorstandssitzung/)
-    
-    
+
+
     15\. Juni @ 19:00 \- 22:00
-    
+
 
 [Alle Veranstaltungen anzeigen](http://www.bonnerruderverein.de/termine/)
 
@@ -125,8 +125,6 @@ am Mittwoch, dem 30. Mai 2018 findet am Bonner Rheinufer der 9. ...
 ![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Abend-900x600.jpg)
 
 - [](http://www.bonnerruderverein.de)
-
-### 
 
 ### Anfahrt
 

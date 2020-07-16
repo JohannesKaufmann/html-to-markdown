@@ -40,3 +40,15 @@ func TrimpLeadingSpaces(text string) string {
 
 	return strings.Join(parts, "\n")
 }
+
+func TrimTrailingSpaces(text string) string {
+	parts := strings.Split(text, "\n")
+	for i := range parts {
+		parts[i] = strings.TrimRightFunc(parts[i], func(r rune) bool {
+			return unicode.IsSpace(r)
+		})
+
+	}
+
+	return strings.Join(parts, "\n")
+}

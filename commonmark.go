@@ -89,6 +89,10 @@ var commonmark = []Rule{
 	Rule{
 		Filter: []string{"h1", "h2", "h3", "h4", "h5", "h6"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			if strings.TrimSpace(content) == "" {
+				return nil
+			}
+
 			content = strings.Replace(content, "\n", " ", -1)
 			content = strings.Replace(content, "\r", " ", -1)
 			content = strings.Replace(content, `#`, `\#`, -1)
