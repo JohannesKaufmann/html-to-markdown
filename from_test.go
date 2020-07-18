@@ -539,7 +539,12 @@ Next Line
 			</blockquote>
 			`,
 		},
-
+		{
+			name: "empty blockquote",
+			html: `
+<blockquote></blockquote>
+			`,
+		},
 		{
 			name: "turndown demo",
 			html: `

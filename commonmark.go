@@ -307,6 +307,10 @@ var commonmark = []Rule{
 		Filter: []string{"blockquote"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			content = strings.TrimSpace(content)
+			if content == "" {
+				return nil
+			}
+
 			content = multipleNewLinesRegex.ReplaceAllString(content, "\n\n")
 
 			var beginningR = regexp.MustCompile(`(?m)^`)
