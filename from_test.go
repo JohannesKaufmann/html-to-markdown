@@ -51,6 +51,35 @@ func TestFromString(t *testing.T) {
 			html: "<p> Some <strong> Text </strong></p>",
 		},
 		{
+			name: "strong in p tag with whitespace inside",
+			html: "<p>Some<strong> Text. </strong></p>",
+		},
+		{
+			name: "strong in p tag whithout whitespace",
+			html: "<p>Some<strong>Text</strong></p>",
+		},
+		{
+			name: "strong in p tag with spans",
+			html: "<p><span>Some</span><strong>Text</strong>Content</p>",
+		},
+		{
+			name: "strong in p tag with punctuation",
+			html: "<p><span>Some</span><strong>Text.</strong></p>",
+		},
+		{
+			name: "i inside an em ",
+			html: `<em><i>Double</i>Italic</em>`,
+		},
+		{
+			name: "em in a p",
+			html: `<p>首付<em class="red"><i>19,8</i>万</em> 月供</p>`,
+		},
+		{
+			name: "two em in a h4",
+			html: `<h4>首付<em class="red"><i>19,8</i>万</em> /
+			月供<em class="red">6339元X24</em></h4>`,
+		},
+		{
 			name: "em in p tag",
 			html: "<p>Some <em>Text</em></p>",
 		},
@@ -326,6 +355,27 @@ func TestFromString(t *testing.T) {
 	<img src="xxx">
 	<p>Second Text</p>
 </a>`,
+		},
+		{
+			name: "multiline link inside a list item",
+			html: `
+<ul>
+	<li>
+		<a href="http://commonmark.org/">
+			<p>First Text</p>
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<p>Second Text</p>
+		</a>
+	</li>
+</ul>
+			`,
 		},
 		{
 			name: "link with svg inlined",

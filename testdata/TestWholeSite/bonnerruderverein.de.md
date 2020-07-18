@@ -124,8 +124,6 @@ am Mittwoch, dem 30. Mai 2018 findet am Bonner Rheinufer der 9. ...
 
 ![](http://www.bonnerruderverein.de/wp-content/uploads/2015/08/Abend-900x600.jpg)
 
-- [](http://www.bonnerruderverein.de)
-
 ### Anfahrt
 
 [![Klicken, um eine größere Karte zu öffnen](http://maps.googleapis.com/maps/api/staticmap?key=AIzaSyBgMsrXWkCAcRhjd7DVQ9PQQB1ZqSjRhI4&scale=1&format=png&zoom=13&size=250x250&language=en&maptype=roadmap&markers=size%3Adefault%7Ccolor%3A0xff0000%7Clabel%3AA%7CBonner+Ruder-Verein+1882+e.V.+%2C+Wilhelm-Spiritusufer+2%2C+53113+Bonn+&center=Bonner+Ruder-Verein+1882+e.V.+%2C+Wilhelm-Spiritusufer+2%2C+53113+Bonn+)](#gmw-dialog-googlemapswidget-2 "Klicken, um eine größere Karte zu öffnen")

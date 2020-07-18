@@ -129,22 +129,56 @@ var commonmark = []Rule{
 	Rule{
 		Filter: []string{"strong", "b"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			// only use one bold tag if they are nested
+			parent := selec.Parent()
+			if parent.Is("strong") || parent.Is("b") {
+				return &content
+			}
+
 			trimmed := strings.TrimSpace(content)
 			if trimmed == "" {
 				return &trimmed
 			}
 			trimmed = opt.StrongDelimiter + trimmed + opt.StrongDelimiter
+
+			// always have a space to the side to recognize the delimiter
+			next := selec.Next().Text()
+			if !strings.HasPrefix(next, " ") {
+				trimmed += " "
+			}
+			prev := selec.Prev().Text()
+			if !strings.HasSuffix(prev, " ") {
+				trimmed = " " + trimmed
+			}
+
 			return &trimmed
 		},
 	},
 	Rule{
 		Filter: []string{"i", "em"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			// only use one italic tag if they are nested
+			parent := selec.Parent()
+			if parent.Is("i") || parent.Is("em") {
+				return &content
+			}
+
 			trimmed := strings.TrimSpace(content)
 			if trimmed == "" {
 				return &trimmed
 			}
 			trimmed = opt.EmDelimiter + trimmed + opt.EmDelimiter
+
+			// always have a space to the side to recognize the delimiter
+			next := selec.Next().Text()
+			if !strings.HasPrefix(next, " ") {
+				trimmed += " "
+			}
+			prev := selec.Prev().Text()
+			if !strings.HasSuffix(prev, " ") {
+				trimmed = " " + trimmed
+			}
+
 			return &trimmed
 		},
 	},
@@ -181,8 +215,7 @@ var commonmark = []Rule{
 			}
 
 			// having multiline content inside a link is a bit tricky
-			content = strings.TrimSpace(content)
-			content = strings.Replace(content, "\n", `\`+"\n", -1)
+			content = EscapeMultiLine(content)
 
 			var title string
 			if t, ok := selec.Attr("title"); ok {
@@ -193,6 +226,11 @@ var commonmark = []Rule{
 			// the 'title' or 'aria-label' attribute is used instead.
 			if strings.TrimSpace(content) == "" {
 				content = selec.AttrOr("title", selec.AttrOr("aria-label", ""))
+			}
+
+			// a link without text won't de displayed anyway
+			if content == "" {
+				return AdvancedResult{}, true
 			}
 
 			if opt.LinkStyle == "inlined" {

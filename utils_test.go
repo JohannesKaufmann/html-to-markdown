@@ -144,5 +144,54 @@ func TestTrimTrailingSpaces(t *testing.T) {
 			}
 		})
 	}
+}
 
+func TestEscapeMultiLine(t *testing.T) {
+	var tests = []struct {
+		Name   string
+		Text   string
+		Expect string
+	}{
+		{
+			Name: "escape new lines",
+			Text: `line1
+line2
+
+line3
+
+
+
+
+
+
+
+
+
+line4`,
+			Expect: `line1\
+line2\
+\
+\
+line3\
+\
+\
+line4`,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.Name, func(t *testing.T) {
+			output := EscapeMultiLine(test.Text)
+
+			if output != test.Expect {
+				dmp := diffmatchpatch.New()
+				diffs := dmp.DiffMain(test.Expect, output, false)
+
+				fmt.Println(dmp.DiffToDelta(diffs))
+				fmt.Println(dmp.DiffPrettyText(diffs))
+
+				t.Errorf("expected '%s' but got '%s'", test.Expect, output)
+			}
+		})
+	}
 }

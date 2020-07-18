@@ -189,6 +189,9 @@ func wrap(simple simpleRuleFunc) ruleFunc {
 }
 
 // AddRules adds the rules that are passed in to the converter.
+//
+// By default it overrides the rule for that html tag. You can
+// fall back to the default rule by returning nil.
 func (c *Converter) AddRules(rules ...Rule) *Converter {
 	c.m.Lock()
 	defer c.m.Unlock()
@@ -270,9 +273,6 @@ func DomainFromURL(rawURL string) string {
 // Reduce many newline characters `\n` to at most 2 new line characters.
 var multipleNewLinesRegex = regexp.MustCompile(`[\n]{2,}`)
 
-// The same as above, but applies to escaped new lines inside a link `\n\`
-var multipleNewLinesInLinkRegex = regexp.MustCompile(`(\n\\){1,}`) // `([\n\r\s]\\)`
-
 // Convert returns the content from a goquery selection.
 // If you have a goquery document just pass in doc.Selection.
 func (c *Converter) Convert(selec *goquery.Selection) string {
@@ -301,7 +301,6 @@ func (c *Converter) Convert(selec *goquery.Selection) string {
 
 	markdown = strings.TrimSpace(markdown)
 	markdown = multipleNewLinesRegex.ReplaceAllString(markdown, "\n\n")
-	markdown = multipleNewLinesInLinkRegex.ReplaceAllString(markdown, "\n\\\n\\")
 
 	// remove unnecessary trailing spaces to have clean markdown
 	markdown = TrimTrailingSpaces(markdown)
