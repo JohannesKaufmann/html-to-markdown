@@ -4,6 +4,8 @@ Godoc: documenting Go code - The Go Blog
 
 [Go](//golang.org/)
 
+▽
+
 [Documents](//golang.org/doc/)[Packages](//golang.org/pkg/)[The Project](//golang.org/project/)[Help](//golang.org/help/)[Blog](/)submit search
 
 #### Next article

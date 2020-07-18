@@ -340,6 +340,16 @@ func TestFromString(t *testing.T) {
 			html: `<img alt="website favicon" src="http://commonmark.org/help/images/favicon.png" />`,
 		},
 		{
+			name: "image with alt tag",
+			html: `<img alt='website "favicon"' src="http://commonmark.org/help/images/favicon.png" />`,
+		},
+		{
+			name: "image inside an empty link",
+			html: `	<a href="" title="title">
+						<img alt="website favicon" src="http://commonmark.org/help/images/favicon.png" />
+					</a>`,
+		},
+		{
 			name: "link",
 			html: `<a href="http://commonmark.org/">Link</a>`,
 		},

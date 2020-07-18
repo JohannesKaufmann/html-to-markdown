@@ -209,9 +209,12 @@ var commonmark = []Rule{
 	Rule{
 		Filter: []string{"a"},
 		AdvancedReplacement: func(content string, selec *goquery.Selection, opt *Options) (AdvancedResult, bool) {
+			// if there is no href, no link is used. So just return the content inside the link
 			href, ok := selec.Attr("href")
 			if !ok || strings.TrimSpace(href) == "" || strings.TrimSpace(href) == "#" {
-				return AdvancedResult{}, true
+				return AdvancedResult{
+					Markdown: content,
+				}, false
 			}
 
 			// having multiline content inside a link is a bit tricky
