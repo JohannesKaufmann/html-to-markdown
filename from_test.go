@@ -662,6 +662,18 @@ func Fprint(w io.Writer, a ...interface{}) (n int, err error) {</pre></div>
 			name: "dont escape too much",
 			html: `jmap –histo[:live]`,
 		},
+		{
+			name: "html in noscript",
+			html: `
+<noscript>
+	<img src="https://example.cm/funny.gif">
+</noscript>
+			`,
+		},
+		{
+			name: "remove iframe",
+			html: ` <iframe src="https://www.w3schools.com" title="W3Schools Free Online Web Tutorials"></iframe> `,
+		},
 		/*
 					{ // TODO: not working yet
 						name: "p tag with lots of whitespace",

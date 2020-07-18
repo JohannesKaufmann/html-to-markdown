@@ -320,4 +320,13 @@ var commonmark = []Rule{
 			return &text
 		},
 	},
+	Rule{
+		Filter: []string{"noscript"},
+		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			// for now remove the contents of noscript. But in the future we could
+			// tell goquery to parse the contents of the tag.
+			// -> https://github.com/PuerkitoBio/goquery/issues/139#issuecomment-517526070
+			return nil
+		},
+	},
 }
