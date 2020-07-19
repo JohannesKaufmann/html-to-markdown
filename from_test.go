@@ -67,6 +67,10 @@ func TestFromString(t *testing.T) {
 			html: "<p><span>Some</span><strong>Text.</strong></p>",
 		},
 		{
+			name: "nested strong tags",
+			html: `<p><strong><strong>Text</strong></strong></p>`,
+		},
+		{
 			name: "i inside an em ",
 			html: `<em><i>Double</i>Italic</em>`,
 		},
@@ -102,6 +106,27 @@ func TestFromString(t *testing.T) {
 		{
 			name: "escape h1",
 			html: "<h1>#hashtag</h1>",
+		},
+		{ // TODO: also escape short setext
+			name: "escape h2",
+			html: `
+not title
+-
+`,
+		},
+		{
+			name: "escape h2 with longer dashes",
+			html: `
+not title
+------
+`,
+		},
+		{ // TODO: dont escape twice
+			name: "dont escape twice",
+			html: `
+not title
+\-\-\-
+`,
 		},
 		{
 			name: "heading in link",
@@ -512,6 +537,28 @@ Robin  6</code></pre>
 			html: `
 			<code>last_30_days</code>
 			`,
+		},
+		{
+			name: "code block with fence characters",
+			html: "<pre><code>```</code></pre>",
+		},
+		{
+			name: "code block with fence characters tilde",
+			html: "<pre><code>~~~</code></pre>",
+			options: &Options{
+				Fence: "~~~",
+			},
+		},
+		{
+			name: "code block with multiple fence characters tilde",
+			html: `<pre><code>
+Some ~~~
+totally ~~~~~~ normal
+~ code
+</code></pre>`,
+			options: &Options{
+				Fence: "~~~",
+			},
 		},
 		{
 			name: "hr",

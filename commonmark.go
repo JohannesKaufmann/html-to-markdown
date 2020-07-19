@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/JohannesKaufmann/html-to-markdown/escape"
 	"github.com/PuerkitoBio/goquery"
@@ -284,9 +285,12 @@ var commonmark = []Rule{
 				code = selec.Text()
 			}
 
-			text := "\n\n" + opt.Fence + language + "\n" +
+			fenceChar, _ := utf8.DecodeRuneInString(opt.Fence)
+			fence := CalculateCodeFence(fenceChar, code)
+
+			text := "\n\n" + fence + language + "\n" +
 				code +
-				"\n" + opt.Fence + "\n\n"
+				"\n" + fence + "\n\n"
 			return &text
 		},
 	},
