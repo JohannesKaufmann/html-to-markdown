@@ -187,23 +187,25 @@ var commonmark = []Rule{
 		Filter: []string{"img"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			alt := selec.AttrOr("alt", "")
-			src, ok := selec.Attr("src")
-			if !ok {
+			src := selec.AttrOr("src", "")
+			src = strings.TrimSpace(src)
+			if src == "" {
 				return String("")
 			}
 
-			u, err := url.Parse(src)
-			if err != nil {
+			if u, err := url.Parse(src); err == nil {
+				if u.Scheme == "" {
+					u.Scheme = "http"
+				}
+				if u.Host == "" {
+					u.Host = opt.domain
+				}
+				src = u.String()
+			} else {
 				fmt.Println("error could not parse the url:", err)
 			}
-			if u.Scheme == "" {
-				u.Scheme = "http"
-			}
-			if u.Host == "" {
-				u.Host = opt.domain
-			}
 
-			text := fmt.Sprintf("![%s](%s)", alt, u.String())
+			text := fmt.Sprintf("![%s](%s)", alt, src)
 			return &text
 		},
 	},

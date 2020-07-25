@@ -369,6 +369,26 @@ not title
 			html: `<img alt='website "favicon"' src="http://commonmark.org/help/images/favicon.png" />`,
 		},
 		{
+			name: "image with no src",
+			html: `<img />`,
+		},
+		{
+			name: "image with empty src",
+			html: `<img src="" />`,
+		},
+		{
+			name: "image with invalid src",
+			html: "<img src='http://example.com/image.png\r' />",
+		},
+		{
+			name: "image with completely invalid src",
+			html: "<img src='%zz\n\rzzz' />",
+		},
+		{
+			name: "image with data uri",
+			html: `<img src="data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7" alt="star" width="16" height="16">`,
+		},
+		{
 			name: "image inside an empty link",
 			html: `	<a href="" title="title">
 						<img alt="website favicon" src="http://commonmark.org/help/images/favicon.png" />
@@ -377,6 +397,14 @@ not title
 		{
 			name: "link",
 			html: `<a href="http://commonmark.org/">Link</a>`,
+		},
+		{
+			name: "link with href",
+			html: `<a href="https://www.google.com/maps/place/24%20Rue%20Traversiere,%2030900%20Nîmes">Link</a>`,
+		},
+		{
+			name: "link with broken href",
+			html: `<a href="http://example.com/test.html\r">Link</a>`,
 		},
 		{
 			name: "link with title",
