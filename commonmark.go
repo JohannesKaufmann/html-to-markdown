@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"unicode"
 	"unicode/utf8"
 
 	"github.com/JohannesKaufmann/html-to-markdown/escape"
@@ -19,9 +20,22 @@ var commonmark = []Rule{
 		Filter: []string{"ul", "ol"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			parent := selec.Parent()
+
+			// we have a nested list, were the ul/ol is inside a list item
+			// -> based on work done by @requilence from @anytypeio
 			if parent.Is("li") && parent.Children().Last().IsSelection(selec) {
-				// content = "\n" + content
-				// panic("ul&li -> parent is li & something")
+				// add a line break prefix if the parent's text node doesn't have it.
+				// that makes sure that every list item is on its on line
+				lastContentTextNode := strings.TrimRight(parent.Nodes[0].FirstChild.Data, " \t")
+				if !strings.HasSuffix(lastContentTextNode, "\n") {
+					content = "\n" + content
+				}
+
+				// remove empty lines between lists
+				trimmedSpaceContent := strings.TrimRight(content, " \t")
+				if strings.HasSuffix(trimmedSpaceContent, "\n") {
+					content = strings.TrimRightFunc(content, unicode.IsSpace)
+				}
 			} else {
 				content = "\n\n" + content + "\n\n"
 			}

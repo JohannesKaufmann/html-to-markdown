@@ -9,22 +9,22 @@ Menu
 - 
 
 - [Startseite](http://www.bonnerruderverein.de/)
-- [Über uns](http://www.bonnerruderverein.de/ueber-uns/informationen/)- [Allgemeine Informationen](http://www.bonnerruderverein.de/ueber-uns/informationen/)
+- [Über uns](http://www.bonnerruderverein.de/ueber-uns/informationen/)
+    - [Allgemeine Informationen](http://www.bonnerruderverein.de/ueber-uns/informationen/)
     - [Der Vorstand](http://www.bonnerruderverein.de/ueber-uns/der-vorstand-des-bonner-rudervereins-1882-e-v/)
     - [Mitgliedschaft](http://www.bonnerruderverein.de/ueber-uns/mitgliedschaft/)
-    - [Geschichte des BRV](http://www.bonnerruderverein.de/bootshaus/raeumlichkeiten/)- [Gegenwärtige Geschichte](http://www.bonnerruderverein.de/die-gegenwaertige-geschichte/)
+    - [Geschichte des BRV](http://www.bonnerruderverein.de/bootshaus/raeumlichkeiten/)
+        - [Gegenwärtige Geschichte](http://www.bonnerruderverein.de/die-gegenwaertige-geschichte/)
         - [Die 60er und 70er Jahre](http://www.bonnerruderverein.de/die-sechziger-und-siebziger-jahre/)
         - [Nachkriegszeit](http://www.bonnerruderverein.de/die-20er-und-30er-jahre/)
         - [1882-1934](http://www.bonnerruderverein.de/bootshaus/veranstaltungsort/)
-
-
-- [Alles zum Rudern](http://www.bonnerruderverein.de/alles-zum-rudern/ruderbetrieb/)- [Allgemeiner Ruderbetrieb](http://www.bonnerruderverein.de/alles-zum-rudern/ruderbetrieb/)
+- [Alles zum Rudern](http://www.bonnerruderverein.de/alles-zum-rudern/ruderbetrieb/)
+    - [Allgemeiner Ruderbetrieb](http://www.bonnerruderverein.de/alles-zum-rudern/ruderbetrieb/)
     - [Wanderrudern](http://www.bonnerruderverein.de/alles-zum-rudern/wanderrudern/)
     - [Langstreckenrudern](http://www.bonnerruderverein.de/termine/kategorie/langstreckenrudern/)
     - [Das Blaue Band](http://www.bonnerruderverein.de/das-blaue-band/)
     - [Jugendriege](http://www.bonnerruderverein.de/alles-zum-rudern/jugendriege/)
     - [Anfängerausbildung](http://www.bonnerruderverein.de/alles-zum-rudern/anfaengerausbildung/)
-
 - [Unser Bootshaus](http://www.bonnerruderverein.de/bootshaus/unser-bootshaus/)
 - [Aktuelles](http://www.bonnerruderverein.de/aktuelles/)
 - [Termine/Veranstaltungen](http://www.bonnerruderverein.de/termine)

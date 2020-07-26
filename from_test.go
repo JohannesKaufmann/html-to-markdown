@@ -262,7 +262,47 @@ not title
 			</ul>
 			`,
 		},
+		{
+			name: "nested lists without space",
+			html: `<ul>
+	<li>Coffee</li>
+	<li>Tea<ul>
+		<li>Black tea</li>
+		<li>Green tea</li>
+	</ul>
+	</li>
+	<li>Milk</li>
+</ul><h1>header1</h1>
 
+
+<ul>
+<li>Bullet list
+<ul>
+<li>Nested bullet
+<ul>
+<li>Sub-nested bullet etc</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Bullet list item 2</li>
+</ul>
+			`,
+		},
+		{
+			name: "nested lists with too much space",
+			html: `<ul>
+	<li>
+		Coffee
+	</li>
+	<li>Tea<ul>
+		<li>Black tea</li>
+		<li>Green tea</li>
+	</ul>
+	</li>
+	<li>Milk</li>
+</ul><h1>header1</h1>`,
+		},
 		{
 			name: "nested list real world",
 			html: `
