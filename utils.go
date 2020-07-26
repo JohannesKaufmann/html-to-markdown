@@ -1,10 +1,93 @@
 package md
 
 import (
+	"bytes"
 	"regexp"
 	"strings"
 	"unicode"
+	"unicode/utf8"
+
+	"github.com/PuerkitoBio/goquery"
+	"golang.org/x/net/html"
 )
+
+func CollectText(n *html.Node) string {
+	text := &bytes.Buffer{}
+	collectText(n, text)
+	return text.String()
+}
+func collectText(n *html.Node, buf *bytes.Buffer) {
+
+	if n.Type == html.TextNode {
+		buf.WriteString(n.Data)
+	}
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		collectText(c, buf)
+	}
+}
+
+// always have a space to the side to recognize the delimiter
+func AddSpaceIfNessesary(selec *goquery.Selection, text string) string {
+
+	var prev string
+	if len(selec.Nodes) > 0 {
+		node := selec.Nodes[0]
+
+		if node.PrevSibling != nil {
+			for node = node.PrevSibling; node != nil; node = node.PrevSibling {
+				prev = CollectText(node)
+
+				// if the content is empty, try our luck with the next node
+				if strings.TrimSpace(prev) != "" {
+					break
+				}
+			}
+		}
+	}
+
+	lastChar, size := utf8.DecodeLastRuneInString(prev)
+	if size > 0 && !unicode.IsSpace(lastChar) {
+		text = " " + text
+	}
+
+	// - - - - - - - - - - - - - - - - - - - //
+
+	var next string
+	if len(selec.Nodes) > 0 {
+		node := selec.Nodes[len(selec.Nodes)-1]
+
+		if node.NextSibling != nil {
+			for node = node.NextSibling; node != nil; node = node.NextSibling {
+				next = CollectText(node)
+
+				// if the content is empty, try our luck with the next node
+				if strings.TrimSpace(next) != "" {
+
+					// Right now, this function AddSpaceIfNessesary is used for `a`,
+					// `strong`, `b`, `i` and `em`.
+					// Don't add another space if the other element is going to add a
+					// space already.
+					s := &goquery.Selection{Nodes: []*html.Node{node}}
+					name := goquery.NodeName(s)
+
+					if name == "a" || name == "strong" || name == "b" || name == "i" || name == "em" {
+						next = " "
+					}
+
+					break
+				}
+			}
+
+		}
+	}
+
+	firstChar, size := utf8.DecodeRuneInString(next)
+	if size > 0 && !unicode.IsSpace(firstChar) && !unicode.IsPunct(firstChar) {
+		text += " "
+	}
+
+	return text
+}
 
 func TrimpLeadingSpaces(text string) string {
 	parts := strings.Split(text, "\n")

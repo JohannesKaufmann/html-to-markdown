@@ -143,14 +143,7 @@ var commonmark = []Rule{
 			trimmed = opt.StrongDelimiter + trimmed + opt.StrongDelimiter
 
 			// always have a space to the side to recognize the delimiter
-			next := selec.Next().Text()
-			if !strings.HasPrefix(next, " ") {
-				trimmed += " "
-			}
-			prev := selec.Prev().Text()
-			if !strings.HasSuffix(prev, " ") {
-				trimmed = " " + trimmed
-			}
+			trimmed = AddSpaceIfNessesary(selec, trimmed)
 
 			return &trimmed
 		},
@@ -171,14 +164,7 @@ var commonmark = []Rule{
 			trimmed = opt.EmDelimiter + trimmed + opt.EmDelimiter
 
 			// always have a space to the side to recognize the delimiter
-			next := selec.Next().Text()
-			if !strings.HasPrefix(next, " ") {
-				trimmed += " "
-			}
-			prev := selec.Prev().Text()
-			if !strings.HasSuffix(prev, " ") {
-				trimmed = " " + trimmed
-			}
+			trimmed = AddSpaceIfNessesary(selec, trimmed)
 
 			return &trimmed
 		},
@@ -240,8 +226,11 @@ var commonmark = []Rule{
 			}
 
 			if opt.LinkStyle == "inlined" {
+				md := fmt.Sprintf("[%s](%s%s)", content, href, title)
+				md = AddSpaceIfNessesary(selec, md)
+
 				return AdvancedResult{
-					Markdown: fmt.Sprintf("[%s](%s%s)", content, href, title),
+					Markdown: md,
 				}, false
 			}
 
@@ -262,6 +251,8 @@ var commonmark = []Rule{
 				replacement = "[" + content + "][" + id + "]"
 				reference = "[" + id + "]: " + href + title
 			}
+
+			replacement = AddSpaceIfNessesary(selec, replacement)
 			return AdvancedResult{Markdown: replacement, Footer: reference}, false
 		},
 	},

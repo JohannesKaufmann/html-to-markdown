@@ -8,7 +8,7 @@ The Go Programming Language
 
 ▽
 
-[Documents](/doc/)[Packages](/pkg/)[The Project](/project/)[Help](/help/)[Blog](/blog/)[Play](http://play.golang.org/ "Show Go Playground")submit search
+[Documents](/doc/) [Packages](/pkg/) [The Project](/project/) [Help](/help/) [Blog](/blog/) [Play](http://play.golang.org/ "Show Go Playground") submit search
 
 RunFormatShare
 
@@ -21,7 +21,7 @@ Hello, 世界
 
 ```
 
-RunShare[Tour](//tour.golang.org/ "Learn Go from your browser")
+RunShare [Tour](//tour.golang.org/ "Learn Go from your browser")
 
 Hello, World!Conway's Game of LifeFibonacci ClosurePeano IntegersConcurrent piConcurrent Prime SievePeg Solitaire SolverTree Comparison
 

@@ -399,6 +399,14 @@ not title
 			html: `<a href="http://commonmark.org/">Link</a>`,
 		},
 		{
+			name: "links next to each other",
+			html: `<p><a href="http://first.com">first</a> <a href="http://second.com">second</a></p>`,
+		},
+		{
+			name: "links directly next to content",
+			html: `<p>Before<a href="http://example.com">Link</a>After</p>`,
+		},
+		{
 			name: "link with href",
 			html: `<a href="https://www.google.com/maps/place/24%20Rue%20Traversiere,%2030900%20Nîmes">Link</a>`,
 		},
