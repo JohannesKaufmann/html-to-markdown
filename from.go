@@ -39,14 +39,6 @@ type Converter struct {
 	keep   map[string]struct{}
 	remove map[string]struct{}
 
-	Before func(selec *goquery.Selection)
-
-	// TODO: REMOVE!!!
-	// dom      *goquery.Selection
-	// leading  []string
-	// trailing []string
-	// Plugin -> ReportError, ... (not public)
-
 	domain  string
 	options Options
 }

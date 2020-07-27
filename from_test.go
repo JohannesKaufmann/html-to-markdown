@@ -2,7 +2,6 @@ package md
 
 import (
 	"bytes"
-	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/url"
@@ -15,7 +14,9 @@ import (
 	"github.com/sergi/go-diff/diffmatchpatch"
 )
 
-var update = flag.Bool("update", false, "update .golden files")
+// var update = flag.Bool("update", false, "update .golden files")
+var f = false
+var update = &f
 
 func TestFromString(t *testing.T) {
 	var tests = []struct {

@@ -70,7 +70,10 @@ func AddSpaceIfNessesary(selec *goquery.Selection, text string) string {
 					s := &goquery.Selection{Nodes: []*html.Node{node}}
 					name := goquery.NodeName(s)
 
-					if name == "a" || name == "strong" || name == "b" || name == "i" || name == "em" {
+					if name == "a" ||
+						name == "strong" || name == "b" ||
+						name == "i" || name == "em" ||
+						name == "del" || name == "s" || name == "strike" {
 						next = " "
 					}
 
