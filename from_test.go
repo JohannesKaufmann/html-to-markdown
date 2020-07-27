@@ -27,27 +27,6 @@ func TestFromString(t *testing.T) {
 		options *Options
 	}{
 		{
-			name: "p tag",
-			html: `<p>Some Text</p>`,
-		},
-		{
-			name: "two p tags",
-			html: `
-			<div>
-				<p>Text</p>
-				<p>Some Text</p>
-			</div>
-			`,
-		},
-		{
-			name: "span in p tag",
-			html: "<p>Some <span>Text</span></p>",
-		},
-		{
-			name: "strong in p tag",
-			html: "<p>Some <strong>Text</strong></p>",
-		},
-		{
 			name: "strong in p tag with whitespace",
 			html: "<p> Some <strong> Text </strong></p>",
 		},
