@@ -1,5 +1,10 @@
 # html-to-markdown
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/JohannesKaufmann/html-to-markdown)](https://goreportcard.com/report/github.com/JohannesKaufmann/html-to-markdown)
+[![codecov](https://codecov.io/gh/JohannesKaufmann/html-to-markdown/branch/master/graph/badge.svg)](https://codecov.io/gh/JohannesKaufmann/html-to-markdown)
+![GitHub MIT License](https://img.shields.io/github/license/JohannesKaufmann/html-to-markdown)
+[![GoDoc](https://godoc.org/github.com/JohannesKaufmann/html-to-markdown?status.png)](http://godoc.org/github.com/JohannesKaufmann/html-to-markdown)
+
 ![gopher stading on top of a machine that converts a box of html to blocks of markdown](/logo.png)
 
 Convert HTML into Markdown with Go. It is using an [HTML Parser](https://github.com/PuerkitoBio/goquery) to avoid the use of `regexp` as much as possible. That should prevent some [weird cases](https://stackoverflow.com/a/1732454) and allows it to be used for cases where the input is totally unknown.
