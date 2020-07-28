@@ -13,6 +13,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+// Timeout for the http client
 var Timeout = time.Second * 10
 var netClient = &http.Client{
 	Timeout: Timeout,
@@ -46,12 +47,15 @@ var vimeoID = regexp.MustCompile(`video\/(\d*)`)
 
 type vimeoVariation int
 
+// Configure how the Vimeo Plugin should display the video in markdown.
 const (
 	VimeoOnlyThumbnail vimeoVariation = iota
 	VimeoWithTitle
 	VimeoWithDescription
 )
 
+// EXPERIMENTAL_VimeoEmbed registers a rule (for iframes) and
+// returns a markdown compatible representation (link to video, ...).
 func EXPERIMENTAL_VimeoEmbed(variation vimeoVariation) md.Plugin {
 	return func(c *md.Converter) []md.Rule {
 		getVimeoData := func(id string) (*vimeoVideo, error) {
@@ -89,7 +93,7 @@ func EXPERIMENTAL_VimeoEmbed(variation vimeoVariation) md.Plugin {
 		}
 
 		return []md.Rule{
-			md.Rule{
+			{
 				Filter: []string{"iframe"},
 				Replacement: func(content string, selec *goquery.Selection, opt *md.Options) *string {
 					src := selec.AttrOr("src", "")

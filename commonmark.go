@@ -16,7 +16,7 @@ import (
 var multipleSpacesR = regexp.MustCompile(`  +`)
 
 var commonmark = []Rule{
-	Rule{
+	{
 		Filter: []string{"ul", "ol"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			parent := selec.Parent()
@@ -42,7 +42,7 @@ var commonmark = []Rule{
 			return &content
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"li"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			if strings.TrimSpace(content) == "" {
@@ -68,7 +68,7 @@ var commonmark = []Rule{
 			return String(prefix + content + "\n")
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"#text"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			text := selec.Text()
@@ -85,7 +85,7 @@ var commonmark = []Rule{
 			return &text
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"p", "div"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			parent := goquery.NodeName(selec.Parent())
@@ -101,7 +101,7 @@ var commonmark = []Rule{
 			return &content
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"h1", "h2", "h3", "h4", "h5", "h6"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			if strings.TrimSpace(content) == "" {
@@ -141,7 +141,7 @@ var commonmark = []Rule{
 			return &text
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"strong", "b"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			// only use one bold tag if they are nested
@@ -162,7 +162,7 @@ var commonmark = []Rule{
 			return &trimmed
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"i", "em"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			// only use one italic tag if they are nested
@@ -183,7 +183,7 @@ var commonmark = []Rule{
 			return &trimmed
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"img"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			alt := selec.AttrOr("alt", "")
@@ -209,7 +209,7 @@ var commonmark = []Rule{
 			return &text
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"a"},
 		AdvancedReplacement: func(content string, selec *goquery.Selection, opt *Options) (AdvancedResult, bool) {
 			// if there is no href, no link is used. So just return the content inside the link
@@ -270,7 +270,7 @@ var commonmark = []Rule{
 			return AdvancedResult{Markdown: replacement, Footer: reference}, false
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"code"},
 		Replacement: func(_ string, selec *goquery.Selection, opt *Options) *string {
 			content := selec.Text()
@@ -280,7 +280,7 @@ var commonmark = []Rule{
 			return &text
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"pre"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			codeElement := selec.Find("code")
@@ -301,20 +301,20 @@ var commonmark = []Rule{
 			return &text
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"hr"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			text := "\n\n" + opt.HorizontalRule + "\n\n"
 			return &text
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"br"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			return String("\n\n")
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"blockquote"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			content = strings.TrimSpace(content)
@@ -331,7 +331,7 @@ var commonmark = []Rule{
 			return &text
 		},
 	},
-	Rule{
+	{
 		Filter: []string{"noscript"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
 			// for now remove the contents of noscript. But in the future we could

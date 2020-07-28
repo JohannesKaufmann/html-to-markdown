@@ -10,13 +10,13 @@ import (
 
 // EXPERIMENTAL_Table converts a html table to markdown.
 var EXPERIMENTAL_Table = []md.Rule{
-	md.Rule{ // TableCell
+	{ // TableCell
 		Filter: []string{"th", "td"},
 		Replacement: func(content string, selec *goquery.Selection, opt *md.Options) *string {
 			return md.String(cell(content, selec))
 		},
 	},
-	md.Rule{ // TableRow
+	{ // TableRow
 		Filter: []string{"tr"},
 		Replacement: func(content string, selec *goquery.Selection, opt *md.Options) *string {
 			borderCells := ""

@@ -65,6 +65,9 @@ var inlineElements = []string{ // -> https://developer.mozilla.org/de/docs/Web/H
 	"button", "input", "label", "select", "textarea",
 }
 
+// IsInlineElement can be used to check wether a node name (goquery.Nodename) is
+// an html inline element and not a block element. Used in the rule for the
+// p tag to check wether the text is inside a block element.
 func IsInlineElement(e string) bool {
 	for _, element := range inlineElements {
 		if element == e {
@@ -132,6 +135,8 @@ type Options struct {
 	domain string
 }
 
+// AdvancedResult is used for example for links. If you use LinkStyle:referenced
+// the link href is placed at the bottom of the generated markdown (Footer).
 type AdvancedResult struct {
 	Header   string
 	Markdown string

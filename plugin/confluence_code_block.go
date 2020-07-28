@@ -14,7 +14,7 @@ func ConfluenceCodeBlock() md.Plugin {
 	return func(c *md.Converter) []md.Rule {
 		character := "```"
 		return []md.Rule{
-			md.Rule{
+			{
 				Filter: []string{"ac:structured-macro"},
 				Replacement: func(content string, selec *goquery.Selection, opt *md.Options) *string {
 					for _, node := range selec.Nodes {

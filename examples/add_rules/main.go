@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-	html := `Good sountrack <span class="bb_strike"> and cake</span>.`
-	// -> `Good sountrack ~and cake~.`
+	html := `Good soundtrack <span class="bb_strike"> and cake</span>.`
+	// -> `Good soundtrack ~~and cake~~.`
 
 	/*
 		We want to add a rule when a `span` tag has a class of `bb_strike`.
@@ -31,7 +31,7 @@ func main() {
 			// Because of the space it is not recognized as strikethrough.
 			// -> trim spaces at begin&end of string when inside strong/italic/...
 			content = strings.TrimSpace(content)
-			return md.String("~" + content + "~")
+			return md.String("~~" + content + "~~")
 		},
 	}
 

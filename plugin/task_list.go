@@ -9,7 +9,7 @@ import (
 func TaskListItems() md.Plugin {
 	return func(c *md.Converter) []md.Rule {
 		return []md.Rule{
-			md.Rule{
+			{
 				Filter: []string{"input"},
 				Replacement: func(content string, selec *goquery.Selection, opt *md.Options) *string {
 					if !selec.Parent().Is("li") {

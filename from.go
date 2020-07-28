@@ -237,7 +237,7 @@ type Plugin func(conv *Converter) []Rule
 func (c *Converter) Use(plugins ...Plugin) *Converter {
 	for _, plugin := range plugins {
 		rules := plugin(c)
-		c.AddRules(rules...) // TODO: for better perfomance only use one lock for all plugins
+		c.AddRules(rules...) // TODO: for better performance only use one lock for all plugins
 	}
 	return c
 }

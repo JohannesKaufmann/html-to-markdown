@@ -11,6 +11,12 @@ import (
 	"golang.org/x/net/html"
 )
 
+/*
+WARNING: The functions from this file can be used externally
+but there is no garanty that they will stay exported.
+*/
+
+// CollectText returns the text of the node and all its children
 func CollectText(n *html.Node) string {
 	text := &bytes.Buffer{}
 	collectText(n, text)
@@ -26,7 +32,8 @@ func collectText(n *html.Node, buf *bytes.Buffer) {
 	}
 }
 
-// always have a space to the side to recognize the delimiter
+// AddSpaceIfNessesary adds spaces to the text based on the neighbors.
+// That makes sure that there is always a space to the side, to recognize the delimiter.
 func AddSpaceIfNessesary(selec *goquery.Selection, text string) string {
 
 	var prev string
@@ -92,6 +99,8 @@ func AddSpaceIfNessesary(selec *goquery.Selection, text string) string {
 	return text
 }
 
+// TrimpLeadingSpaces removes spaces from the beginning of a line
+// but makes sure that list items and code blocks are not affected.
 func TrimpLeadingSpaces(text string) string {
 	parts := strings.Split(text, "\n")
 	for i := range parts {
@@ -128,6 +137,7 @@ func TrimpLeadingSpaces(text string) string {
 	return strings.Join(parts, "\n")
 }
 
+// TrimTrailingSpaces removes unnecessary spaces from the end of lines.
 func TrimTrailingSpaces(text string) string {
 	parts := strings.Split(text, "\n")
 	for i := range parts {
@@ -143,6 +153,7 @@ func TrimTrailingSpaces(text string) string {
 // The same as `multipleNewLinesRegex`, but applies to escaped new lines inside a link `\n\`
 var multipleNewLinesInLinkRegex = regexp.MustCompile(`(\n\\){1,}`) // `([\n\r\s]\\)`
 
+// EscapeMultiLine deals with multiline content inside a link
 func EscapeMultiLine(content string) string {
 	content = strings.TrimSpace(content)
 	content = strings.Replace(content, "\n", `\`+"\n", -1)
@@ -152,7 +163,7 @@ func EscapeMultiLine(content string) string {
 	return content
 }
 
-// Cal can be passed the content of a code block and it returns
+// CalculateCodeFence can be passed the content of a code block and it returns
 // how many fence characters (` or ~) should be used.
 //
 // This is useful if the html content includes the same fence characters
