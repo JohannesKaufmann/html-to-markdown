@@ -1,0 +1,17 @@
+<p><a href="http://simple.org/">Simple Link</a></p>
+<p><a href="http://space.org/">Link with Space</a></p>
+<p><a href="http://title.org/" title="Some Title">Link with Title</a></p>
+<p><a href="http://broken.com/test.html%5Cr">Broken Link</a></p>
+<p><a href="http://multi.org/">First Text<br>
+<img src="http://xxx" alt=""><br>
+Second Text</a></p>
+<ul>
+<li><a href="http://list.org/">First Text<br>
+<br>
+<br>
+Second Text</a></li>
+</ul>
+<p><a href="https://github.com" title="GitHub">GitHub</a></p>
+<p><a href="http://first_under.com">first top</a> <a href="http://second_under.com">second below</a></p>
+<p><a href="http://first_next.com">first left</a> <a href="http://second_next.com">second right</a></p>
+<p>Before <a href="http://example_close.com">close</a> After</p>

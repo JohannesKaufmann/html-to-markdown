@@ -1,0 +1,12 @@
+<p>Some Content</p>
+<p>Text</p>
+<p>Some Text</p>
+<p>Some Content</p>
+<p>jmap –histo[:live]</p>
+<p>Sometimes a struct field, function, type, or even a whole package becomes</p>
+<p>redundant or unnecessary, but must be kept for compatibility with existing</p>
+<p>programs.</p>
+<p>To signal that an identifier should not be used, add a paragraph to its doc</p>
+<p>comment that begins with &quot;Deprecated:&quot; followed by some information about the</p>
+<p>deprecation.</p>
+<p>There are a few examples <a href="https://golang.org/search?q=Deprecated:">in the standard library</a>.</p>

@@ -1,0 +1,74 @@
+<!--simple headings-->
+<h1>Heading 1</h1>
+
+<h2>Heading 2</h2>
+
+<h3>Heading 3</h3>
+
+<h4>Heading 4</h4>
+
+<h5>Heading 5</h5>
+
+<h6>Heading 6</h6>
+
+
+<!--with whitespace-->
+<h2>  Heading with Whitespace  </h2>
+
+
+<!--with newlines that are stripped
+
+    When a header (eg. <h3>) contains any new lines in its body, it will split the header contents
+    over multiple lines, breaking the header in Markdown (because in Markdown, a header just
+    starts with #'s and anything on the next line is not part of the header). Since in HTML
+    and Markdown all white space is treated the same, I chose to replace line endings with spaces.
+    -> https://github.com/lunny/html2md/pull/6
+-->
+<h2>
+
+Header
+Containing
+
+Newlines
+
+</h2>
+
+
+<!--with br that are stripped-->
+<h1>Heading<br/> <br/>One</h1>
+
+
+<!--inside link-->
+<a href="/page.html">
+    <h2>Heading 2</h2>
+</a>
+
+
+<!--with markdown characters (escaping)-->
+<h1>#hashtag</h1>
+
+<p>
+not title
+------
+</p>
+
+<!--TODO: fix-->
+<p>
+not title
+-
+</p>
+
+
+<p>not title</p>
+<p>-</p>
+
+<p>
+not title
+=
+</p>
+
+<!--TODO: fix; dont escape if it is already escaped-->
+<p>
+not title
+\-\-\-
+</p>

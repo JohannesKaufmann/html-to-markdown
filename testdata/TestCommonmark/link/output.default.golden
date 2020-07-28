@@ -1,0 +1,24 @@
+[Link](http://commonmark.org/)
+
+ [Link](http://commonmark.org/)
+
+[Link](http://commonmark.org/ "Some Title")
+
+ [Link](http://example.com/test.html\r)
+
+ [First Text\
+![](http://xxx)\
+Second Text](http://commonmark.org/)
+
+- [First Text\
+    \
+    \
+    Second Text](http://commonmark.org/)
+
+[GitHub](https://github.com "GitHub")
+
+[first](http://first.com) [second](http://second.com)
+
+[first](http://first.com) [second](http://second.com)
+
+Before [Link](http://example.com) After

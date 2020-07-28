@@ -1,0 +1,252 @@
+Godoc: documenting Go code - The Go Blog
+
+[The Go Programming Language][1]
+
+[Go][2]
+
+▽
+
+[Documents][4] [Packages][5] [The Project][6] [Help][7] [Blog][8]submit search
+
+#### Next article
+
+[Introducing Gofix][9]
+
+#### Previous article
+
+[Gobs of data][10]
+
+#### Links
+
+- [golang.org][11]
+- [Install Go][12]
+- [A Tour of Go][13]
+- [Go Documentation][14]
+- [Go Mailing List][15]
+- [Go on Google+][16]
+- [Go+ Community][17]
+- [Go on Twitter][18]
+
+[Blog index][19]
+
+# [The Go Blog][20]
+
+### [Godoc: documenting Go code][21]
+
+31 March 2011
+
+The Go project takes documentation seriously. Documentation is a huge part of making software accessible and maintainable.
+Of course it must be well-written and accurate, but it also must be easy to write and to maintain. Ideally, it
+should be coupled to the code itself so the documentation evolves along with the code. The easier it is for programmers
+to produce good documentation, the better for everyone.
+
+
+To that end, we have developed the
+[godoc][22] documentation tool. This article describes godoc's approach to documentation, and explains how
+you can use our conventions and tools to write good documentation for your own projects.
+
+
+Godoc parses Go source code - including comments - and produces documentation as HTML or plain text. The end result is documentation
+tightly coupled with the code it documents. For example, through godoc's web interface you can navigate from
+a function's
+[documentation][23] to its
+[implementation][24] with one click.
+
+
+Godoc is conceptually related to Python's
+[Docstring][25] and Java's
+[Javadoc][26], but its design is simpler. The comments read by godoc are not language constructs (as with Docstring)
+nor must they have their own machine-readable syntax (as with Javadoc). Godoc comments are just good comments,
+the sort you would want to read even if godoc didn't exist.
+
+
+The convention is simple: to document a type, variable, constant, function, or even a package, write a regular comment directly
+preceding its declaration, with no intervening blank line. Godoc will then present that comment as text alongside
+the item it documents. For example, this is the documentation for the
+`fmt` package's
+[`Fprint`][27] function:
+
+
+```
+// Fprint formats using the default formats for its operands and writes to w.
+// Spaces are added between operands when neither is a string.
+// It returns the number of bytes written and any write error encountered.
+func Fprint(w io.Writer, a ...interface{}) (n int, err error) {
+```
+
+Notice this comment is a complete sentence that begins with the name of the element it describes. This important convention
+allows us to generate documentation in a variety of formats, from plain text to HTML to UNIX man pages, and makes
+it read better when tools truncate it for brevity, such as when they extract the first line or sentence.
+
+
+Comments on package declarations should provide general package documentation. These comments can be short, like the
+[`sort`][28] package's brief description:
+
+
+```
+// Package sort provides primitives for sorting slices and user-defined
+// collections.
+package sort
+```
+
+They can also be detailed like the
+[gob package][29]'s overview. That package uses another convention for packages that need large amounts of
+introductory documentation: the package comment is placed in its own file,
+[doc.go][30], which contains only those comments and a package clause.
+
+
+When writing package comments of any size, keep in mind that their first sentence will appear in godoc's
+[package list][31].
+
+
+Comments that are not adjacent to a top-level declaration are omitted from godoc's output, with one notable exception.
+Top-level comments that begin with the word
+`"BUG(who)”` are recognized as known bugs, and included in the "Bugs” section of the package documentation. The "who”
+part should be the user name of someone who could provide more information. For example, this is a known issue
+from the
+[bytes package][32]:
+
+
+```
+// BUG(r): The rule Title uses for word boundaries does not handle Unicode punctuation properly.
+```
+
+Sometimes a struct field, function, type, or even a whole package becomes redundant or unnecessary, but must be kept for
+compatibility with existing programs. To signal that an identifier should not be used, add a paragraph to its
+doc comment that begins with "Deprecated:" followed by some information about the deprecation. There
+are a few examples
+[in the standard library][33].
+
+
+There are a few formatting rules that Godoc uses when converting comments to HTML:
+
+
+- Subsequent lines of text are considered part of the same paragraph; you must leave a blank line to separate paragraphs.
+
+- Pre-formatted text must be indented relative to the surrounding comment text (see gob's
+     [doc.go][34] for an example).
+
+- URLs will be converted to HTML links; no special markup is necessary.
+
+Note that none of these rules requires you to do anything out of the ordinary.
+
+
+In fact, the best thing about godoc's minimal approach is how easy it is to use. As a result, a lot of Go code, including
+all of the standard library, already follows the conventions.
+
+
+Your own code can present good documentation just by having comments as described above. Any Go packages installed inside
+`$GOROOT/src/pkg` and any
+`GOPATH` work spaces will already be accessible via godoc's command-line and HTTP interfaces, and you can specify
+additional paths for indexing via the
+`-path` flag or just by running
+`"godoc ."` in the source directory. See the
+[godoc documentation][35] for more details.
+
+
+By Andrew Gerrand
+
+## Related articles
+
+- [HTTP/2 Server Push][36]
+- [Introducing HTTP Tracing][37]
+- [Testable Examples in Go][38]
+- [Generating code][39]
+- [Introducing the Go Race Detector][40]
+- [Go maps in action][41]
+- [go fmt your code][42]
+- [Organizing Go code][43]
+- [Debugging Go programs with the GNU Debugger][44]
+- [The Go image/draw package][45]
+- [The Go image package][46]
+- [The Laws of Reflection][47]
+- [Error handling and Go][48]
+- ["First Class Functions in Go"][49]
+- [Profiling Go Programs][50]
+- [A GIF decoder: an exercise in Go interfaces][51]
+- [Introducing Gofix][52]
+- [Gobs of data][53]
+- [C? Go? Cgo!][54]
+- [JSON and Go][55]
+- [Go Slices: usage and internals][56]
+- [Go Concurrency Patterns: Timing out, moving on][57]
+- [Defer, Panic, and Recover][58]
+- [Share Memory By Communicating][59]
+- [JSON-RPC: a tale of interfaces][60]
+
+Except as
+[noted][61], the content of this page is licensed under the Creative Commons Attribution 3.0 License,
+
+
+and code is licensed under a
+[BSD license][62].
+
+
+[Terms of Service][63] \|
+[Privacy Policy][64] \|
+[View the source code][65]
+
+[1]: //golang.org/
+[2]: //golang.org/
+[4]: //golang.org/doc/
+[5]: //golang.org/pkg/
+[6]: //golang.org/project/
+[7]: //golang.org/help/
+[8]: /
+[9]: /introducing-gofix
+[10]: /gobs-of-data
+[11]: //golang.org/
+[12]: //golang.org/doc/install.html
+[13]: //tour.golang.org/
+[14]: //golang.org/doc/
+[15]: //groups.google.com/group/golang-nuts
+[16]: //plus.google.com/101406623878176903605
+[17]: //plus.google.com/communities/114112804251407510571
+[18]: //twitter.com/golang
+[19]: /index
+[20]: /
+[21]: /godoc-documenting-go-code
+[22]: https://golang.org/cmd/godoc/
+[23]: https://golang.org/pkg/strings/#HasPrefix
+[24]: https://golang.org/src/pkg/strings/strings.go#L493
+[25]: http://www.python.org/dev/peps/pep-0257/
+[26]: http://www.oracle.com/technetwork/java/javase/documentation/index-jsp-135444.html
+[27]: https://golang.org/pkg/fmt/#Fprint
+[28]: https://golang.org/pkg/sort/
+[29]: https://golang.org/pkg/encoding/gob/
+[30]: https://golang.org/src/pkg/encoding/gob/doc.go
+[31]: https://golang.org/pkg/
+[32]: https://golang.org/pkg/bytes/#pkg-note-BUG
+[33]: https://golang.org/search?q=Deprecated:
+[34]: https://golang.org/src/pkg/encoding/gob/doc.go
+[35]: https://golang.org/cmd/godoc/
+[36]: /h2push
+[37]: /http-tracing
+[38]: /examples
+[39]: /generate
+[40]: /race-detector
+[41]: /go-maps-in-action
+[42]: /go-fmt-your-code
+[43]: /organizing-go-code
+[44]: /debugging-go-programs-with-gnu-debugger
+[45]: /go-imagedraw-package
+[46]: /go-image-package
+[47]: /laws-of-reflection
+[48]: /error-handling-and-go
+[49]: /first-class-functions-in-go-and-new-go
+[50]: /profiling-go-programs
+[51]: /gif-decoder-exercise-in-go-interfaces
+[52]: /introducing-gofix
+[53]: /gobs-of-data
+[54]: /c-go-cgo
+[55]: /json-and-go
+[56]: /go-slices-usage-and-internals
+[57]: /go-concurrency-patterns-timing-out-and
+[58]: /defer-panic-and-recover
+[59]: /share-memory-by-communicating
+[60]: /json-rpc-tale-of-interfaces
+[61]: https://developers.google.com/site-policies#restrictions
+[62]: //golang.org/LICENSE
+[63]: //golang.org/doc/tos.html
+[64]: //www.google.com/intl/en/policies/privacy/
+[65]: https://go.googlesource.com/blog/

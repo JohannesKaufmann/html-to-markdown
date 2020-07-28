@@ -1,0 +1,42 @@
+[Simple Link][]
+
+ [Link with Space][]
+
+[Link with Title][]
+
+ [Broken Link][]
+
+ [First Text\
+![](http://xxx)\
+Second Text][]
+
+- [First Text\
+    \
+    \
+    Second Text][]
+
+[GitHub][]
+
+[first top][] [second below][]
+
+[first left][] [second right][]
+
+Before [close][] After
+
+[Simple Link]: http://simple.org/
+[Link with Space]: http://space.org/
+[Link with Title]: http://title.org/ "Some Title"
+[Broken Link]: http://broken.com/test.html\r
+[First Text\
+![](http://xxx)\
+Second Text]: http://multi.org/
+[First Text\
+\
+\
+Second Text]: http://list.org/
+[GitHub]: https://github.com "GitHub"
+[first top]: http://first_under.com
+[second below]: http://second_under.com
+[first left]: http://first_next.com
+[second right]: http://second_next.com
+[close]: http://example_close.com

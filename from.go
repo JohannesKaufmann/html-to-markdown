@@ -355,7 +355,7 @@ func (c *Converter) ConvertURL(url string) (string, error) {
 	}
 	domain := DomainFromURL(url)
 	if c.domain != domain {
-		return "", errors.New("expected " + c.domain + " as the domain but got " + domain)
+		return "", fmt.Errorf("expected '%s' as the domain but got '%s'", c.domain, domain)
 	}
 	return c.Convert(doc.Selection), nil
 }
