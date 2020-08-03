@@ -18,6 +18,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -146,7 +147,7 @@ func NewConverter(domain string, enableCommonmark bool, options *Options) *Conve
 	c.options = *options
 	err := validateOptions(c.options)
 	if err != nil {
-		fmt.Println("markdown options is not valid:", err)
+		log.Println("markdown options is not valid:", err)
 	}
 
 	return c
@@ -190,7 +191,7 @@ func (c *Converter) AddRules(rules ...Rule) *Converter {
 
 	for _, rule := range rules {
 		if len(rule.Filter) == 0 {
-			panic("you need to specify at least one filter for your rule")
+			log.Println("you need to specify at least one filter for your rule")
 		}
 		for _, filter := range rule.Filter {
 			r, _ := c.rules[filter]
@@ -273,7 +274,7 @@ func (c *Converter) Convert(selec *goquery.Selection) string {
 	options := c.options
 	l := len(c.rules)
 	if l == 0 {
-		panic("you have added no rules. either enable commonmark or add you own.")
+		log.Println("you have added no rules. either enable commonmark or add you own.")
 	}
 	c.m.RUnlock()
 
@@ -347,11 +348,16 @@ func (c *Converter) ConvertURL(url string) (string, error) {
 	// not using goquery.NewDocument directly because of the timeout
 	resp, err := netClient.Get(url)
 	if err != nil {
-		return "", nil
+		return "", err
 	}
+
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		return "", fmt.Errorf("expected a status code in the 2xx range but got %d", resp.StatusCode)
+	}
+
 	doc, err := goquery.NewDocumentFromResponse(resp)
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 	domain := DomainFromURL(url)
 	if c.domain != domain {

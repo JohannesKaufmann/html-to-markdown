@@ -2,6 +2,7 @@ package md
 
 import (
 	"fmt"
+	"log"
 	"net/url"
 	"regexp"
 	"strconv"
@@ -121,8 +122,7 @@ var commonmark = []Rule{
 			node := goquery.NodeName(selec)
 			level, err := strconv.Atoi(node[1:])
 			if err != nil {
-				fmt.Println("[JohannesKaufmann/html-to-markdown] 'h' tag with unknown level:", err)
-				level = 6
+				return nil
 			}
 
 			if opt.HeadingStyle == "setext" && level < 3 {
@@ -202,7 +202,7 @@ var commonmark = []Rule{
 				}
 				src = u.String()
 			} else {
-				fmt.Println("error could not parse the url:", err)
+				log.Println("error could not parse the url:", err)
 			}
 
 			text := fmt.Sprintf("![%s](%s)", alt, src)

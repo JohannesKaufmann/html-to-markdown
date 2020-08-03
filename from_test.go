@@ -3,8 +3,10 @@ package md
 import (
 	"bytes"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"sync"
 	"testing"
@@ -117,7 +119,89 @@ func TestConvertURL(t *testing.T) {
 	}
 }
 
+func TestConvertURL_ErrorStatusCode(t *testing.T) {
+	// Start a local HTTP server
+	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+		rw.WriteHeader(http.StatusNotFound)
+		rw.Write([]byte("404 Not Found"))
+	}))
+	// Close the server when test finishes
+	defer server.Close()
+	// override the client used in `ConvertURL`
+	netClient = server.Client()
+
+	converter := NewConverter(server.URL, true, nil)
+	res, err := converter.ConvertURL(server.URL)
+	if err == nil {
+		t.Error("expected an error")
+	}
+
+	if res != "" {
+		t.Error("the result is different that expected")
+	}
+}
+
 // - - - - - - - - - - - - //
+
+func TestNewConverter_NoRules(t *testing.T) {
+	var buf bytes.Buffer
+	log.SetOutput(&buf)
+	log.SetFlags(0)
+	defer func() {
+		// reset the options back to the defaults
+		log.SetOutput(os.Stderr)
+		log.SetFlags(3)
+	}()
+
+	input := `<strong>Bold</strong>`
+	expected := ``
+
+	// disable commonmark
+	converter := NewConverter("", false, nil)
+	res, err := converter.ConvertString(input)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if res != expected {
+		t.Error("the result is different that expected")
+	}
+
+	if strings.TrimSuffix(buf.String(), "\n") != "you have added no rules. either enable commonmark or add you own." {
+		t.Error("expected a different log message")
+	}
+}
+
+func TestNewConverter_ValidateOptions(t *testing.T) {
+	var buf bytes.Buffer
+	log.SetOutput(&buf)
+	log.SetFlags(0)
+	defer func() {
+		// reset the options back to the defaults
+		log.SetOutput(os.Stderr)
+		log.SetFlags(3)
+	}()
+
+	input := `<strong>Bold</strong>`
+	expected := `====Bold====`
+
+	// disable commonmark
+	converter := NewConverter("", true, &Options{
+		StrongDelimiter: "====",
+	})
+	res, err := converter.ConvertString(input)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if res != expected {
+		t.Error("the result is different that expected")
+	}
+
+	if strings.TrimSuffix(buf.String(), "\n") != "markdown options is not valid: field must be one of [** __] but got ====" {
+		t.Error("expected a different log message")
+	}
+}
 
 func BenchmarkFromString(b *testing.B) {
 	converter := NewConverter("www.google.com", true, nil)

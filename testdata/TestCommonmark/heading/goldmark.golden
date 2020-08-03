@@ -4,6 +4,7 @@
 <h4>Heading 4</h4>
 <h5>Heading 5</h5>
 <h6>Heading 6</h6>
+<p>Heading 7</p>
 <h2>Heading with Whitespace</h2>
 <h2>Header Containing  Newlines</h2>
 <h1>Heading    One</h1>
