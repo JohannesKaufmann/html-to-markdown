@@ -186,26 +186,26 @@ and code is licensed under a
 [Privacy Policy] \|
 [View the source code]
 
-[The Go Programming Language]: //golang.org/
-[Go]: //golang.org/
-[Documents]: //golang.org/doc/
-[Packages]: //golang.org/pkg/
-[The Project]: //golang.org/project/
-[Help]: //golang.org/help/
-[Blog]: /
-[Introducing Gofix]: /introducing-gofix
-[Gobs of data]: /gobs-of-data
-[golang.org]: //golang.org/
-[Install Go]: //golang.org/doc/install.html
-[A Tour of Go]: //tour.golang.org/
-[Go Documentation]: //golang.org/doc/
-[Go Mailing List]: //groups.google.com/group/golang-nuts
-[Go on Google+]: //plus.google.com/101406623878176903605
-[Go+ Community]: //plus.google.com/communities/114112804251407510571
-[Go on Twitter]: //twitter.com/golang
-[Blog index]: /index
-[The Go Blog]: /
-[Godoc: documenting Go code]: /godoc-documenting-go-code
+[The Go Programming Language]: http://golang.org/
+[Go]: http://golang.org/
+[Documents]: http://golang.org/doc/
+[Packages]: http://golang.org/pkg/
+[The Project]: http://golang.org/project/
+[Help]: http://golang.org/help/
+[Blog]: http://blog.golang.org/
+[Introducing Gofix]: http://blog.golang.org/introducing-gofix
+[Gobs of data]: http://blog.golang.org/gobs-of-data
+[golang.org]: http://golang.org/
+[Install Go]: http://golang.org/doc/install.html
+[A Tour of Go]: http://tour.golang.org/
+[Go Documentation]: http://golang.org/doc/
+[Go Mailing List]: http://groups.google.com/group/golang-nuts
+[Go on Google+]: http://plus.google.com/101406623878176903605
+[Go+ Community]: http://plus.google.com/communities/114112804251407510571
+[Go on Twitter]: http://twitter.com/golang
+[Blog index]: http://blog.golang.org/index
+[The Go Blog]: http://blog.golang.org/
+[Godoc: documenting Go code]: http://blog.golang.org/godoc-documenting-go-code
 [godoc]: https://golang.org/cmd/godoc/
 [documentation]: https://golang.org/pkg/strings/#HasPrefix
 [implementation]: https://golang.org/src/pkg/strings/strings.go#L493
@@ -220,33 +220,33 @@ and code is licensed under a
 [in the standard library]: https://golang.org/search?q=Deprecated:
 [doc.go]: https://golang.org/src/pkg/encoding/gob/doc.go
 [godoc documentation]: https://golang.org/cmd/godoc/
-[HTTP/2 Server Push]: /h2push
-[Introducing HTTP Tracing]: /http-tracing
-[Testable Examples in Go]: /examples
-[Generating code]: /generate
-[Introducing the Go Race Detector]: /race-detector
-[Go maps in action]: /go-maps-in-action
-[go fmt your code]: /go-fmt-your-code
-[Organizing Go code]: /organizing-go-code
-[Debugging Go programs with the GNU Debugger]: /debugging-go-programs-with-gnu-debugger
-[The Go image/draw package]: /go-imagedraw-package
-[The Go image package]: /go-image-package
-[The Laws of Reflection]: /laws-of-reflection
-[Error handling and Go]: /error-handling-and-go
-["First Class Functions in Go"]: /first-class-functions-in-go-and-new-go
-[Profiling Go Programs]: /profiling-go-programs
-[A GIF decoder: an exercise in Go interfaces]: /gif-decoder-exercise-in-go-interfaces
-[Introducing Gofix]: /introducing-gofix
-[Gobs of data]: /gobs-of-data
-[C? Go? Cgo!]: /c-go-cgo
-[JSON and Go]: /json-and-go
-[Go Slices: usage and internals]: /go-slices-usage-and-internals
-[Go Concurrency Patterns: Timing out, moving on]: /go-concurrency-patterns-timing-out-and
-[Defer, Panic, and Recover]: /defer-panic-and-recover
-[Share Memory By Communicating]: /share-memory-by-communicating
-[JSON-RPC: a tale of interfaces]: /json-rpc-tale-of-interfaces
+[HTTP/2 Server Push]: http://blog.golang.org/h2push
+[Introducing HTTP Tracing]: http://blog.golang.org/http-tracing
+[Testable Examples in Go]: http://blog.golang.org/examples
+[Generating code]: http://blog.golang.org/generate
+[Introducing the Go Race Detector]: http://blog.golang.org/race-detector
+[Go maps in action]: http://blog.golang.org/go-maps-in-action
+[go fmt your code]: http://blog.golang.org/go-fmt-your-code
+[Organizing Go code]: http://blog.golang.org/organizing-go-code
+[Debugging Go programs with the GNU Debugger]: http://blog.golang.org/debugging-go-programs-with-gnu-debugger
+[The Go image/draw package]: http://blog.golang.org/go-imagedraw-package
+[The Go image package]: http://blog.golang.org/go-image-package
+[The Laws of Reflection]: http://blog.golang.org/laws-of-reflection
+[Error handling and Go]: http://blog.golang.org/error-handling-and-go
+["First Class Functions in Go"]: http://blog.golang.org/first-class-functions-in-go-and-new-go
+[Profiling Go Programs]: http://blog.golang.org/profiling-go-programs
+[A GIF decoder: an exercise in Go interfaces]: http://blog.golang.org/gif-decoder-exercise-in-go-interfaces
+[Introducing Gofix]: http://blog.golang.org/introducing-gofix
+[Gobs of data]: http://blog.golang.org/gobs-of-data
+[C? Go? Cgo!]: http://blog.golang.org/c-go-cgo
+[JSON and Go]: http://blog.golang.org/json-and-go
+[Go Slices: usage and internals]: http://blog.golang.org/go-slices-usage-and-internals
+[Go Concurrency Patterns: Timing out, moving on]: http://blog.golang.org/go-concurrency-patterns-timing-out-and
+[Defer, Panic, and Recover]: http://blog.golang.org/defer-panic-and-recover
+[Share Memory By Communicating]: http://blog.golang.org/share-memory-by-communicating
+[JSON-RPC: a tale of interfaces]: http://blog.golang.org/json-rpc-tale-of-interfaces
 [noted]: https://developers.google.com/site-policies#restrictions
-[BSD license]: //golang.org/LICENSE
-[Terms of Service]: //golang.org/doc/tos.html
-[Privacy Policy]: //www.google.com/intl/en/policies/privacy/
+[BSD license]: http://golang.org/LICENSE
+[Terms of Service]: http://golang.org/doc/tos.html
+[Privacy Policy]: http://www.google.com/intl/en/policies/privacy/
 [View the source code]: https://go.googlesource.com/blog/

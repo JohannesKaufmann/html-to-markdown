@@ -93,6 +93,10 @@ func RunGoldenTest(t *testing.T, tests []GoldenTest) {
 					return
 				}
 
+				if test.Domain == "" {
+					test.Domain = "example.com"
+				}
+
 				conv := md.NewConverter(test.Domain, true, options)
 				conv.Keep("keep-tag").Remove("remove-tag")
 				for _, plugin := range test.Plugins {

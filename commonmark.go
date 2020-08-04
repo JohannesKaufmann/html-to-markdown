@@ -2,8 +2,6 @@ package md
 
 import (
 	"fmt"
-	"log"
-	"net/url"
 	"regexp"
 	"strconv"
 	"strings"
@@ -193,17 +191,7 @@ var commonmark = []Rule{
 				return String("")
 			}
 
-			if u, err := url.Parse(src); err == nil {
-				if u.Scheme == "" {
-					u.Scheme = "http"
-				}
-				if u.Host == "" {
-					u.Host = opt.domain
-				}
-				src = u.String()
-			} else {
-				log.Println("error could not parse the url:", err)
-			}
+			src = opt.GetAbsoluteURL(selec, src, opt.domain)
 
 			text := fmt.Sprintf("![%s](%s)", alt, src)
 			return &text
@@ -219,6 +207,8 @@ var commonmark = []Rule{
 					Markdown: content,
 				}, false
 			}
+
+			href = opt.GetAbsoluteURL(selec, href, opt.domain)
 
 			// having multiline content inside a link is a bit tricky
 			content = EscapeMultiLine(content)

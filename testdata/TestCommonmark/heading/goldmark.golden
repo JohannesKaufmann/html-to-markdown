@@ -8,7 +8,7 @@
 <h2>Heading with Whitespace</h2>
 <h2>Header Containing  Newlines</h2>
 <h1>Heading    One</h1>
-<p><a href="/page.html"><strong>Heading 2</strong></a></p>
+<p><a href="http://example.com/page.html"><strong>Heading 2</strong></a></p>
 <h1>#hashtag</h1>
 <p>not title
 ------</p>

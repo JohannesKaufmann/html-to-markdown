@@ -144,6 +144,10 @@ func NewConverter(domain string, enableCommonmark bool, options *Options) *Conve
 	// for now, store it in the options
 	options.domain = domain
 
+	if options.GetAbsoluteURL == nil {
+		options.GetAbsoluteURL = DefaultGetAbsoluteURL
+	}
+
 	c.options = *options
 	err := validateOptions(c.options)
 	if err != nil {
@@ -253,14 +257,13 @@ var netClient = &http.Client{
 	Timeout: Timeout,
 }
 
-// DomainFromURL removes the path from the url.
+// DomainFromURL returns `u.Host` from the parsed url.
 func DomainFromURL(rawURL string) string {
 	u, err := url.Parse(rawURL)
 	if err != nil {
 		return ""
 	}
-	u.Path = ""
-	return u.String()
+	return u.Host
 }
 
 // Reduce many newline characters `\n` to at most 2 new line characters.

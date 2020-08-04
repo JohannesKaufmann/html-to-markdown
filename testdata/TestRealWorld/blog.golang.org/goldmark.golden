@@ -1,26 +1,26 @@
 <p>Godoc: documenting Go code - The Go Blog</p>
-<p><a href="//golang.org/">The Go Programming Language</a></p>
-<p><a href="//golang.org/">Go</a></p>
+<p><a href="http://golang.org/">The Go Programming Language</a></p>
+<p><a href="http://golang.org/">Go</a></p>
 <p>▽</p>
-<p><a href="//golang.org/doc/">Documents</a> <a href="//golang.org/pkg/">Packages</a> <a href="//golang.org/project/">The Project</a> <a href="//golang.org/help/">Help</a> <a href="/">Blog</a>submit search</p>
+<p><a href="http://golang.org/doc/">Documents</a> <a href="http://golang.org/pkg/">Packages</a> <a href="http://golang.org/project/">The Project</a> <a href="http://golang.org/help/">Help</a> <a href="http://blog.golang.org/">Blog</a>submit search</p>
 <h4>Next article</h4>
-<p><a href="/introducing-gofix">Introducing Gofix</a></p>
+<p><a href="http://blog.golang.org/introducing-gofix">Introducing Gofix</a></p>
 <h4>Previous article</h4>
-<p><a href="/gobs-of-data">Gobs of data</a></p>
+<p><a href="http://blog.golang.org/gobs-of-data">Gobs of data</a></p>
 <h4>Links</h4>
 <ul>
-<li><a href="//golang.org/">golang.org</a></li>
-<li><a href="//golang.org/doc/install.html">Install Go</a></li>
-<li><a href="//tour.golang.org/">A Tour of Go</a></li>
-<li><a href="//golang.org/doc/">Go Documentation</a></li>
-<li><a href="//groups.google.com/group/golang-nuts">Go Mailing List</a></li>
-<li><a href="//plus.google.com/101406623878176903605">Go on Google+</a></li>
-<li><a href="//plus.google.com/communities/114112804251407510571">Go+ Community</a></li>
-<li><a href="//twitter.com/golang">Go on Twitter</a></li>
+<li><a href="http://golang.org/">golang.org</a></li>
+<li><a href="http://golang.org/doc/install.html">Install Go</a></li>
+<li><a href="http://tour.golang.org/">A Tour of Go</a></li>
+<li><a href="http://golang.org/doc/">Go Documentation</a></li>
+<li><a href="http://groups.google.com/group/golang-nuts">Go Mailing List</a></li>
+<li><a href="http://plus.google.com/101406623878176903605">Go on Google+</a></li>
+<li><a href="http://plus.google.com/communities/114112804251407510571">Go+ Community</a></li>
+<li><a href="http://twitter.com/golang">Go on Twitter</a></li>
 </ul>
-<p><a href="/index">Blog index</a></p>
-<h1><a href="/">The Go Blog</a></h1>
-<h3><a href="/godoc-documenting-go-code">Godoc: documenting Go code</a></h3>
+<p><a href="http://blog.golang.org/index">Blog index</a></p>
+<h1><a href="http://blog.golang.org/">The Go Blog</a></h1>
+<h3><a href="http://blog.golang.org/godoc-documenting-go-code">Godoc: documenting Go code</a></h3>
 <p>31 March 2011</p>
 <p>The Go project takes documentation seriously. Documentation is a huge part of making software accessible and maintainable.
 Of course it must be well-written and accurate, but it also must be easy to write and to maintain. Ideally, it
@@ -103,36 +103,36 @@ additional paths for indexing via the
 <p>By Andrew Gerrand</p>
 <h2>Related articles</h2>
 <ul>
-<li><a href="/h2push">HTTP/2 Server Push</a></li>
-<li><a href="/http-tracing">Introducing HTTP Tracing</a></li>
-<li><a href="/examples">Testable Examples in Go</a></li>
-<li><a href="/generate">Generating code</a></li>
-<li><a href="/race-detector">Introducing the Go Race Detector</a></li>
-<li><a href="/go-maps-in-action">Go maps in action</a></li>
-<li><a href="/go-fmt-your-code">go fmt your code</a></li>
-<li><a href="/organizing-go-code">Organizing Go code</a></li>
-<li><a href="/debugging-go-programs-with-gnu-debugger">Debugging Go programs with the GNU Debugger</a></li>
-<li><a href="/go-imagedraw-package">The Go image/draw package</a></li>
-<li><a href="/go-image-package">The Go image package</a></li>
-<li><a href="/laws-of-reflection">The Laws of Reflection</a></li>
-<li><a href="/error-handling-and-go">Error handling and Go</a></li>
-<li><a href="/first-class-functions-in-go-and-new-go">&quot;First Class Functions in Go&quot;</a></li>
-<li><a href="/profiling-go-programs">Profiling Go Programs</a></li>
-<li><a href="/gif-decoder-exercise-in-go-interfaces">A GIF decoder: an exercise in Go interfaces</a></li>
-<li><a href="/introducing-gofix">Introducing Gofix</a></li>
-<li><a href="/gobs-of-data">Gobs of data</a></li>
-<li><a href="/c-go-cgo">C? Go? Cgo!</a></li>
-<li><a href="/json-and-go">JSON and Go</a></li>
-<li><a href="/go-slices-usage-and-internals">Go Slices: usage and internals</a></li>
-<li><a href="/go-concurrency-patterns-timing-out-and">Go Concurrency Patterns: Timing out, moving on</a></li>
-<li><a href="/defer-panic-and-recover">Defer, Panic, and Recover</a></li>
-<li><a href="/share-memory-by-communicating">Share Memory By Communicating</a></li>
-<li><a href="/json-rpc-tale-of-interfaces">JSON-RPC: a tale of interfaces</a></li>
+<li><a href="http://blog.golang.org/h2push">HTTP/2 Server Push</a></li>
+<li><a href="http://blog.golang.org/http-tracing">Introducing HTTP Tracing</a></li>
+<li><a href="http://blog.golang.org/examples">Testable Examples in Go</a></li>
+<li><a href="http://blog.golang.org/generate">Generating code</a></li>
+<li><a href="http://blog.golang.org/race-detector">Introducing the Go Race Detector</a></li>
+<li><a href="http://blog.golang.org/go-maps-in-action">Go maps in action</a></li>
+<li><a href="http://blog.golang.org/go-fmt-your-code">go fmt your code</a></li>
+<li><a href="http://blog.golang.org/organizing-go-code">Organizing Go code</a></li>
+<li><a href="http://blog.golang.org/debugging-go-programs-with-gnu-debugger">Debugging Go programs with the GNU Debugger</a></li>
+<li><a href="http://blog.golang.org/go-imagedraw-package">The Go image/draw package</a></li>
+<li><a href="http://blog.golang.org/go-image-package">The Go image package</a></li>
+<li><a href="http://blog.golang.org/laws-of-reflection">The Laws of Reflection</a></li>
+<li><a href="http://blog.golang.org/error-handling-and-go">Error handling and Go</a></li>
+<li><a href="http://blog.golang.org/first-class-functions-in-go-and-new-go">&quot;First Class Functions in Go&quot;</a></li>
+<li><a href="http://blog.golang.org/profiling-go-programs">Profiling Go Programs</a></li>
+<li><a href="http://blog.golang.org/gif-decoder-exercise-in-go-interfaces">A GIF decoder: an exercise in Go interfaces</a></li>
+<li><a href="http://blog.golang.org/introducing-gofix">Introducing Gofix</a></li>
+<li><a href="http://blog.golang.org/gobs-of-data">Gobs of data</a></li>
+<li><a href="http://blog.golang.org/c-go-cgo">C? Go? Cgo!</a></li>
+<li><a href="http://blog.golang.org/json-and-go">JSON and Go</a></li>
+<li><a href="http://blog.golang.org/go-slices-usage-and-internals">Go Slices: usage and internals</a></li>
+<li><a href="http://blog.golang.org/go-concurrency-patterns-timing-out-and">Go Concurrency Patterns: Timing out, moving on</a></li>
+<li><a href="http://blog.golang.org/defer-panic-and-recover">Defer, Panic, and Recover</a></li>
+<li><a href="http://blog.golang.org/share-memory-by-communicating">Share Memory By Communicating</a></li>
+<li><a href="http://blog.golang.org/json-rpc-tale-of-interfaces">JSON-RPC: a tale of interfaces</a></li>
 </ul>
 <p>Except as
 <a href="https://developers.google.com/site-policies#restrictions">noted</a>, the content of this page is licensed under the Creative Commons Attribution 3.0 License,</p>
 <p>and code is licensed under a
-<a href="//golang.org/LICENSE">BSD license</a>.</p>
-<p><a href="//golang.org/doc/tos.html">Terms of Service</a> |
-<a href="//www.google.com/intl/en/policies/privacy/">Privacy Policy</a> |
+<a href="http://golang.org/LICENSE">BSD license</a>.</p>
+<p><a href="http://golang.org/doc/tos.html">Terms of Service</a> |
+<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a> |
 <a href="https://go.googlesource.com/blog/">View the source code</a></p>

@@ -3,6 +3,7 @@ package md
 import (
 	"bytes"
 	"log"
+	"net/url"
 	"regexp"
 	"strings"
 
@@ -133,6 +134,48 @@ type Options struct {
 	LinkReferenceStyle string
 
 	domain string
+
+	// GetAbsoluteURL parses the `rawURL` and adds the `domain` to convert relative (/page.html)
+	// urls to absolute urls (http://domain.com/page.html).
+	//
+	// The default is `DefaultGetAbsoluteURL`, unless you override it. That can also
+	// be useful if you want to proxy the images.
+	GetAbsoluteURL func(selec *goquery.Selection, rawURL string, domain string) string
+
+	// GetCodeBlockLanguage identifies the language for syntax highlighting
+	// of a code block. The default is `DefaultGetCodeBlockLanguage`, which
+	// only gets the attribute x from the selection.
+	//
+	// You can override it if you want more results, for example by using
+	// lexers.Analyse(content) from github.com/alecthomas/chroma
+	// TODO: implement
+	// GetCodeBlockLanguage func(s *goquery.Selection, content string) string
+}
+
+func DefaultGetAbsoluteURL(selec *goquery.Selection, rawURL string, domain string) string {
+	if domain == "" {
+		return rawURL
+	}
+
+	u, err := url.Parse(rawURL)
+	if err != nil {
+		// we can't do anything with this url because it is invalid
+		return rawURL
+	}
+
+	if u.Scheme == "data" {
+		// this is a data uri (for example an inline base64 image)
+		return rawURL
+	}
+
+	if u.Scheme == "" {
+		u.Scheme = "http"
+	}
+	if u.Host == "" {
+		u.Host = domain
+	}
+
+	return u.String()
 }
 
 // AdvancedResult is used for example for links. If you use LinkStyle:referenced

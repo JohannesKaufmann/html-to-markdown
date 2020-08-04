@@ -7,7 +7,7 @@
  [Broken Link][4]
 
  [First Text\
-![](http://xxx)\
+![](http://example.com/xxx)\
 Second Text][5]
 
 - [First Text\
@@ -26,7 +26,7 @@ Before [close][12] After
 [1]: http://simple.org/
 [2]: http://space.org/
 [3]: http://title.org/ "Some Title"
-[4]: http://broken.com/test.html\r
+[4]: http://broken.com/test.html%5Cr
 [5]: http://multi.org/
 [6]: http://list.org/
 [7]: https://github.com "GitHub"

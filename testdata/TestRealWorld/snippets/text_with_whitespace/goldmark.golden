@@ -7,6 +7,6 @@
 <a href="http://www.bonnerruderverein.de/bonner-nachtlauf/">More</a></p>
 <hr>
 <h1>Aktuelles</h1>
-<h3><a href="some_url">Title</a></h3>
+<h3><a href="http://example.com/some_url">Title</a></h3>
 <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Vestibulum id ligula porta felis euismod semper.
-<a href="other_url">More</a></p>
+<a href="http://example.com/other_url">More</a></p>

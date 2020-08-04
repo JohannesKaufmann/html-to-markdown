@@ -3,7 +3,7 @@
 <p><a href="http://title.org/" title="Some Title">Link with Title</a></p>
 <p><a href="http://broken.com/test.html%5Cr">Broken Link</a></p>
 <p><a href="http://multi.org/">First Text<br>
-<img src="http://xxx" alt=""><br>
+<img src="http://example.com/xxx" alt=""><br>
 Second Text</a></p>
 <ul>
 <li><a href="http://list.org/">First Text<br>
