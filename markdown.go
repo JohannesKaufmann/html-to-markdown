@@ -29,36 +29,6 @@ var (
 	}
 )
 
-/*
-var blockElements = []string{
-	"address",
-	"article",
-	"aside",
-	"audio",
-	"video",
-	"blockquote",
-	"canvas",
-	"dd",
-	"div",
-	"dl",
-	"fieldset",
-	"figcaption",
-	"figure",
-	"footer",
-	"form",
-	"h1", "h2", "h3", "h4", "h5", "h6",
-	"header",
-	"hgroup",
-	"hr",
-	"noscript",
-	"ol", "ul",
-	"output",
-	"p",
-	"pre",
-	"section",
-	"table", "tfoot",
-}
-*/
 var inlineElements = []string{ // -> https://developer.mozilla.org/de/docs/Web/HTML/Inline_elemente
 	"b", "big", "i", "small", "tt",
 	"abbr", "acronym", "cite", "code", "dfn", "em", "kbd", "strong", "samp", "var",
@@ -77,17 +47,6 @@ func IsInlineElement(e string) bool {
 	}
 	return false
 }
-
-/*
-func IsBlockElement(e string) bool {
-	for _, element := range blockElements {
-		if element == e {
-			return true
-		}
-	}
-	return false
-}
-*/
 
 // String is a helper function to return a pointer.
 func String(text string) *string {

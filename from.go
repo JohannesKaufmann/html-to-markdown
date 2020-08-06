@@ -44,9 +44,6 @@ type Converter struct {
 	options Options
 }
 
-// TODO: some STATE -> naming???
-// TODO: should Plugin be called on every convert
-
 func validate(val string, possible ...string) error {
 	for _, e := range possible {
 		if e == val {
@@ -246,10 +243,6 @@ func (c *Converter) Use(plugins ...Plugin) *Converter {
 	}
 	return c
 }
-
-// TODO: Find
-// TODO: ReportError
-// TODO: AddLeading
 
 // Timeout for the http client
 var Timeout = time.Second * 10
