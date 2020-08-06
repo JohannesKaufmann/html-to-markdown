@@ -111,6 +111,7 @@ type Options struct {
 	// GetCodeBlockLanguage func(s *goquery.Selection, content string) string
 }
 
+// DefaultGetAbsoluteURL is the default function and can be overriden through `GetAbsoluteURL` in the options.
 func DefaultGetAbsoluteURL(selec *goquery.Selection, rawURL string, domain string) string {
 	if domain == "" {
 		return rawURL
