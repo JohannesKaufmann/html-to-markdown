@@ -169,18 +169,18 @@ var newlinesR = regexp.MustCompile(`\n+`)
 var tabR = regexp.MustCompile(`\t+`)
 var indentR = regexp.MustCompile(`(?m)\n`)
 
-func (c *Converter) selecToMD(domain string, selec *goquery.Selection, opt *Options) AdvancedResult {
+func (conv *Converter) selecToMD(domain string, selec *goquery.Selection, opt *Options) AdvancedResult {
 	var result AdvancedResult
 
 	var builder strings.Builder
 	selec.Contents().Each(func(i int, s *goquery.Selection) {
 		name := goquery.NodeName(s)
-		rules := c.getRuleFuncs(name)
+		rules := conv.getRuleFuncs(name)
 
 		for i := len(rules) - 1; i >= 0; i-- {
 			rule := rules[i]
 
-			content := c.selecToMD(domain, s, opt)
+			content := conv.selecToMD(domain, s, opt)
 			if content.Header != "" {
 				result.Header += content.Header
 			}

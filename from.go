@@ -35,7 +35,7 @@ type ruleFunc func(content string, selec *goquery.Selection, options *Options) (
 
 // Converter is initialized by NewConverter.
 type Converter struct {
-	m      sync.RWMutex
+	mutex  sync.RWMutex
 	rules  map[string][]ruleFunc
 	keep   map[string]struct{}
 	remove map[string]struct{}
@@ -92,7 +92,7 @@ func validateOptions(opt Options) error {
 // - CommonMark is the default set of rules. Set enableCommonmark to false if you want
 //   to customize everything using AddRules and DONT want to fallback to default rules.
 func NewConverter(domain string, enableCommonmark bool, options *Options) *Converter {
-	c := &Converter{
+	conv := &Converter{
 		domain: domain,
 		rules:  make(map[string][]ruleFunc),
 		keep:   make(map[string]struct{}),
@@ -100,10 +100,10 @@ func NewConverter(domain string, enableCommonmark bool, options *Options) *Conve
 	}
 
 	if enableCommonmark {
-		c.AddRules(commonmark...)
-		c.remove["script"] = struct{}{}
-		c.remove["style"] = struct{}{}
-		c.remove["textarea"] = struct{}{}
+		conv.AddRules(commonmark...)
+		conv.remove["script"] = struct{}{}
+		conv.remove["style"] = struct{}{}
+		conv.remove["textarea"] = struct{}{}
 	}
 
 	// TODO: put domain in options?
@@ -145,24 +145,24 @@ func NewConverter(domain string, enableCommonmark bool, options *Options) *Conve
 		options.GetAbsoluteURL = DefaultGetAbsoluteURL
 	}
 
-	c.options = *options
-	err := validateOptions(c.options)
+	conv.options = *options
+	err := validateOptions(conv.options)
 	if err != nil {
 		log.Println("markdown options is not valid:", err)
 	}
 
-	return c
+	return conv
 }
-func (c *Converter) getRuleFuncs(tag string) []ruleFunc {
-	c.m.RLock()
-	defer c.m.RUnlock()
+func (conv *Converter) getRuleFuncs(tag string) []ruleFunc {
+	conv.mutex.RLock()
+	defer conv.mutex.RUnlock()
 
-	r, ok := c.rules[tag]
+	r, ok := conv.rules[tag]
 	if !ok || len(r) == 0 {
-		if _, keep := c.keep[tag]; keep {
+		if _, keep := conv.keep[tag]; keep {
 			return []ruleFunc{wrap(ruleKeep)}
 		}
-		if _, remove := c.remove[tag]; remove {
+		if _, remove := conv.remove[tag]; remove {
 			return nil // TODO:
 		}
 
@@ -186,48 +186,48 @@ func wrap(simple simpleRuleFunc) ruleFunc {
 //
 // By default it overrides the rule for that html tag. You can
 // fall back to the default rule by returning nil.
-func (c *Converter) AddRules(rules ...Rule) *Converter {
-	c.m.Lock()
-	defer c.m.Unlock()
+func (conv *Converter) AddRules(rules ...Rule) *Converter {
+	conv.mutex.Lock()
+	defer conv.mutex.Unlock()
 
 	for _, rule := range rules {
 		if len(rule.Filter) == 0 {
 			log.Println("you need to specify at least one filter for your rule")
 		}
 		for _, filter := range rule.Filter {
-			r, _ := c.rules[filter]
+			r, _ := conv.rules[filter]
 
 			if rule.AdvancedReplacement != nil {
 				r = append(r, rule.AdvancedReplacement)
 			} else {
 				r = append(r, wrap(rule.Replacement))
 			}
-			c.rules[filter] = r
+			conv.rules[filter] = r
 		}
 	}
 
-	return c
+	return conv
 }
 
 // Keep certain html tags in the generated output.
-func (c *Converter) Keep(tags ...string) *Converter {
-	c.m.Lock()
-	defer c.m.Unlock()
+func (conv *Converter) Keep(tags ...string) *Converter {
+	conv.mutex.Lock()
+	defer conv.mutex.Unlock()
 
 	for _, tag := range tags {
-		c.keep[tag] = struct{}{}
+		conv.keep[tag] = struct{}{}
 	}
-	return c
+	return conv
 }
 
 // Remove certain html tags from the source.
-func (c *Converter) Remove(tags ...string) *Converter {
-	c.m.Lock()
-	defer c.m.Unlock()
+func (conv *Converter) Remove(tags ...string) *Converter {
+	conv.mutex.Lock()
+	defer conv.mutex.Unlock()
 	for _, tag := range tags {
-		c.remove[tag] = struct{}{}
+		conv.remove[tag] = struct{}{}
 	}
-	return c
+	return conv
 }
 
 // Plugin can be used to extends functionality beyond what
@@ -236,12 +236,12 @@ type Plugin func(conv *Converter) []Rule
 
 // Use can be used to add additional functionality to the converter. It is
 // used when its not sufficient to use only rules for example in Plugins.
-func (c *Converter) Use(plugins ...Plugin) *Converter {
+func (conv *Converter) Use(plugins ...Plugin) *Converter {
 	for _, plugin := range plugins {
-		rules := plugin(c)
-		c.AddRules(rules...) // TODO: for better performance only use one lock for all plugins
+		rules := plugin(conv)
+		conv.AddRules(rules...) // TODO: for better performance only use one lock for all plugins
 	}
-	return c
+	return conv
 }
 
 // Timeout for the http client
@@ -264,21 +264,21 @@ var multipleNewLinesRegex = regexp.MustCompile(`[\n]{2,}`)
 
 // Convert returns the content from a goquery selection.
 // If you have a goquery document just pass in doc.Selection.
-func (c *Converter) Convert(selec *goquery.Selection) string {
-	c.m.RLock()
-	domain := c.domain
-	options := c.options
-	l := len(c.rules)
+func (conv *Converter) Convert(selec *goquery.Selection) string {
+	conv.mutex.RLock()
+	domain := conv.domain
+	options := conv.options
+	l := len(conv.rules)
 	if l == 0 {
 		log.Println("you have added no rules. either enable commonmark or add you own.")
 	}
-	c.m.RUnlock()
+	conv.mutex.RUnlock()
 
 	selec.Find("a[href]").Each(func(i int, s *goquery.Selection) {
 		s.SetAttr("data-index", strconv.Itoa(i+1))
 	})
 
-	res := c.selecToMD(domain, selec, &options)
+	res := conv.selecToMD(domain, selec, &options)
 	markdown := res.Markdown
 
 	if res.Header != "" {
@@ -298,41 +298,41 @@ func (c *Converter) Convert(selec *goquery.Selection) string {
 }
 
 // ConvertReader returns the content from a reader and returns a buffer.
-func (c *Converter) ConvertReader(reader io.Reader) (bytes.Buffer, error) {
+func (conv *Converter) ConvertReader(reader io.Reader) (bytes.Buffer, error) {
 	var buffer bytes.Buffer
 	doc, err := goquery.NewDocumentFromReader(reader)
 	if err != nil {
 		return buffer, err
 	}
 	buffer.WriteString(
-		c.Convert(doc.Selection),
+		conv.Convert(doc.Selection),
 	)
 
 	return buffer, nil
 }
 
 // ConvertResponse returns the content from a html response.
-func (c *Converter) ConvertResponse(res *http.Response) (string, error) {
+func (conv *Converter) ConvertResponse(res *http.Response) (string, error) {
 	doc, err := goquery.NewDocumentFromResponse(res)
 	if err != nil {
 		return "", err
 	}
-	return c.Convert(doc.Selection), nil
+	return conv.Convert(doc.Selection), nil
 }
 
 // ConvertString returns the content from a html string. If you
 // already have a goquery selection use `Convert`.
-func (c *Converter) ConvertString(html string) (string, error) {
+func (conv *Converter) ConvertString(html string) (string, error) {
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 	if err != nil {
 		return "", err
 	}
-	return c.Convert(doc.Selection), nil
+	return conv.Convert(doc.Selection), nil
 }
 
 // ConvertBytes returns the content from a html byte array.
-func (c *Converter) ConvertBytes(bytes []byte) ([]byte, error) {
-	res, err := c.ConvertString(string(bytes))
+func (conv *Converter) ConvertBytes(bytes []byte) ([]byte, error) {
+	res, err := conv.ConvertString(string(bytes))
 	if err != nil {
 		return nil, err
 	}
@@ -340,7 +340,7 @@ func (c *Converter) ConvertBytes(bytes []byte) ([]byte, error) {
 }
 
 // ConvertURL returns the content from the page with that url.
-func (c *Converter) ConvertURL(url string) (string, error) {
+func (conv *Converter) ConvertURL(url string) (string, error) {
 	// not using goquery.NewDocument directly because of the timeout
 	resp, err := netClient.Get(url)
 	if err != nil {
@@ -356,8 +356,8 @@ func (c *Converter) ConvertURL(url string) (string, error) {
 		return "", err
 	}
 	domain := DomainFromURL(url)
-	if c.domain != domain {
-		log.Printf("expected '%s' as the domain but got '%s' \n", c.domain, domain)
+	if conv.domain != domain {
+		log.Printf("expected '%s' as the domain but got '%s' \n", conv.domain, domain)
 	}
-	return c.Convert(doc.Selection), nil
+	return conv.Convert(doc.Selection), nil
 }
