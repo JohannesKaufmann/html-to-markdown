@@ -23,7 +23,6 @@ func CollectText(n *html.Node) string {
 	return text.String()
 }
 func collectText(n *html.Node, buf *bytes.Buffer) {
-
 	if n.Type == html.TextNode {
 		buf.WriteString(n.Data)
 	}
@@ -32,71 +31,110 @@ func collectText(n *html.Node, buf *bytes.Buffer) {
 	}
 }
 
+func getName(node *html.Node) string {
+	selec := &goquery.Selection{Nodes: []*html.Node{node}}
+	return goquery.NodeName(selec)
+}
+
+// What elements automatically trim their content?
+// Don't add another space if the other element is going to add a
+// space already.
+func isTrimmedElement(name string) bool {
+	nodes := []string{
+		"a",
+		"strong", "b",
+		"i", "em",
+		"del", "s", "strike",
+	}
+
+	for _, node := range nodes {
+		if name == node {
+			return true
+		}
+	}
+	return false
+}
+
+func getPrevNodeText(node *html.Node) (string, bool) {
+	if node == nil {
+		return "", false
+	}
+
+	for ; node != nil; node = node.PrevSibling {
+		text := CollectText(node)
+
+		name := getName(node)
+		if name == "br" {
+			return "\n", true
+		}
+
+		// if the content is empty, try our luck with the next node
+		if strings.TrimSpace(text) == "" {
+			continue
+		}
+
+		if isTrimmedElement(name) {
+			text = strings.TrimSpace(text)
+		}
+
+		return text, true
+	}
+	return "", false
+}
+func getNextNodeText(node *html.Node) (string, bool) {
+	if node == nil {
+		return "", false
+	}
+
+	for ; node != nil; node = node.NextSibling {
+		text := CollectText(node)
+
+		name := getName(node)
+		if name == "br" {
+			return "\n", true
+		}
+
+		// if the content is empty, try our luck with the next node
+		if strings.TrimSpace(text) == "" {
+			continue
+		}
+
+		// if you have "a a a", three elements that are trimmed, then only add
+		// a space to one side, since the other's are also adding a space.
+		if isTrimmedElement(name) {
+			text = " "
+		}
+
+		return text, true
+	}
+	return "", false
+}
+
 // AddSpaceIfNessesary adds spaces to the text based on the neighbors.
 // That makes sure that there is always a space to the side, to recognize the delimiter.
-func AddSpaceIfNessesary(selec *goquery.Selection, text string) string {
+func AddSpaceIfNessesary(selec *goquery.Selection, markdown string) string {
+	if len(selec.Nodes) == 0 {
+		return markdown
+	}
+	rootNode := selec.Nodes[0]
 
-	var prev string
-	if len(selec.Nodes) > 0 {
-		node := selec.Nodes[0]
-
-		if node.PrevSibling != nil {
-			for node = node.PrevSibling; node != nil; node = node.PrevSibling {
-				prev = CollectText(node)
-
-				// if the content is empty, try our luck with the next node
-				if strings.TrimSpace(prev) != "" {
-					break
-				}
-			}
+	prev, hasPrev := getPrevNodeText(rootNode.PrevSibling)
+	if hasPrev {
+		lastChar, size := utf8.DecodeLastRuneInString(prev)
+		if size > 0 && !unicode.IsSpace(lastChar) {
+			markdown = " " + markdown
 		}
 	}
 
-	lastChar, size := utf8.DecodeLastRuneInString(prev)
-	if size > 0 && !unicode.IsSpace(lastChar) {
-		text = " " + text
-	}
-
-	// - - - - - - - - - - - - - - - - - - - //
-
-	var next string
-	if len(selec.Nodes) > 0 {
-		node := selec.Nodes[len(selec.Nodes)-1]
-
-		if node.NextSibling != nil {
-			for node = node.NextSibling; node != nil; node = node.NextSibling {
-				next = CollectText(node)
-
-				// if the content is empty, try our luck with the next node
-				if strings.TrimSpace(next) != "" {
-
-					// Right now, this function AddSpaceIfNessesary is used for `a`,
-					// `strong`, `b`, `i` and `em`.
-					// Don't add another space if the other element is going to add a
-					// space already.
-					s := &goquery.Selection{Nodes: []*html.Node{node}}
-					name := goquery.NodeName(s)
-
-					if name == "a" ||
-						name == "strong" || name == "b" ||
-						name == "i" || name == "em" ||
-						name == "del" || name == "s" || name == "strike" {
-						next = " "
-					}
-
-					break
-				}
-			}
-
+	next, hasNext := getNextNodeText(rootNode.NextSibling)
+	if hasNext {
+		firstChar, size := utf8.DecodeRuneInString(next)
+		if size > 0 && !unicode.IsSpace(firstChar) && !unicode.IsPunct(firstChar) {
+			markdown = markdown + " "
 		}
 	}
 
-	firstChar, size := utf8.DecodeRuneInString(next)
-	if size > 0 && !unicode.IsSpace(firstChar) && !unicode.IsPunct(firstChar) {
-		text += " "
-	}
-
-	return text
+	return markdown
 }
 
 // TrimpLeadingSpaces removes spaces from the beginning of a line

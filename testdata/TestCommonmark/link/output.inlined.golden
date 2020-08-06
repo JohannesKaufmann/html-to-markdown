@@ -1,12 +1,12 @@
 [Simple Link](http://simple.org/)
 
- [Link with Space](http://space.org/)
+[Link with Space](http://space.org/)
 
 [Link with Title](http://title.org/ "Some Title")
 
- [Broken Link](http://broken.com/test.html%5Cr)
+[Broken Link](http://broken.com/test.html%5Cr)
 
- [First Text\
+[First Text\
 ![](http://example.com/xxx)\
 Second Text](http://multi.org/)
 
