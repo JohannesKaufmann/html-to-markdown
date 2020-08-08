@@ -26,13 +26,10 @@ type GoldenTest struct {
 
 	DisableGoldmark bool
 	Variations      map[string]Variation
-
-	Options map[string]*md.Options
-	Plugins []md.Plugin
 }
 
-func runGoldenTest(t *testing.T, test GoldenTest, key string, options *md.Options, plugins []md.Plugin) {
-	// variation := test.Variations[key]
+func runGoldenTest(t *testing.T, test GoldenTest, variationKey string) {
+	variation := test.Variations[variationKey]
 
 	g := goldie.New(t)
 
@@ -50,9 +47,9 @@ func runGoldenTest(t *testing.T, test GoldenTest, key string, options *md.Option
 		test.Domain = "example.com"
 	}
 
-	conv := md.NewConverter(test.Domain, true, options)
+	conv := md.NewConverter(test.Domain, true, variation.Options)
 	conv.Keep("keep-tag").Remove("remove-tag")
-	for _, plugin := range plugins {
+	for _, plugin := range variation.Plugins {
 		conv.Use(plugin)
 	}
 	markdown, err := conv.ConvertBytes(input)
@@ -61,7 +58,7 @@ func runGoldenTest(t *testing.T, test GoldenTest, key string, options *md.Option
 	}
 
 	// testdata/TestCommonmark/name/output.default.golden
-	p = path.Join(t.Name(), "output."+key)
+	p = path.Join(t.Name(), "output."+variationKey)
 	g.Assert(t, p, markdown)
 
 	gold := goldmark.New(goldmark.WithExtensions(extension.GFM))
@@ -121,9 +118,9 @@ func RunGoldenTest(t *testing.T, tests []GoldenTest) {
 	}
 
 	for _, test := range tests {
-		if len(test.Options) == 0 && len(test.Variations) == 0 {
-			test.Options = map[string]*md.Options{
-				"default": nil,
+		if len(test.Variations) == 0 {
+			test.Variations = map[string]Variation{
+				"default": {},
 			}
 		}
 
@@ -133,12 +130,8 @@ func RunGoldenTest(t *testing.T, tests []GoldenTest) {
 				return
 			}
 
-			for key, options := range test.Options {
-				runGoldenTest(t, test, key, options, test.Plugins)
-			}
-
-			for key, variation := range test.Variations {
-				runGoldenTest(t, test, key, variation.Options, variation.Plugins)
+			for variationKey := range test.Variations {
+				runGoldenTest(t, test, variationKey)
 			}
 		})
 	}
