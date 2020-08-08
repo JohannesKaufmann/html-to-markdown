@@ -53,8 +53,43 @@ func TableCompat() md.Plugin {
 // like GitHub's Flavored Markdown.
 func Table() md.Plugin {
 	return func(c *md.Converter) []md.Rule {
+		c.Before(func(selec *goquery.Selection) {
+			selec.Find("caption").Each(func(i int, s *goquery.Selection) {
+				parent := s.Parent()
+				if !parent.Is("table") {
+					return
+				}
+
+				// move the caption from inside the table to after the table
+				parent.AfterSelection(s)
+			})
+		})
 
 		return []md.Rule{
+			{
+				Filter: []string{"table"},
+				Replacement: func(content string, selec *goquery.Selection, opt *md.Options) *string {
+					noHeader := selec.Find("thead").Length() == 0 && selec.Find("th").Length() == 0
+					if noHeader {
+						var maxCount int
+						selec.Find("tr").Each(func(i int, s *goquery.Selection) {
+							count := s.Children().Length()
+							if count > maxCount {
+								maxCount = count
+							}
+						})
+
+						// add an empty header, so that the table is recognized.
+						header := "|" + strings.Repeat("     |", maxCount)
+						divider := "|" + strings.Repeat(" --- |", maxCount)
+
+						content = header + "\n" + divider + content
+					}
+
+					content = "\n\n" + content + "\n\n"
+					return &content
+				},
+			},
 			{ // TableCell
 				Filter: []string{"th", "td"},
 				Replacement: func(content string, selec *goquery.Selection, opt *md.Options) *string {

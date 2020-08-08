@@ -33,12 +33,18 @@ import (
 type simpleRuleFunc func(content string, selec *goquery.Selection, options *Options) *string
 type ruleFunc func(content string, selec *goquery.Selection, options *Options) (res AdvancedResult, skip bool)
 
+type BeforeHook func(selec *goquery.Selection)
+type Afterhook func(markdown string) string
+
 // Converter is initialized by NewConverter.
 type Converter struct {
 	mutex  sync.RWMutex
 	rules  map[string][]ruleFunc
 	keep   map[string]struct{}
 	remove map[string]struct{}
+
+	before []BeforeHook
+	after  []Afterhook
 
 	domain  string
 	options Options
@@ -98,6 +104,21 @@ func NewConverter(domain string, enableCommonmark bool, options *Options) *Conve
 		keep:   make(map[string]struct{}),
 		remove: make(map[string]struct{}),
 	}
+
+	conv.before = append(conv.before, func(selec *goquery.Selection) {
+		selec.Find("a[href]").Each(func(i int, s *goquery.Selection) {
+			s.SetAttr("data-index", strconv.Itoa(i+1))
+		})
+	})
+	conv.after = append(conv.after, func(markdown string) string {
+		markdown = strings.TrimSpace(markdown)
+		markdown = multipleNewLinesRegex.ReplaceAllString(markdown, "\n\n")
+
+		// remove unnecessary trailing spaces to have clean markdown
+		markdown = TrimTrailingSpaces(markdown)
+
+		return markdown
+	})
 
 	if enableCommonmark {
 		conv.AddRules(commonmark...)
@@ -180,6 +201,37 @@ func wrap(simple simpleRuleFunc) ruleFunc {
 		}
 		return AdvancedResult{Markdown: *res}, false
 	}
+}
+
+// Before registers a hook that is run before the convertion. It
+// can be used to transform the original goquery html document.
+//
+// For example, the default before hook adds an index to every link,
+// so that the `a` tag rule (for "reference" "full") can have an incremental number.
+func (conv *Converter) Before(hooks ...BeforeHook) *Converter {
+	conv.mutex.Lock()
+	defer conv.mutex.Unlock()
+
+	for _, hook := range hooks {
+		conv.before = append(conv.before, hook)
+	}
+
+	return conv
+}
+
+// After registers a hook that is run after the convertion. It
+// can be used to transform the markdown document that is about to be returned.
+//
+// For example, the default after hook trims the returned markdown.
+func (conv *Converter) After(hooks ...Afterhook) *Converter {
+	conv.mutex.Lock()
+	defer conv.mutex.Unlock()
+
+	for _, hook := range hooks {
+		conv.after = append(conv.after, hook)
+	}
+
+	return conv
 }
 
 // AddRules adds the rules that are passed in to the converter.
@@ -272,11 +324,14 @@ func (conv *Converter) Convert(selec *goquery.Selection) string {
 	if l == 0 {
 		log.Println("you have added no rules. either enable commonmark or add you own.")
 	}
+	before := conv.before
+	after := conv.after
 	conv.mutex.RUnlock()
 
-	selec.Find("a[href]").Each(func(i int, s *goquery.Selection) {
-		s.SetAttr("data-index", strconv.Itoa(i+1))
-	})
+	// before hook
+	for _, hook := range before {
+		hook(selec)
+	}
 
 	res := conv.selecToMD(domain, selec, &options)
 	markdown := res.Markdown
@@ -288,11 +343,10 @@ func (conv *Converter) Convert(selec *goquery.Selection) string {
 		markdown += "\n\n" + res.Footer
 	}
 
-	markdown = strings.TrimSpace(markdown)
-	markdown = multipleNewLinesRegex.ReplaceAllString(markdown, "\n\n")
-
-	// remove unnecessary trailing spaces to have clean markdown
-	markdown = TrimTrailingSpaces(markdown)
+	// after hook
+	for _, hook := range after {
+		markdown = hook(markdown)
+	}
 
 	return markdown
 }
