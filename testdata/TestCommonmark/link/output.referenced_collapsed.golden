@@ -6,6 +6,8 @@
 
 [Link with Title][]
 
+[Link with multiline Title][]
+
 [Broken Link][]
 
 [First Text\
@@ -29,6 +31,7 @@ Before [close][] After
 [Simple Relative Link]: http://example.com/page.html
 [Link with Space]: http://space.org/
 [Link with Title]: http://title.org/ "Some Title"
+[Link with multiline Title]: http://title.org/ "Some  Long Title"
 [Broken Link]: http://broken.com/test.html%5Cr
 [First Text\
 ![](http://example.com/xxx)\

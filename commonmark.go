@@ -217,6 +217,7 @@ var commonmark = []Rule{
 
 			var title string
 			if t, ok := selec.Attr("title"); ok {
+				t = strings.Replace(t, "\n", " ", -1)
 				title = fmt.Sprintf(` "%s"`, t)
 			}
 
