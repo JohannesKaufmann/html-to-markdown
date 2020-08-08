@@ -1,37 +1,40 @@
-[Simple Link][1]
+[Simple Absolute Link][1]
 
-[Link with Space][2]
+[Simple Relative Link][2]
 
-[Link with Title][3]
+[Link with Space][3]
 
-[Broken Link][4]
+[Link with Title][4]
+
+[Broken Link][5]
 
 [First Text\
 ![](http://example.com/xxx)\
-Second Text][5]
+Second Text][6]
 
 - [First Text\
     \
     \
-    Second Text][6]
+    Second Text][7]
 
-[GitHub][7]
+[GitHub][8]
 
-[first top][8] [second below][9]
+[first top][9] [second below][10]
 
-[first left][10] [second right][11]
+[first left][11] [second right][12]
 
-Before [close][12] After
+Before [close][13] After
 
 [1]: http://simple.org/
-[2]: http://space.org/
-[3]: http://title.org/ "Some Title"
-[4]: http://broken.com/test.html%5Cr
-[5]: http://multi.org/
-[6]: http://list.org/
-[7]: https://github.com "GitHub"
-[8]: http://first_under.com
-[9]: http://second_under.com
-[10]: http://first_next.com
-[11]: http://second_next.com
-[12]: http://example_close.com
+[2]: http://example.com/page.html
+[3]: http://space.org/
+[4]: http://title.org/ "Some Title"
+[5]: http://broken.com/test.html%5Cr
+[6]: http://multi.org/
+[7]: http://list.org/
+[8]: https://github.com "GitHub"
+[9]: http://first_under.com
+[10]: http://second_under.com
+[11]: http://first_next.com
+[12]: http://second_next.com
+[13]: http://example_close.com

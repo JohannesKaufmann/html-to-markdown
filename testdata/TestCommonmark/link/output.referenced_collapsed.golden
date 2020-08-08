@@ -1,4 +1,6 @@
-[Simple Link][]
+[Simple Absolute Link][]
+
+[Simple Relative Link][]
 
 [Link with Space][]
 
@@ -23,7 +25,8 @@ Second Text][]
 
 Before [close][] After
 
-[Simple Link]: http://simple.org/
+[Simple Absolute Link]: http://simple.org/
+[Simple Relative Link]: http://example.com/page.html
 [Link with Space]: http://space.org/
 [Link with Title]: http://title.org/ "Some Title"
 [Broken Link]: http://broken.com/test.html%5Cr

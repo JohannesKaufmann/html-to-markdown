@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	md "github.com/JohannesKaufmann/html-to-markdown"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/sebdah/goldie/v2"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
@@ -140,8 +141,17 @@ func RunGoldenTest(t *testing.T, tests []GoldenTest) {
 func TestCommonmark(t *testing.T) {
 	var tests = []GoldenTest{
 		{
-			Name: "link",
+			Name:            "link",
+			DisableGoldmark: true,
 			Variations: map[string]Variation{
+				"relative": {
+					Options: &md.Options{
+						GetAbsoluteURL: func(selec *goquery.Selection, rawURL string, domain string) string {
+							return rawURL
+						},
+					},
+				},
+
 				"inlined": {
 					Options: &md.Options{LinkStyle: "inlined"},
 				},

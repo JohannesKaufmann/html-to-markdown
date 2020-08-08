@@ -1,15 +1,15 @@
 [Simple Absolute Link](http://simple.org/)
 
-[Simple Relative Link](http://example.com/page.html)
+[Simple Relative Link](/page.html)
 
 [Link with Space](http://space.org/)
 
 [Link with Title](http://title.org/ "Some Title")
 
-[Broken Link](http://broken.com/test.html%5Cr)
+[Broken Link](http://broken.com/test.html\r)
 
 [First Text\
-![](http://example.com/xxx)\
+![](xxx)\
 Second Text](http://multi.org/)
 
 - [First Text\
