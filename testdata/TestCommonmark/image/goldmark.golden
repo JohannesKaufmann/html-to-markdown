@@ -1,5 +1,6 @@
 <p><img src="http://commonmark.org/help/images/favicon.png" alt="website favicon"></p>
 <p><img src="http://commonmark.org/help/images/favicon.png" alt="alt &quot;attribute&quot;"></p>
+<p><img src="http://commonmark.org/help/images/favicon.png" alt="alt  description"></p>
 <p><img src="http://example.com/image.png" alt=""></p>
 <p>![](invalid%zz</p>
 <p>zzz)</p>

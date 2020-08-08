@@ -184,7 +184,6 @@ var commonmark = []Rule{
 	{
 		Filter: []string{"img"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
-			alt := selec.AttrOr("alt", "")
 			src := selec.AttrOr("src", "")
 			src = strings.TrimSpace(src)
 			if src == "" {
@@ -192,6 +191,9 @@ var commonmark = []Rule{
 			}
 
 			src = opt.GetAbsoluteURL(selec, src, opt.domain)
+
+			alt := selec.AttrOr("alt", "")
+			alt = strings.Replace(alt, "\n", " ", -1)
 
 			text := fmt.Sprintf("![%s](%s)", alt, src)
 			return &text
