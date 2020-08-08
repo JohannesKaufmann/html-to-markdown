@@ -1,4 +1,8 @@
 <p><code>last_30_days</code></p>
+<p><code>with backtick (`)</code></p>
+<p><code>with backtick (``)</code></p>
+<p><code>here are three ``` here are four ```` here is one ` that's it</code></p>
+<p><code>`starting &amp; ending with a backtick`</code></p>
 <p>Who ate the most donuts this week?</p>
 <pre><code class="language-foo+bar">Jeff  15
 Sam   11

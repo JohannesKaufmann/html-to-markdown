@@ -201,13 +201,7 @@ func EscapeMultiLine(content string) string {
 	return content
 }
 
-// CalculateCodeFence can be passed the content of a code block and it returns
-// how many fence characters (` or ~) should be used.
-//
-// This is useful if the html content includes the same fence characters
-// for example ```
-// -> https://stackoverflow.com/a/49268657
-func CalculateCodeFence(fenceChar rune, content string) string {
+func calculateCodeFenceOccurrences(fenceChar rune, content string) int {
 	var occurrences []int
 
 	var charsTogether int
@@ -227,7 +221,17 @@ func CalculateCodeFence(fenceChar rune, content string) string {
 		occurrences = append(occurrences, charsTogether)
 	}
 
-	repeat := findMax(occurrences)
+	return findMax(occurrences)
+}
+
+// CalculateCodeFence can be passed the content of a code block and it returns
+// how many fence characters (` or ~) should be used.
+//
+// This is useful if the html content includes the same fence characters
+// for example ```
+// -> https://stackoverflow.com/a/49268657
+func CalculateCodeFence(fenceChar rune, content string) string {
+	repeat := calculateCodeFenceOccurrences(fenceChar, content)
 
 	// the outer fence block always has to have
 	// at least one character more than any content inside

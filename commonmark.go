@@ -263,10 +263,25 @@ var commonmark = []Rule{
 	{
 		Filter: []string{"code"},
 		Replacement: func(_ string, selec *goquery.Selection, opt *Options) *string {
-			content := selec.Text()
+			code := selec.Text()
+
+			fenceChar := '`'
+			maxCount := calculateCodeFenceOccurrences(fenceChar, code)
+			maxCount++
+
+			fence := strings.Repeat(string(fenceChar), maxCount)
+
+			// code block contains a backtick as first character
+			if strings.HasPrefix(code, "`") {
+				code = " " + code
+			}
+			// code block contains a backtick as last character
+			if strings.HasSuffix(code, "`") {
+				code = code + " "
+			}
 
 			// TODO: configure delimeter in options?
-			text := "`" + content + "`"
+			text := fence + code + fence
 			return &text
 		},
 	},
