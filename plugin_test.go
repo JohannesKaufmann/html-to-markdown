@@ -11,21 +11,22 @@ func TestPlugins(t *testing.T) {
 	var tests = []GoldenTest{
 		{
 			Name: "strikethrough",
-			// Variations: map[string]Variation{
-			// 	"default": {
-			// 		Plugins: []md.Plugin{
-			// 			plugin.Strikethrough(""),
-			// 		},
-			// 	},
-			// },
-			Plugins: []md.Plugin{
-				plugin.Strikethrough(""),
+			Variations: map[string]Variation{
+				"default": {
+					Plugins: []md.Plugin{
+						plugin.Strikethrough(""),
+					},
+				},
 			},
 		},
 		{
 			Name: "checkbox",
-			Plugins: []md.Plugin{
-				plugin.TaskListItems(),
+			Variations: map[string]Variation{
+				"default": {
+					Plugins: []md.Plugin{
+						plugin.TaskListItems(),
+					},
+				},
 			},
 		},
 		{

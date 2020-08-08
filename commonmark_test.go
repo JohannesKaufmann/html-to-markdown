@@ -121,7 +121,7 @@ func RunGoldenTest(t *testing.T, tests []GoldenTest) {
 	}
 
 	for _, test := range tests {
-		if len(test.Options) == 0 {
+		if len(test.Options) == 0 && len(test.Variations) == 0 {
 			test.Options = map[string]*md.Options{
 				"default": nil,
 			}
@@ -148,56 +148,94 @@ func TestCommonmark(t *testing.T) {
 	var tests = []GoldenTest{
 		{
 			Name: "link",
-			Options: map[string]*md.Options{
-				"inlined":              {LinkStyle: "inlined"},
-				"referenced_full":      {LinkStyle: "referenced", LinkReferenceStyle: "full"},
-				"referenced_collapsed": {LinkStyle: "referenced", LinkReferenceStyle: "collapsed"},
-				"referenced_shortcut":  {LinkStyle: "referenced", LinkReferenceStyle: "shortcut"},
+			Variations: map[string]Variation{
+				"inlined": {
+					Options: &md.Options{LinkStyle: "inlined"},
+				},
+				"referenced_full": {
+					Options: &md.Options{LinkStyle: "referenced", LinkReferenceStyle: "full"},
+				},
+				"referenced_collapsed": {
+					Options: &md.Options{LinkStyle: "referenced", LinkReferenceStyle: "collapsed"},
+				},
+				"referenced_shortcut": {
+					Options: &md.Options{LinkStyle: "referenced", LinkReferenceStyle: "shortcut"},
+				},
 			},
 		},
 		{
 			Name: "heading",
-			Options: map[string]*md.Options{
-				"atx":    {HeadingStyle: "atx"},
-				"setext": {HeadingStyle: "setext"},
+			Variations: map[string]Variation{
+				"atx": {
+					Options: &md.Options{HeadingStyle: "atx"},
+				},
+				"setext": {
+					Options: &md.Options{HeadingStyle: "setext"},
+				},
 			},
 		},
 		{
 			Name: "italic",
-			Options: map[string]*md.Options{
-				"asterisks":   {EmDelimiter: "*"},
-				"underscores": {EmDelimiter: "_"},
+			Variations: map[string]Variation{
+				"asterisks": {
+					Options: &md.Options{EmDelimiter: "*"},
+				},
+				"underscores": {
+					Options: &md.Options{EmDelimiter: "_"},
+				},
 			},
 		},
 		{
 			Name: "bold",
-			Options: map[string]*md.Options{
-				"asterisks":   {StrongDelimiter: "**"},
-				"underscores": {StrongDelimiter: "__"},
+			Variations: map[string]Variation{
+				"asterisks": {
+					Options: &md.Options{StrongDelimiter: "**"},
+				},
+				"underscores": {
+					Options: &md.Options{StrongDelimiter: "__"},
+				},
 			},
 		},
 		{
 			Name: "pre_code",
-			Options: map[string]*md.Options{
-				"indented":        {CodeBlockStyle: "indented"},
-				"fenced_backtick": {CodeBlockStyle: "fenced", Fence: "```"},
-				"fenced_tilde":    {CodeBlockStyle: "fenced", Fence: "~~~"},
+			Variations: map[string]Variation{
+				"indented": {
+					Options: &md.Options{CodeBlockStyle: "indented"},
+				},
+				"fenced_backtick": {
+					Options: &md.Options{CodeBlockStyle: "fenced", Fence: "```"},
+				},
+				"fenced_tilde": {
+					Options: &md.Options{CodeBlockStyle: "fenced", Fence: "~~~"},
+				},
 			},
 		},
 		{
 			Name: "list",
-			Options: map[string]*md.Options{
-				"asterisks": {BulletListMarker: "*"},
-				"dash":      {BulletListMarker: "-"},
-				"plus":      {BulletListMarker: "+"},
+			Variations: map[string]Variation{
+				"asterisks": {
+					Options: &md.Options{BulletListMarker: "*"},
+				},
+				"dash": {
+					Options: &md.Options{BulletListMarker: "-"},
+				},
+				"plus": {
+					Options: &md.Options{BulletListMarker: "+"},
+				},
 			},
 		},
 		{
 			Name: "list_nested",
-			Options: map[string]*md.Options{
-				"asterisks": {BulletListMarker: "*"},
-				"dash":      {BulletListMarker: "-"},
-				"plus":      {BulletListMarker: "+"},
+			Variations: map[string]Variation{
+				"asterisks": {
+					Options: &md.Options{BulletListMarker: "*"},
+				},
+				"dash": {
+					Options: &md.Options{BulletListMarker: "-"},
+				},
+				"plus": {
+					Options: &md.Options{BulletListMarker: "+"},
+				},
 			},
 		},
 		// + all the test on disk that are added automatically
@@ -211,13 +249,26 @@ func TestRealWorld(t *testing.T) {
 		{
 			Name:   "blog.golang.org",
 			Domain: "blog.golang.org",
-			Options: map[string]*md.Options{
-				"inlined":              {LinkStyle: "inlined"},
-				"referenced_full":      {LinkStyle: "referenced", LinkReferenceStyle: "full"},
-				"referenced_collapsed": {LinkStyle: "referenced", LinkReferenceStyle: "collapsed"},
-				"referenced_shortcut":  {LinkStyle: "referenced", LinkReferenceStyle: "shortcut"},
-				"emphasis_asterisks":   {EmDelimiter: "*", StrongDelimiter: "**"},
-				"emphasis_underscores": {EmDelimiter: "_", StrongDelimiter: "__"},
+			Variations: map[string]Variation{
+				"inlined": {
+					Options: &md.Options{LinkStyle: "inlined"},
+				},
+				"referenced_full": {
+					Options: &md.Options{LinkStyle: "referenced", LinkReferenceStyle: "full"},
+				},
+				"referenced_collapsed": {
+					Options: &md.Options{LinkStyle: "referenced", LinkReferenceStyle: "collapsed"},
+				},
+				"referenced_shortcut": {
+					Options: &md.Options{LinkStyle: "referenced", LinkReferenceStyle: "shortcut"},
+				},
+
+				"emphasis_asterisks": {
+					Options: &md.Options{EmDelimiter: "*", StrongDelimiter: "**"},
+				},
+				"emphasis_underscores": {
+					Options: &md.Options{EmDelimiter: "_", StrongDelimiter: "__"},
+				},
 			},
 		},
 		{
