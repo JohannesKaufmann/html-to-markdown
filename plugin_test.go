@@ -34,18 +34,19 @@ func TestPlugins(t *testing.T) {
 			},
 		},
 		{
-			Name: "table/simple",
-			Plugins: []md.Plugin{
-				func(conv *md.Converter) []md.Rule {
-					return plugin.EXPERIMENTAL_Table
+			Name:            "table",
+			DisableGoldmark: true,
+			Variations: map[string]Variation{
+				"default": {},
+				"table": {
+					Plugins: []md.Plugin{
+						plugin.Table(),
+					},
 				},
-			},
-		},
-		{
-			Name: "table/escape pipe",
-			Plugins: []md.Plugin{
-				func(conv *md.Converter) []md.Rule {
-					return plugin.EXPERIMENTAL_Table
+				"tablecompat": {
+					Plugins: []md.Plugin{
+						plugin.TableCompat(),
+					},
 				},
 			},
 		},

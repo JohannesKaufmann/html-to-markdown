@@ -8,7 +8,7 @@ import md "github.com/JohannesKaufmann/html-to-markdown"
 func GitHubFlavored() md.Plugin {
 	return func(c *md.Converter) (rules []md.Rule) {
 		rules = append(rules, Strikethrough("")(c)...)
-		rules = append(rules, EXPERIMENTAL_Table...)
+		rules = append(rules, Table()(c)...)
 		rules = append(rules, TaskListItems()(c)...)
 		return
 	}

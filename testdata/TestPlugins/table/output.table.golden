@@ -1,0 +1,19 @@
+| Firstname | Lastname | Age |
+| --- | --- | --- |
+| Jill | Smith | 50 |
+| Eve | Jackson | 94 |
+| End |  |  |
+
+### With \| Character
+
+| Firstname | With \| Character | Age |
+| --- | --- | --- |
+| Jill | Smith | 50 |
+| Eve | Jackson | 94 |
+
+### Tabelle mit thead, tfoot, and tbody
+
+| Header content 1 | Header content 2 |
+| --- | --- |
+| Footer content 1 | Footer content 2 |
+| Body content 1 | Body content 2 |

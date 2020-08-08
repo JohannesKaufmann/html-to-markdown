@@ -16,12 +16,65 @@ import (
 	"github.com/yuin/goldmark/extension"
 )
 
+type Variation struct {
+	Options *md.Options
+	Plugins []md.Plugin
+}
 type GoldenTest struct {
 	Name   string
 	Domain string
 
+	DisableGoldmark bool
+	Variations      map[string]Variation
+
 	Options map[string]*md.Options
 	Plugins []md.Plugin
+}
+
+func runGoldenTest(t *testing.T, test GoldenTest, key string, options *md.Options, plugins []md.Plugin) {
+	// variation := test.Variations[key]
+
+	g := goldie.New(t)
+
+	// testdata/TestCommonmark/name/input.html
+	p := path.Join(t.Name(), "input.html")
+
+	// get the input html from a file
+	input, err := ioutil.ReadFile(path.Join("testdata", p))
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	if test.Domain == "" {
+		test.Domain = "example.com"
+	}
+
+	conv := md.NewConverter(test.Domain, true, options)
+	conv.Keep("keep-tag").Remove("remove-tag")
+	for _, plugin := range plugins {
+		conv.Use(plugin)
+	}
+	markdown, err := conv.ConvertBytes(input)
+	if err != nil {
+		t.Error(err)
+	}
+
+	// testdata/TestCommonmark/name/output.default.golden
+	p = path.Join(t.Name(), "output."+key)
+	g.Assert(t, p, markdown)
+
+	gold := goldmark.New(goldmark.WithExtensions(extension.GFM))
+	var buf bytes.Buffer
+	if err := gold.Convert(markdown, &buf); err != nil {
+		t.Error(err)
+	}
+
+	if !test.DisableGoldmark {
+		// testdata/TestCommonmark/name/goldmark.golden
+		p = path.Join(t.Name(), "goldmark")
+		g.Assert(t, p, buf.Bytes())
+	}
 }
 
 func RunGoldenTest(t *testing.T, tests []GoldenTest) {
@@ -80,46 +133,12 @@ func RunGoldenTest(t *testing.T, tests []GoldenTest) {
 				return
 			}
 
-			g := goldie.New(t)
-
 			for key, options := range test.Options {
-				// testdata/TestCommonmark/name/input.html
-				p := path.Join(t.Name(), "input.html")
+				runGoldenTest(t, test, key, options, test.Plugins)
+			}
 
-				// get the input html from a file
-				input, err := ioutil.ReadFile(path.Join("testdata", p))
-				if err != nil {
-					t.Error(err)
-					return
-				}
-
-				if test.Domain == "" {
-					test.Domain = "example.com"
-				}
-
-				conv := md.NewConverter(test.Domain, true, options)
-				conv.Keep("keep-tag").Remove("remove-tag")
-				for _, plugin := range test.Plugins {
-					conv.Use(plugin)
-				}
-				markdown, err := conv.ConvertBytes(input)
-				if err != nil {
-					t.Error(err)
-				}
-
-				// testdata/TestCommonmark/name/output.default.golden
-				p = path.Join(t.Name(), "output."+key)
-				g.Assert(t, p, markdown)
-
-				gold := goldmark.New(goldmark.WithExtensions(extension.GFM))
-				var buf bytes.Buffer
-				if err := gold.Convert(markdown, &buf); err != nil {
-					t.Error(err)
-				}
-
-				// testdata/TestCommonmark/name/goldmark.golden
-				p = path.Join(t.Name(), "goldmark")
-				g.Assert(t, p, buf.Bytes())
+			for key, variation := range test.Variations {
+				runGoldenTest(t, test, key, variation.Options, variation.Plugins)
 			}
 		})
 	}

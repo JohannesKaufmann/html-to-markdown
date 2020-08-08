@@ -8,10 +8,15 @@ import (
 )
 
 // type frontMatterCallback func(selec *goquery.Selection) map[string]interface{}
-
 // TODO: automatically convert to formats (look at hugo)
 
-func EXPERIMENTAL_FrontMatter(format string) md.Plugin {
+// EXPERIMENTALFrontMatter was an experiment to add certain data
+// from a callback function into the beginning of the file as frontmatter.
+// It not really working right now.
+//
+// If someone has a need for it, let me know what your use-case is. Then
+// I can create a plugin with a good interface.
+func EXPERIMENTALFrontMatter(format string) md.Plugin {
 	return func(c *md.Converter) []md.Rule {
 		data := make(map[string]interface{})
 

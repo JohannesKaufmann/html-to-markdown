@@ -11,9 +11,9 @@ import (
 
 var youtubeID = regexp.MustCompile(`youtube\.com\/embed\/([^\&\?\/]+)`)
 
-// EXPERIMENTAL_YoutubeEmbed registers a rule (for iframes) and
+// EXPERIMENTALYoutubeEmbed registers a rule (for iframes) and
 // returns a markdown compatible representation (link to video, ...).
-var EXPERIMENTAL_YoutubeEmbed = []md.Rule{
+var EXPERIMENTALYoutubeEmbed = []md.Rule{
 	{
 		Filter: []string{"iframe"},
 		Replacement: func(content string, selec *goquery.Selection, opt *md.Options) *string {
