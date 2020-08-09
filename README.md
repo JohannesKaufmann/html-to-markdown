@@ -37,6 +37,11 @@ If you are already using [goquery](https://github.com/PuerkitoBio/goquery) you c
 markdown, err := converter.Convert(selec)
 ```
 
+### Using it on the command line
+
+If you want to make use of `html-to-markdown` on the command line without any Go coding, check out [`html2md`](https://github.com/suntong/html2md), a cli wrapper for `html-to-markdown` that has all the following options and plugins builtin. 
+
+
 ## Options
 
 The third parameter to `md.NewConverter` is `*md.Options`.
