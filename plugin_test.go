@@ -46,6 +46,46 @@ func TestPlugins(t *testing.T) {
 				},
 			},
 		},
+		{
+			Name: "movefrontmatter/simple",
+			Variations: map[string]Variation{
+				"default": {
+					Plugins: []md.Plugin{
+						plugin.EXPERIMENTALMoveFrontMatter(),
+					},
+				},
+			},
+		},
+		{
+			Name: "movefrontmatter/not",
+			Variations: map[string]Variation{
+				"default": {
+					Plugins: []md.Plugin{
+						plugin.EXPERIMENTALMoveFrontMatter(),
+					},
+				},
+			},
+		},
+		{
+			Name: "movefrontmatter/jekyll",
+			Variations: map[string]Variation{
+				"default": {
+					Plugins: []md.Plugin{
+						plugin.EXPERIMENTALMoveFrontMatter(),
+					},
+				},
+			},
+		},
+		{
+			Name: "movefrontmatter/blog",
+			Variations: map[string]Variation{
+				"default": {
+					Plugins: []md.Plugin{
+						plugin.EXPERIMENTALMoveFrontMatter(),
+					},
+				},
+			},
+		},
 	}
 
 	RunGoldenTest(t, tests)

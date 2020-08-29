@@ -1,0 +1,3 @@
+<hr>
+<h2>food: Pizza</h2>
+<h1>{{ page.food }}</h1>

@@ -1,0 +1,16 @@
+<hr>
+<p>type: page
+layout: reisebericht
+title: Hamar
+date: &quot;2018-10-24 22:32:03 +0100&quot;
+weight: 2
+tags:</p>
+<ul>
+<li>Norwegen</li>
+<li>Hamar
+url: /2018/10-norwegen/02-hamar/
+description: Ein Spaziergang durch Hamar, Shoppen und ein Besuch im Norsk jernbanemusem, dem norwegischen Eisenbahnmuseum.
+image: files/2018/10-Norwegen/Hamar_Titel.jpg</li>
+</ul>
+<hr>
+<h1>{{ title }}</h1>

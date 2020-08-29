@@ -1,0 +1,13 @@
+<hr>
+<p>type: page
+tags:</p>
+<ul>
+<li>Berlin</li>
+</ul>
+<hr>
+<p>some content
+---
+not: frontmatter
+---</p>
+<p>Start of the <strong>HTML</strong> Document.</p>
+<h1>Title</h1>
