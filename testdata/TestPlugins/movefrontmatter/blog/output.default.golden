@@ -1,4 +1,4 @@
----
++++
 type: page
 layout: reisebericht
 title: Hamar
@@ -10,6 +10,6 @@ tags:
 url: /2018/10-norwegen/02-hamar/
 description: Ein Spaziergang durch Hamar, Shoppen und ein Besuch im Norsk jernbanemusem, dem norwegischen Eisenbahnmuseum.
 image: files/2018/10-Norwegen/Hamar_Titel.jpg
----
++++
 
 # {{ title }}

@@ -1,3 +1,4 @@
-<hr>
-<h2>food: Pizza</h2>
+<p>+++
+food: Pizza
++++</p>
 <h1>{{ page.food }}</h1>

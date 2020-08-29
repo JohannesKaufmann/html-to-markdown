@@ -71,7 +71,7 @@ func TestPlugins(t *testing.T) {
 			Variations: map[string]Variation{
 				"default": {
 					Plugins: []md.Plugin{
-						plugin.EXPERIMENTALMoveFrontMatter(),
+						plugin.EXPERIMENTALMoveFrontMatter('-', '+'),
 					},
 				},
 			},
