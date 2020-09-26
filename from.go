@@ -234,6 +234,26 @@ func (conv *Converter) After(hooks ...Afterhook) *Converter {
 	return conv
 }
 
+// ClearBefore clears the current before hooks (including the default before hooks).
+func (conv *Converter) ClearBefore() *Converter {
+	conv.mutex.Lock()
+	defer conv.mutex.Unlock()
+
+	conv.before = nil
+
+	return conv
+}
+
+// ClearAfter clears the current after hooks (including the default after hooks).
+func (conv *Converter) ClearAfter() *Converter {
+	conv.mutex.Lock()
+	defer conv.mutex.Unlock()
+
+	conv.after = nil
+
+	return conv
+}
+
 // AddRules adds the rules that are passed in to the converter.
 //
 // By default it overrides the rule for that html tag. You can
