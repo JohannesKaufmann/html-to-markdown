@@ -328,3 +328,116 @@ func TestAddRules_Fallback(t *testing.T) {
 		t.Error("second rule was not called")
 	}
 }
+
+func TestBefore(t *testing.T) {
+	var firstWasCalled bool
+	var secondWasCalled bool
+	firstHook := func(selec *goquery.Selection) {
+		firstWasCalled = true
+		if secondWasCalled {
+			t.Error("the second hook should not be called yet")
+		}
+	}
+	secondHook := func(selec *goquery.Selection) {
+		secondWasCalled = true
+		if !firstWasCalled {
+			t.Error("the first hook should already be called")
+		}
+	}
+
+	conv := NewConverter("", true, nil)
+	conv.Before(firstHook, secondHook)
+	_, err := conv.ConvertString(`<a href="https://test.com">Link</a>`)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if !firstWasCalled || !secondWasCalled {
+		t.Error("not all hooks were called")
+	}
+}
+
+func TestAfter(t *testing.T) {
+	var firstWasCalled bool
+	var secondWasCalled bool
+	firstHook := func(md string) string {
+		firstWasCalled = true
+		if secondWasCalled {
+			t.Error("the second hook should not be called yet")
+		}
+		return md + " first"
+	}
+	secondHook := func(md string) string {
+		secondWasCalled = true
+		if !firstWasCalled {
+			t.Error("the first hook should already be called")
+		}
+		return md + " second"
+	}
+
+	conv := NewConverter("", true, nil)
+	conv.After(firstHook, secondHook)
+	md, err := conv.ConvertString(`<span>base</span>`)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if md != `base first second` {
+		t.Errorf("expected different markdown result but got '%s'", md)
+	}
+
+	if !firstWasCalled || !secondWasCalled {
+		t.Error("not all hooks were called")
+	}
+}
+func TestClearBefore(t *testing.T) {
+	var wasCalled bool
+	hook := func(selec *goquery.Selection) {
+		wasCalled = true
+	}
+
+	conv := NewConverter("", true, nil)
+	conv.ClearBefore()
+	if len(conv.before) != 0 {
+		t.Error("the before hook array should be of length 0")
+	}
+
+	conv.Before(hook)
+
+	_, err := conv.ConvertString(`<a href="https://test.com">Link</a>`)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if !wasCalled {
+		t.Error("the hook should have been called")
+	}
+}
+
+func TestClearAfter(t *testing.T) {
+	var wasCalled bool
+	hook := func(markdown string) string {
+		wasCalled = true
+		return "my new value"
+	}
+
+	conv := NewConverter("", true, nil)
+	conv.ClearAfter()
+	if len(conv.after) != 0 {
+		t.Error("the after hook array should be of length 0")
+	}
+
+	conv.After(hook)
+
+	md, err := conv.ConvertString(`<a href="https://test.com">Link</a>`)
+	if err != nil {
+		t.Error(err)
+	}
+	if md != "my new value" {
+		t.Error("the result was different then expected")
+	}
+
+	if !wasCalled {
+		t.Error("the hook should have been called")
+	}
+}
