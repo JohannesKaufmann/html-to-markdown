@@ -45,6 +45,7 @@ func isTrimmedElement(name string) bool {
 		"strong", "b",
 		"i", "em",
 		"del", "s", "strike",
+		"code",
 	}
 
 	for _, node := range nodes {

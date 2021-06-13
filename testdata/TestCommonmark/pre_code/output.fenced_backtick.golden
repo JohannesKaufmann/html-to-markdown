@@ -25,6 +25,26 @@ func Fprint(w io.Writer, a ...interface{}) (n int, err error) {
 
 When `x = 3`, that means `x + 2 = 5`
 
+The `<img>` tag is used to embed an image.
+
+The `<img/>` tag is used to embed an image.
+
+Two variables `A` `B`
+
+CSS: `
+body {
+    color: yellow;
+    font-size: 16px;
+}
+`
+
+CSS: `
+body {
+    color: yellow;
+    font-size: 16px;
+}
+`
+
 ````
 ```
 ````
