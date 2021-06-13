@@ -27,6 +27,10 @@ Second Text][7]
 
 Before [close][14] After
 
+[**Heading A**  **Heading B**][15]
+
+[DIW-Chef zum Grünen-Programm "Vermögenssteuer ist aus wirtschaftlicher Sicht klug"][16]
+
 [1]: http://simple.org/
 [2]: http://example.com/page.html
 [3]: http://space.org/
@@ -41,3 +45,5 @@ Before [close][14] After
 [12]: http://first_next.com
 [13]: http://second_next.com
 [14]: http://example_close.com
+[15]: http://example.com/page.html
+[16]: http://example.com/page.html "\"Vermögenssteuer ist aus wirtschaftlicher Sicht klug\""

@@ -27,6 +27,10 @@ Second Text][]
 
 Before [close][] After
 
+[**Heading A**  **Heading B**][]
+
+[DIW-Chef zum Grünen-Programm "Vermögenssteuer ist aus wirtschaftlicher Sicht klug"][]
+
 [Simple Absolute Link]: http://simple.org/
 [Simple Relative Link]: http://example.com/page.html
 [Link with Space]: http://space.org/
@@ -46,3 +50,5 @@ Second Text]: http://list.org/
 [first left]: http://first_next.com
 [second right]: http://second_next.com
 [close]: http://example_close.com
+[**Heading A**  **Heading B**]: http://example.com/page.html
+[DIW-Chef zum Grünen-Programm "Vermögenssteuer ist aus wirtschaftlicher Sicht klug"]: http://example.com/page.html "\"Vermögenssteuer ist aus wirtschaftlicher Sicht klug\""

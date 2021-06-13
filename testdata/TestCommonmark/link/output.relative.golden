@@ -26,3 +26,7 @@ Second Text](http://multi.org/)
 [first left](http://first_next.com) [second right](http://second_next.com)
 
 Before [close](http://example_close.com) After
+
+[**Heading A**  **Heading B**](/page.html)
+
+[DIW-Chef zum Grünen-Programm "Vermögenssteuer ist aus wirtschaftlicher Sicht klug"](/page.html "\"Vermögenssteuer ist aus wirtschaftlicher Sicht klug\"")

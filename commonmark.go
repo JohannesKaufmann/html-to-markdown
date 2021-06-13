@@ -115,6 +115,7 @@ var commonmark = []Rule{
 			insideLink := selec.ParentsFiltered("a").Length() > 0
 			if insideLink {
 				text := opt.StrongDelimiter + content + opt.StrongDelimiter
+				text = AddSpaceIfNessesary(selec, text)
 				return &text
 			}
 
@@ -219,6 +220,8 @@ var commonmark = []Rule{
 			var title string
 			if t, ok := selec.Attr("title"); ok {
 				t = strings.Replace(t, "\n", " ", -1)
+				// escape all quotes
+				t = strings.Replace(t, `"`, `\"`, -1)
 				title = fmt.Sprintf(` "%s"`, t)
 			}
 
