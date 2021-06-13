@@ -107,6 +107,7 @@ func NewConverter(domain string, enableCommonmark bool, options *Options) *Conve
 
 	conv.before = append(conv.before, func(selec *goquery.Selection) {
 		selec.Find("a[href]").Each(func(i int, s *goquery.Selection) {
+			// TODO: don't hardcode "data-index" and rename it to avoid accidental conflicts
 			s.SetAttr("data-index", strconv.Itoa(i+1))
 		})
 	})

@@ -60,3 +60,19 @@ totally ~~~~~~ normal
 ~ code
 
 ~~~~~~~
+
+~~~
+
+The <img> tag is used to embed an image.
+
+The <img/> tag is used to embed an image.
+
+~~~
+
+~~~
+
+<a href="#Blabla" data-index="1">
+    <img src="http://bla.bla/img/img.svg" style="height:auto" width="200px"/>
+</a>
+
+~~~

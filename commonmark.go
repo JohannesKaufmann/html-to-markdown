@@ -11,7 +11,6 @@ import (
 
 	"github.com/JohannesKaufmann/html-to-markdown/escape"
 	"github.com/PuerkitoBio/goquery"
-	"golang.org/x/net/html"
 )
 
 var multipleSpacesR = regexp.MustCompile(`  +`)
@@ -268,12 +267,7 @@ var commonmark = []Rule{
 	{
 		Filter: []string{"code"},
 		Replacement: func(_ string, selec *goquery.Selection, opt *Options) *string {
-			code, err := selec.Html()
-			if err != nil {
-				return nil
-			}
-			// We don't want the html encoded characters to be displayed as is.
-			code = html.UnescapeString(code)
+			code := getHTML(selec)
 
 			// Newlines in the text aren't great, since this is inline code and not a code block.
 			// Newlines will be stripped anyway in the browser, but it won't be recognized as code
@@ -309,9 +303,9 @@ var commonmark = []Rule{
 			language := codeElement.AttrOr("class", "")
 			language = strings.Replace(language, "language-", "", 1)
 
-			code := codeElement.Text()
+			code := getHTML(codeElement)
 			if codeElement.Length() == 0 {
-				code = selec.Text()
+				code = getHTML(selec)
 			}
 
 			fenceChar, _ := utf8.DecodeRuneInString(opt.Fence)

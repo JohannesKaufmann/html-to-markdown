@@ -259,3 +259,15 @@ func findMax(a []int) (max int) {
 	}
 	return max
 }
+
+// getHTML gets the HTML content and unescapes the encoded characters.
+// Returns "" if there is an error.
+func getHTML(selec *goquery.Selection) string {
+	content, err := selec.Html()
+	if err != nil {
+		return ""
+	}
+
+	// We don't want the html encoded characters to be displayed as is.
+	return html.UnescapeString(content)
+}

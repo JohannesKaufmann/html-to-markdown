@@ -29,3 +29,15 @@ totally ~~~~~~ normal
 ~ code
 
 </code></pre>
+<pre><code>
+The &lt;img&gt; tag is used to embed an image.
+
+The &lt;img/&gt; tag is used to embed an image.
+
+</code></pre>
+<pre><code>
+&lt;a href=&quot;#Blabla&quot; data-index=&quot;1&quot;&gt;
+    &lt;img src=&quot;http://bla.bla/img/img.svg&quot; style=&quot;height:auto&quot; width=&quot;200px&quot;/&gt;
+&lt;/a&gt;
+
+</code></pre>
