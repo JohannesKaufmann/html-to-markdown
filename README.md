@@ -39,8 +39,7 @@ markdown, err := converter.Convert(selec)
 
 ### Using it on the command line
 
-If you want to make use of `html-to-markdown` on the command line without any Go coding, check out [`html2md`](https://github.com/suntong/html2md#usage), a cli wrapper for `html-to-markdown` that has all the following options and plugins builtin. 
-
+If you want to make use of `html-to-markdown` on the command line without any Go coding, check out [`html2md`](https://github.com/suntong/html2md#usage), a cli wrapper for `html-to-markdown` that has all the following options and plugins builtin.
 
 ## Options
 
@@ -103,6 +102,14 @@ For more information have a look at the example [github_flavored](/examples/gith
 
 Have a look at the [plugin folder](/plugin) for a reference implementation. The most basic one is [Strikethrough](/plugin/strikethrough.go).
 
+## Security
+
+This library produces markdown that is readable and can be changed by humans.
+
+Once you convert this markdown back to HTML (e.g. using [goldmark](https://github.com/yuin/goldmark) or [blackfriday](https://github.com/russross/blackfriday)) you need to be careful of malicious content.
+
+This library does NOT sanitize untrusted content. Use an HTML sanitizer such as [bluemonday](https://github.com/microcosm-cc/bluemonday) before displaying the HTML in the browser.
+
 ## Other Methods
 
 [Godoc](https://godoc.org/github.com/JohannesKaufmann/html-to-markdown)
@@ -119,7 +126,25 @@ Determines which elements are to be removed altogether i.e. converted to an empt
 
 If you find HTML snippets (or even full websites) that don't produce the expected results, please open an issue!
 
+## Contributing & Testing
+
+Please first discuss the change you wish to make, by opening an issue. I'm also happy to guide you to where a change is most likely needed.
+
+_Note: The outside API should not change because of backwards compatibility..._
+
+You don't have to be afraid of breaking the converter, since there are many "Golden File Tests":
+
+Add your problematic HTML snippet to one of the `input.html` files in the `testdata` folder. Then run `go test -update` and have a look at which `.golden` files changed in GIT.
+
+You can now change the internal logic and inspect what impact your change has by running `go test -update` again.
+
+_Note: Before submitting your change as a PR, make sure that you run those tests and check the files into GIT..._
+
 ## Related Projects
 
 - [turndown (js)](https://github.com/domchristie/turndown), a very good library written in javascript.
 - [lunny/html2md](https://github.com/lunny/html2md), which is using [regex instead of goquery](https://stackoverflow.com/a/1732454). I came around a few edge case when using it (leaving some html comments, ...) so I wrote my own.
+
+## License
+
+This project is licensed under the terms of the MIT license.
