@@ -111,6 +111,7 @@ var commonmark = []Rule{
 			content = strings.Replace(content, "\n", " ", -1)
 			content = strings.Replace(content, "\r", " ", -1)
 			content = strings.Replace(content, `#`, `\#`, -1)
+			content = strings.TrimSpace(content)
 
 			insideLink := selec.ParentsFiltered("a").Length() > 0
 			if insideLink {
@@ -136,7 +137,6 @@ var commonmark = []Rule{
 			}
 
 			prefix := strings.Repeat("#", level)
-			content = strings.TrimSpace(content)
 			text := "\n\n" + prefix + " " + content + "\n\n"
 			return &text
 		},

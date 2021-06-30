@@ -197,7 +197,7 @@ func EscapeMultiLine(content string) string {
 	content = strings.TrimSpace(content)
 	content = strings.Replace(content, "\n", `\`+"\n", -1)
 
-	content = multipleNewLinesInLinkRegex.ReplaceAllString(content, "\n\\\n\\")
+	content = multipleNewLinesInLinkRegex.ReplaceAllString(content, "\n\\")
 
 	return content
 }

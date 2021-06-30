@@ -16,7 +16,6 @@ Second Text](http://multi.org/)
 
 - [First Text\
     \
-    \
     Second Text](http://list.org/)
 
 [GitHub](https://github.com "GitHub")
@@ -30,3 +29,9 @@ Before [close](http://example_close.com) After
 [**Heading A**  **Heading B**](http://example.com/page.html)
 
 [DIW-Chef zum Grünen-Programm "Vermögenssteuer ist aus wirtschaftlicher Sicht klug"](http://example.com/page.html "\"Vermögenssteuer ist aus wirtschaftlicher Sicht klug\"")
+
+[**Die App WDR aktuell begleitet Sie durch den Tag**\
+\
+ Sie möchten eine App, die Sie so durch den Tag in NRW begleitet, dass Sie jederzeit mitreden können? Die App WDR aktuell bietet Ihnen dafür immer die passenden Nachrichten.\
+  \| \
+ **mehr**](http://example.com/nachrichten/wdr-aktuell-app-stores-100.html "Die App WDR aktuell begleitet Sie durch den Tag ")
