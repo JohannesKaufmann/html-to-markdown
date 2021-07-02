@@ -124,7 +124,7 @@ There are a few formatting rules that Godoc uses when converting comments to HTM
 - Subsequent lines of text are considered part of the same paragraph; you must leave a blank line to separate paragraphs.
 
 - Pre-formatted text must be indented relative to the surrounding comment text (see gob's
-     [doc.go][] for an example).
+[doc.go][] for an example).
 
 - URLs will be converted to HTML links; no special markup is necessary.
 

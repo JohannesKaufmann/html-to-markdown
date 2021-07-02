@@ -93,6 +93,10 @@ func validateOptions(opt Options) error {
 	return nil
 }
 
+var (
+	attrListPrefix = "data-converter-list-prefix"
+)
+
 // NewConverter initializes a new converter and holds all the rules.
 // - `domain` is used for links and images to convert relative urls ("/image.png") to absolute urls.
 // - CommonMark is the default set of rules. Set enableCommonmark to false if you want
@@ -109,6 +113,13 @@ func NewConverter(domain string, enableCommonmark bool, options *Options) *Conve
 		selec.Find("a[href]").Each(func(i int, s *goquery.Selection) {
 			// TODO: don't hardcode "data-index" and rename it to avoid accidental conflicts
 			s.SetAttr("data-index", strconv.Itoa(i+1))
+		})
+	})
+	conv.before = append(conv.before, func(selec *goquery.Selection) {
+		selec.Find("li").Each(func(i int, s *goquery.Selection) {
+			prefix := getListPrefix(options, s)
+
+			s.SetAttr(attrListPrefix, prefix)
 		})
 	})
 	conv.after = append(conv.after, func(markdown string) string {

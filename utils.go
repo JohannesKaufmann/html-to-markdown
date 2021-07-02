@@ -2,7 +2,9 @@ package md
 
 import (
 	"bytes"
+	"fmt"
 	"regexp"
+	"strconv"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -270,4 +272,148 @@ func getHTML(selec *goquery.Selection) string {
 
 	// We don't want the html encoded characters to be displayed as is.
 	return html.UnescapeString(content)
+}
+
+// isWrapperListItem returns wether the list item has own
+// content or is just a wrapper for another list.
+// e.g. "<li><ul>..."
+func isWrapperListItem(s *goquery.Selection) bool {
+	directText := s.Contents().Not("ul").Not("ol").Text()
+
+	noOwnText := strings.TrimSpace(directText) == ""
+	childIsList := s.ChildrenFiltered("ul").Length() > 0 || s.ChildrenFiltered("ol").Length() > 0
+
+	return noOwnText && childIsList
+}
+
+// getListPrefix returns the appropriate prefix for the list item.
+// For example "- ", "* ", "1. ", "01. ", ...
+func getListPrefix(opt *Options, s *goquery.Selection) string {
+	if isWrapperListItem(s) {
+		return ""
+	}
+
+	parent := s.Parent()
+	if parent.Is("ul") {
+		return opt.BulletListMarker + " "
+	}
+
+	currentIndex := s.Index() + 1
+
+	lastIndex := parent.Children().Last().Index() + 1
+	maxLength := len(strconv.Itoa(lastIndex))
+
+	// pad the numbers so that all prefix numbers in the list take up the same space
+	// `%02d.` -> "01. "
+	format := `%0` + strconv.Itoa(maxLength) + `d. `
+	return fmt.Sprintf(format, currentIndex)
+}
+
+// countListParents counts how much space is reserved for the prefixes at all the parent lists.
+// This is useful to calculate the correct level of indentation for nested lists.
+func countListParents(opt *Options, selec *goquery.Selection) (int, int) {
+	var values []int
+	for n := selec.Parent(); n != nil; n = n.Parent() {
+		if n.Is("li") {
+			continue
+		}
+		if !n.Is("ul") && !n.Is("ol") {
+			break
+		}
+
+		prefix := n.Children().First().AttrOr(attrListPrefix, "")
+
+		values = append(values, len(prefix))
+	}
+
+	// how many spaces are reserved for the prefixes of my siblings
+	var prefixCount int
+
+	// how many spaces are reserved in total for all of the other
+	// list parents up the tree
+	var previousPrefixCounts int
+
+	for i, val := range values {
+		if i == 0 {
+			prefixCount = val
+			continue
+		}
+
+		previousPrefixCounts += val
+	}
+
+	return prefixCount, previousPrefixCounts
+}
+
+// IndentMultiLineListItem makes sure that multiline list items
+// are properly indented.
+func IndentMultiLineListItem(opt *Options, text string, spaces int) string {
+	parts := strings.Split(text, "\n")
+	for i := range parts {
+		// dont touch the first line since its indented through the prefix
+		if i == 0 {
+			continue
+		}
+
+		if isListItem(opt, parts[i]) {
+			return strings.Join(parts, "\n")
+		}
+
+		indent := strings.Repeat(" ", spaces)
+		parts[i] = indent + parts[i]
+	}
+
+	return strings.Join(parts, "\n")
+}
+
+// isListItem checks wether the line is a markdown list item
+func isListItem(opt *Options, line string) bool {
+	b := []rune(line)
+
+	var hasMarker bool
+	var hasNumber bool
+
+	for i := 0; i < len(b); i++ {
+		// a marker followed by a space qualifies as a list item
+		if hasMarker {
+			if unicode.IsSpace(b[i]) {
+				return true
+			} else {
+				return false
+			}
+		}
+
+		if b[i] == []rune(opt.BulletListMarker)[0] {
+			hasMarker = true
+			continue
+		}
+
+		if hasNumber && b[i] == '.' {
+			hasMarker = true
+			continue
+		}
+		if unicode.IsDigit(b[i]) {
+			hasNumber = true
+			continue
+		}
+
+		if unicode.IsSpace(b[i]) {
+			continue
+		}
+
+		// if we encouter any other character
+		// before finding an indicator, its
+		// not a list item
+		return false
+	}
+	return false
+}
+
+// IndexWithText is similar to goquery's Index function but
+// returns the index of the current element while
+// NOT counting the empty elements beforehand.
+func IndexWithText(s *goquery.Selection) int {
+	return s.PrevAll().FilterFunction(func(i int, s *goquery.Selection) bool {
+		return strings.TrimSpace(s.Text()) != ""
+	}).Length()
 }

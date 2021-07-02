@@ -10,14 +10,9 @@
 </li>
 <li>
 <p><input disabled="" type="checkbox"> Check Me C</p>
-</li>
-<li>
 <ul>
-<li><input disabled="" type="checkbox"> Check Nested 1
-<ul>
+<li><input disabled="" type="checkbox"> Check Nested 1</li>
 <li><input disabled="" type="checkbox"> Check Nested 2</li>
-</ul>
-</li>
 </ul>
 </li>
 <li>

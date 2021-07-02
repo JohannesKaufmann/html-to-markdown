@@ -1,4 +1,5 @@
 
+<!--a list with weird markup-->
 <ul>
 	<li>foo
 		<ul>
@@ -27,6 +28,7 @@
 	<li>Milk</li>
 </ul><h1>header1</h1>
 
+
 <!--without space-->
 <ul>
 <li>Bullet list
@@ -41,4 +43,99 @@
 <li>Bullet list item 2</li>
 </ul>
 
+
+<!--with a nested ul list directly inside-->
+<ul>
+	<li>One</li>
+	<ul>
+		<li>One point one</li>
+		<li>One point two</li>
+	</ul>
+</ul>
+
+<!--with a nested ol list directly inside-->
+<ol>
+	<li>One</li>
+	<ol>
+		<li>One point one</li>
+		<li>One point two</li>
+	</ol>
+</ol>
+
+
+<!--a deeply nested ul list-->
+<ul>
+	<li>1</li>
+	<li>2</li>
+	<li>
+	<ul>
+		<li>2.1</li>
+		<li>2.2</li>
+		<li>
+		<ul>
+			<li>2.2.1</li>
+			<li>2.2.2</li>
+			<li>2.2.3</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+	<li>3</li>
+</ul>
+
+
+<!--a deeply nested ol list-->
+<ol>
+	<li>1</li>
+	<li>2</li>
+	<li>
+	<ol>
+		<li>2.1</li>
+		<li>2.2</li>
+		<li>
+		<ol>
+			<li>2.2.1</li>
+			<li>2.2.2</li>
+			<li>2.2.3</li>
+		</ol>
+		</li>
+	</ol>
+	</li>
+	<li>3</li>
+</ol>
+
+
+<!--a deeply nested ul list inside an item with content-->
+<ul>
+	<li>
+		<p>First Thing</p>
+		<p>Second Thing</p>
+		<ul>
+			<li>
+				<p>Nested First Thing</p>
+				<p>Nested Thing</p>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+
+<!--a deeply nested ol list inside an item with content-->
+<ol>
+	<li>
+		<p>First Thing</p>
+		<p>Second Thing</p>
+		<ol>
+			<li>
+				<p>Nested First Thing</p>
+				<p>Nested Thing</p>
+			</li>
+			<li>
+				<p>Date:</p>
+				<p>20.02.2021</p>
+				<p>26. Mai - 3. Juni</p>
+			</li>
+		</ol>
+	</li>
+</ol>
 
