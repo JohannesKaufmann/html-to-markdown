@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"regexp"
 	"strings"
 
 	md "github.com/JohannesKaufmann/html-to-markdown"
@@ -166,9 +167,14 @@ func isFirstTbody(s *goquery.Selection) bool {
 	return false
 }
 
+var newLineRe = regexp.MustCompile(`(\r?\n)+`)
+
 func getCellContent(content string, s *goquery.Selection) string {
 	content = strings.TrimSpace(content)
-
+	if s.Find("table").Length() == 0 {
+		// nested tables not found
+		content = newLineRe.ReplaceAllString(strings.TrimSpace(content), "<br>")
+	}
 	index := -1
 	for i, node := range s.Parent().Children().Nodes {
 		if s.IsNodes(node) {
