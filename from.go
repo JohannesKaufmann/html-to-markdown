@@ -33,7 +33,10 @@ import (
 type simpleRuleFunc func(content string, selec *goquery.Selection, options *Options) *string
 type ruleFunc func(content string, selec *goquery.Selection, options *Options) (res AdvancedResult, skip bool)
 
+// BeforeHook runs before the converter and can be used to transform the original html
 type BeforeHook func(selec *goquery.Selection)
+
+// Afterhook runs after the converter and can be used to transform the resulting markdown
 type Afterhook func(markdown string) string
 
 // Converter is initialized by NewConverter.
@@ -215,7 +218,7 @@ func wrap(simple simpleRuleFunc) ruleFunc {
 	}
 }
 
-// Before registers a hook that is run before the convertion. It
+// Before registers a hook that is run before the conversion. It
 // can be used to transform the original goquery html document.
 //
 // For example, the default before hook adds an index to every link,
@@ -231,7 +234,7 @@ func (conv *Converter) Before(hooks ...BeforeHook) *Converter {
 	return conv
 }
 
-// After registers a hook that is run after the convertion. It
+// After registers a hook that is run after the conversion. It
 // can be used to transform the markdown document that is about to be returned.
 //
 // For example, the default after hook trims the returned markdown.

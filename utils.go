@@ -378,9 +378,10 @@ func isListItem(opt *Options, line string) bool {
 		if hasMarker {
 			if unicode.IsSpace(b[i]) {
 				return true
-			} else {
-				return false
 			}
+			// a marker like "1." that is not immediately followed by a space
+			// is probably a false positive
+			return false
 		}
 
 		if b[i] == []rune(opt.BulletListMarker)[0] {
