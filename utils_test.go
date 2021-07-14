@@ -359,3 +359,178 @@ code ~~~~~~~~~~~~ block
 		})
 	}
 }
+
+func TestIsListItem(t *testing.T) {
+	var tests = []struct {
+		name string
+
+		opt  *Options
+		line string
+
+		expected bool
+	}{
+		{
+			name: "nothing",
+
+			opt: &Options{
+				BulletListMarker: "-",
+			},
+			line:     "",
+			expected: false,
+		},
+		{
+			name: "just spaces",
+
+			opt: &Options{
+				BulletListMarker: "-",
+			},
+			line:     "   ",
+			expected: false,
+		},
+		{
+			name: "just text",
+
+			opt: &Options{
+				BulletListMarker: "-",
+			},
+			line:     "  text",
+			expected: false,
+		},
+		{
+			name: "just numbers",
+
+			opt: &Options{
+				BulletListMarker: "-",
+			},
+			line:     "  123",
+			expected: false,
+		},
+		{
+			name: "unordered: with -",
+
+			opt: &Options{
+				BulletListMarker: "-",
+			},
+			line:     "  - item",
+			expected: true,
+		},
+		{
+			name: "unordered: with *",
+
+			opt: &Options{
+				BulletListMarker: "*",
+			},
+			line:     "  * item",
+			expected: true,
+		},
+		{
+			name: "unordered: with * false positive",
+
+			opt: &Options{
+				BulletListMarker: "*",
+			},
+			line:     "  - item",
+			expected: false,
+		},
+		{
+			name: "unordered: with multiple spaces",
+
+			opt: &Options{
+				BulletListMarker: "-",
+			},
+			line:     "  -  item",
+			expected: true,
+		},
+		{
+			name: "unordered: without space",
+
+			opt: &Options{
+				BulletListMarker: "-",
+			},
+			line:     "  -item",
+			expected: false,
+		},
+		{
+			name: "ordered: without space",
+
+			opt: &Options{
+				BulletListMarker: "-",
+			},
+			line:     "  1.item",
+			expected: false,
+		},
+		{
+			name: "ordered: with space",
+
+			opt: &Options{
+				BulletListMarker: "-",
+			},
+			line:     "  1. item",
+			expected: true,
+		},
+		{
+			name: "ordered: without dot",
+
+			opt: &Options{
+				BulletListMarker: "-",
+			},
+			line:     "  1 item",
+			expected: false,
+		},
+		{
+			name: "ordered: with dot before",
+
+			opt: &Options{
+				BulletListMarker: "-",
+			},
+			line:     "  .1 item",
+			expected: false,
+		},
+		{
+			name: "ordered: with big number",
+
+			opt: &Options{
+				BulletListMarker: "-",
+			},
+			line:     "  1001. item",
+			expected: true,
+		},
+		{
+			name: "ordered: with date",
+
+			opt: &Options{
+				BulletListMarker: "-",
+			},
+			line:     "  01.01 January",
+			expected: false,
+		},
+		{
+			name: "with divider",
+
+			opt: &Options{
+				BulletListMarker: "*",
+			},
+			line:     "***",
+			expected: false,
+		},
+		{
+			name: "with divider and spaces",
+
+			opt: &Options{
+				BulletListMarker: "*",
+			},
+			line:     "* * *",
+			expected: false,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			result := isListItem(test.opt, test.line)
+			if result != test.expected {
+				t.Errorf("expected '%+v' but got '%+v' for '%s'", test.expected, result, test.line)
+			}
+		})
+	}
+
+}

@@ -119,3 +119,71 @@
 </ol>
 </li>
 </ol>
+<ul>
+<li>
+<p><a href="http://example.com/gesellschaft/" title="Gesellschaft">Gesellschaft</a>  * <a href="http://example.com/gesellschaft/panorama/" title="Panorama">Panorama</a></p>
+<ul>
+<li><a href="http://example.com/gesellschaft/medien/" title="Medien">Medien</a></li>
+<li><a href="http://example.com/gesellschaft/geschichte/" title="Geschichte">Geschichte</a></li>
+</ul>
+</li>
+<li>
+<p>What...</p>
+</li>
+<li>
+<p>about...</p>
+<h5>different elements:</h5>
+<p><code>variable</code></p>
+<hr>
+<pre><code>
+The &lt;img&gt; tag is used to embed an image.
+
+The &lt;img/&gt; tag is used to embed an image.
+
+</code></pre>
+<p>Does it work?</p>
+</li>
+</ul>
+<p>The Corinthos Center for Cancer will be partially closed for remodeling
+starting <strong>4/15/21</strong>. Patients should be redirected as space
+permits in the following order:</p>
+<ol>
+<li>
+<p>Metro Court West.</p>
+</li>
+<li>
+<p>Richie General.</p>
+<ol>
+<li>This place is ok.</li>
+<li>Watch out for the doctors.
+<ol>
+<li>They bite.</li>
+<li>But not hard.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p>Port Charles Main.</p>
+</li>
+</ol>
+<p>For further information about appointment changes, contact:</p>
+<ul>
+<li>
+<p>Dorothy Hardy</p>
+<ul>
+<li><em>Head of Operations</em>
+<ul>
+<li><em>Interim</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><a href="mailto:dorothy.hardy@generalhospital.org">dorothy.hardy@generalhospital.org</a></p>
+</li>
+<li>
+<p>555-555-5555</p>
+</li>
+</ul>
+<p><em>The remodel is</em> <a href="http://www.google.com/"><em>expected</em></a> <em>to complete in June 2021.</em> <strong><em>Timeframe subject to change</em></strong> <em>.</em></p>

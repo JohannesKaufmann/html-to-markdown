@@ -370,21 +370,38 @@ func IndentMultiLineListItem(opt *Options, text string, spaces int) string {
 func isListItem(opt *Options, line string) bool {
 	b := []rune(line)
 
-	var hasMarker bool
+	bulletMarker := []rune(opt.BulletListMarker)[0]
+
 	var hasNumber bool
+	var hasMarker bool
+	var hasSpace bool
 
 	for i := 0; i < len(b); i++ {
-		// a marker followed by a space qualifies as a list item
-		if hasMarker {
-			if unicode.IsSpace(b[i]) {
+		// A marker followed by a space qualifies as a list item
+		if hasMarker && hasSpace {
+			if b[i] == bulletMarker {
+				// But if another BulletListMarker is found, it
+				// might be a HorizontalRule
+				return false
+			}
+
+			if !unicode.IsSpace(b[i]) {
+				// Now we have some text
 				return true
 			}
-			// a marker like "1." that is not immediately followed by a space
+		}
+
+		if hasMarker {
+			if unicode.IsSpace(b[i]) {
+				hasSpace = true
+				continue
+			}
+			// A marker like "1." that is not immediately followed by a space
 			// is probably a false positive
 			return false
 		}
 
-		if b[i] == []rune(opt.BulletListMarker)[0] {
+		if b[i] == bulletMarker {
 			hasMarker = true
 			continue
 		}
@@ -402,7 +419,7 @@ func isListItem(opt *Options, line string) bool {
 			continue
 		}
 
-		// if we encouter any other character
+		// If we encouter any other character
 		// before finding an indicator, its
 		// not a list item
 		return false
