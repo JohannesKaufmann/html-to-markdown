@@ -2,6 +2,7 @@ package md
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -185,7 +186,6 @@ func TestNewConverter_ValidateOptions(t *testing.T) {
 	input := `<strong>Bold</strong>`
 	expected := `====Bold====`
 
-	// disable commonmark
 	converter := NewConverter("", true, &Options{
 		StrongDelimiter: "====",
 	})
@@ -201,6 +201,115 @@ func TestNewConverter_ValidateOptions(t *testing.T) {
 	if strings.TrimSuffix(buf.String(), "\n") != "markdown options is not valid: field must be one of [** __] but got ====" {
 		t.Error("expected a different log message")
 	}
+}
+
+func TestNewConverter_ValidateOptions_All(t *testing.T) {
+	var tests = []struct {
+		name    string
+		options *Options
+
+		input    string
+		expected string
+	}{
+		{
+			name: "HeadingStyle",
+			options: &Options{
+				HeadingStyle: "invalid",
+			},
+			input:    `<h1>Heading</h1>`,
+			expected: `# Heading`,
+		},
+		{
+			name: "HorizontalRule",
+			options: &Options{
+				HorizontalRule: "--",
+			},
+			input:    `<hr />`,
+			expected: `--`,
+		},
+		{
+			name: "BulletListMarker",
+			options: &Options{
+				BulletListMarker: "^",
+			},
+			input:    `<ul><li>Test</li></ul>`,
+			expected: `^ Test`,
+		},
+		{
+			name: "CodeBlockStyle",
+			options: &Options{
+				CodeBlockStyle: "invalid",
+			},
+			input:    `<code>test</code>`,
+			expected: "`test`",
+		},
+		{
+			name: "Fence",
+			options: &Options{
+				Fence: "^^^",
+			},
+			input:    `<pre>test</pre>`,
+			expected: "^^^\ntest\n^^^",
+		},
+		{
+			name: "EmDelimiter",
+			options: &Options{
+				EmDelimiter: "-",
+			},
+			input:    `<i>test</i>`,
+			expected: "-test-",
+		},
+		{
+			name: "LinkStyle",
+			options: &Options{
+				LinkStyle: "invalid",
+			},
+			input: `<a href="example.com">link</a>`,
+			expected: `[link][1]
+
+[1]: example.com`,
+		},
+		{
+			name: "LinkReferenceStyle",
+			options: &Options{
+				LinkReferenceStyle: "invalid",
+			},
+			input:    `<a href="example.com">link</a>`,
+			expected: "[link](example.com)",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			var buf bytes.Buffer
+			log.SetOutput(&buf)
+			log.SetFlags(0)
+			defer func() {
+				// reset the options back to the defaults
+				log.SetOutput(os.Stderr)
+				log.SetFlags(3)
+			}()
+
+			converter := NewConverter("", true, test.options)
+			res, err := converter.ConvertString(test.input)
+			if err != nil {
+				t.Error(err)
+			}
+
+			if res != test.expected {
+				t.Errorf("expected '%s' but got '%s'", test.expected, res)
+			}
+
+			logOutput := strings.TrimSuffix(buf.String(), "\n")
+			if !strings.Contains(logOutput, "markdown options is not valid: ") {
+				t.Errorf("expected a different log message but got '%s'", logOutput)
+			}
+
+			fmt.Println(test.name, "->", logOutput, "|", buf.String())
+
+		})
+	}
+
 }
 
 func BenchmarkFromString(b *testing.B) {
@@ -329,6 +438,46 @@ func TestAddRules_Fallback(t *testing.T) {
 	}
 }
 
+func TestAddRules_NoRules(t *testing.T) {
+	var buf bytes.Buffer
+	log.SetOutput(&buf)
+	log.SetFlags(0)
+	defer func() {
+		// reset the options back to the defaults
+		log.SetOutput(os.Stderr)
+		log.SetFlags(3)
+	}()
+
+	var wasCalled bool
+	rule := Rule{
+		Filter: []string{ /* nothing */ },
+		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			wasCalled = true
+			return nil
+		},
+	}
+
+	conv := NewConverter("", true, nil)
+	conv.AddRules(rule)
+
+	md, err := conv.ConvertString(`<p>Some Content</p>`)
+	if err != nil {
+		t.Error(err)
+	}
+	if md != "Some Content" {
+		t.Error("got different markdown result")
+	}
+
+	logOutput := strings.TrimSuffix(buf.String(), "\n")
+	if logOutput != "you need to specify at least one filter for your rule" {
+		t.Errorf("expected a different log message but got '%s'", logOutput)
+	}
+
+	if wasCalled {
+		t.Error("the rule should not have been called")
+	}
+}
+
 func TestBefore(t *testing.T) {
 	var firstWasCalled bool
 	var secondWasCalled bool
@@ -439,5 +588,69 @@ func TestClearAfter(t *testing.T) {
 
 	if !wasCalled {
 		t.Error("the hook should have been called")
+	}
+}
+
+func TestDomainFromURL(t *testing.T) {
+	var tests = []struct {
+		input    string
+		expected string
+	}{
+		{
+			input:    "example.com",
+			expected: "example.com",
+		},
+		{
+			input:    "https://example.com",
+			expected: "example.com",
+		},
+		{
+			input:    "https://www.example.com",
+			expected: "www.example.com",
+		},
+
+		{
+			input:    "http://example.com/index.html",
+			expected: "example.com",
+		},
+		{
+			input:    "http://example.com?page=home",
+			expected: "example.com",
+		},
+		{
+			input:    "http://example.com#page",
+			expected: "example.com",
+		},
+		{
+			input:    "http://example.com:3000",
+			expected: "example.com:3000",
+		},
+		{
+			// not so happy about this :(
+			input:    "example",
+			expected: "example",
+		},
+		{
+			input:    "https://developer.mozilla.org/en-US/docs/Web/API/URL/host",
+			expected: "developer.mozilla.org",
+		},
+		{
+			input:    "  http://example.com",
+			expected: "example.com",
+		},
+		{
+			// invalid url
+			input:    "abc  http://example.com",
+			expected: "",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.input, func(t *testing.T) {
+			res := DomainFromURL(test.input)
+			if res != test.expected {
+				t.Errorf("for '%s' expected '%s' but got '%s'", test.input, test.expected, res)
+			}
+		})
 	}
 }

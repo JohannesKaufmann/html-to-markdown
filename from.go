@@ -339,11 +339,20 @@ var netClient = &http.Client{
 
 // DomainFromURL returns `u.Host` from the parsed url.
 func DomainFromURL(rawURL string) string {
-	u, err := url.Parse(rawURL)
-	if err != nil {
-		return ""
+	rawURL = strings.TrimSpace(rawURL)
+
+	u, _ := url.Parse(rawURL)
+	if u != nil && u.Host != "" {
+		return u.Host
 	}
-	return u.Host
+
+	// lets try it again by adding a scheme
+	u, _ = url.Parse("http://" + rawURL)
+	if u != nil {
+		return u.Host
+	}
+
+	return ""
 }
 
 // Reduce many newline characters `\n` to at most 2 new line characters.
