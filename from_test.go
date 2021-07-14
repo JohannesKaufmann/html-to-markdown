@@ -2,7 +2,7 @@ package md
 
 import (
 	"bytes"
-	"fmt"
+	"errors"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -30,6 +30,28 @@ func TestConvertReader(t *testing.T) {
 	}
 }
 
+type ErrReader struct{ Error error }
+
+// -> https://stackoverflow.com/a/57452918
+func (e *ErrReader) Read([]byte) (int, error) {
+	return 0, e.Error
+}
+func TestConvertReader_Error(t *testing.T) {
+	reader := &ErrReader{
+		Error: errors.New("we got an error"),
+	}
+
+	converter := NewConverter("", true, nil)
+	res, err := converter.ConvertReader(reader)
+	if err != reader.Error {
+		t.Error("expected an error")
+	}
+
+	if res.Len() != 0 {
+		t.Error("expected an empty buffer")
+	}
+}
+
 func TestConvertBytes(t *testing.T) {
 	input := `<strong>Bold</strong>`
 	expected := `**Bold**`
@@ -41,6 +63,18 @@ func TestConvertBytes(t *testing.T) {
 	}
 
 	if !bytes.Equal(res, []byte(expected)) {
+		t.Error("the result is different that expected")
+	}
+}
+
+func TestConvertBytes_Empty(t *testing.T) {
+	converter := NewConverter("", true, nil)
+	res, err := converter.ConvertBytes(nil)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if !bytes.Equal(res, []byte("")) {
 		t.Error("the result is different that expected")
 	}
 }
@@ -60,6 +94,26 @@ func TestConvertResponse(t *testing.T) {
 	}
 
 	if res != expected {
+		t.Error("the result is different that expected")
+	}
+}
+
+func TestConvertResponse_Error(t *testing.T) {
+	expectedErr := errors.New("custom error reader")
+
+	converter := NewConverter("", true, nil)
+	res, err := converter.ConvertResponse(&http.Response{
+		StatusCode: 200,
+		Body: ioutil.NopCloser(&ErrReader{
+			Error: expectedErr,
+		}),
+		Request: &http.Request{},
+	})
+	if err != expectedErr {
+		t.Error(err)
+	}
+
+	if res != "" {
 		t.Error("the result is different that expected")
 	}
 }
@@ -116,6 +170,20 @@ func TestConvertURL(t *testing.T) {
 	}
 
 	if res != expected {
+		t.Error("the result is different that expected")
+	}
+}
+
+func TestConvertURL_Error(t *testing.T) {
+	url := "abc https://example.com"
+
+	converter := NewConverter("", true, nil)
+	res, err := converter.ConvertURL(url)
+	if err == nil {
+		t.Error("expected an error")
+	}
+
+	if res != "" {
 		t.Error("the result is different that expected")
 	}
 }
@@ -304,9 +372,6 @@ func TestNewConverter_ValidateOptions_All(t *testing.T) {
 			if !strings.Contains(logOutput, "markdown options is not valid: ") {
 				t.Errorf("expected a different log message but got '%s'", logOutput)
 			}
-
-			fmt.Println(test.name, "->", logOutput, "|", buf.String())
-
 		})
 	}
 
