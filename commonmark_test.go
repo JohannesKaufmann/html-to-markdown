@@ -228,7 +228,8 @@ func TestCommonmark(t *testing.T) {
 			},
 		},
 		{
-			Name: "list_nested",
+			Name:            "list_nested",
+			DisableGoldmark: true,
 			Variations: map[string]Variation{
 				"asterisks": {
 					Options: &md.Options{BulletListMarker: "*"},
