@@ -6,7 +6,7 @@ Some Text
 
 Some Content
 
-jmap –histo[:live]
+jmap –histo\[:live\]
 
 Sometimes a struct field, function, type, or even a whole package becomes
 
