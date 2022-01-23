@@ -326,6 +326,25 @@ func getCodeContent(selec *goquery.Selection) string {
 	return content
 }
 
+// delimiterForEveryLine puts the delimiter not just at the start and end of the string
+// but if the text is divided on multiple lines, puts the delimiters on every line with content.
+//
+// Otherwise the bold/italic delimiters won't be recognized if it contains new line characters.
+func delimiterForEveryLine(text string, delimiter string) string {
+	lines := strings.Split(text, "\n")
+
+	for i, line := range lines {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			// Skip empty lines
+			continue
+		}
+
+		lines[i] = delimiter + line + delimiter
+	}
+	return strings.Join(lines, "\n")
+}
+
 // isWrapperListItem returns wether the list item has own
 // content or is just a wrapper for another list.
 // e.g. "<li><ul>..."

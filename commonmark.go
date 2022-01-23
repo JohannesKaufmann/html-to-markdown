@@ -172,9 +172,13 @@ var commonmark = []Rule{
 			if trimmed == "" {
 				return &trimmed
 			}
-			trimmed = opt.StrongDelimiter + trimmed + opt.StrongDelimiter
 
-			// always have a space to the side to recognize the delimiter
+			// If there is a newline character between the start and end delimiter
+			// the delimiters won't be recognized. Either we remove all newline characters
+			// OR on _every_ line we put start & end delimiters.
+			trimmed = delimiterForEveryLine(trimmed, opt.StrongDelimiter)
+
+			// Always have a space to the side to recognize the delimiter
 			trimmed = AddSpaceIfNessesary(selec, trimmed)
 
 			return &trimmed
@@ -193,9 +197,13 @@ var commonmark = []Rule{
 			if trimmed == "" {
 				return &trimmed
 			}
-			trimmed = opt.EmDelimiter + trimmed + opt.EmDelimiter
 
-			// always have a space to the side to recognize the delimiter
+			// If there is a newline character between the start and end delimiter
+			// the delimiters won't be recognized. Either we remove all newline characters
+			// OR on _every_ line we put start & end delimiters.
+			trimmed = delimiterForEveryLine(trimmed, opt.EmDelimiter)
+
+			// Always have a space to the side to recognize the delimiter
 			trimmed = AddSpaceIfNessesary(selec, trimmed)
 
 			return &trimmed
