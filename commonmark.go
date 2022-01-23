@@ -288,7 +288,7 @@ var commonmark = []Rule{
 	{
 		Filter: []string{"code"},
 		Replacement: func(_ string, selec *goquery.Selection, opt *Options) *string {
-			code := getHTML(selec)
+			code := getCodeContent(selec)
 
 			// Newlines in the text aren't great, since this is inline code and not a code block.
 			// Newlines will be stripped anyway in the browser, but it won't be recognized as code
@@ -324,10 +324,7 @@ var commonmark = []Rule{
 			language := codeElement.AttrOr("class", "")
 			language = strings.Replace(language, "language-", "", 1)
 
-			code := getHTML(codeElement)
-			if codeElement.Length() == 0 {
-				code = getHTML(selec)
-			}
+			code := getCodeContent(selec)
 
 			fenceChar, _ := utf8.DecodeRuneInString(opt.Fence)
 			fence := CalculateCodeFence(fenceChar, code)

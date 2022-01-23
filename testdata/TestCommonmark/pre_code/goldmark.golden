@@ -36,8 +36,70 @@ The &lt;img/&gt; tag is used to embed an image.
 
 </code></pre>
 <pre><code>
+    &lt;ul&gt;
+        &lt;li data-converter-list-prefix=&quot;- &quot;&gt;One&lt;/li&gt;
+        &lt;li data-converter-list-prefix=&quot;- &quot;&gt;Two&lt;/li&gt;
+        &lt;li data-converter-list-prefix=&quot;- &quot;&gt;Three&lt;/li&gt;
+    &lt;/ul&gt;
+
+</code></pre>
+<pre><code>
 &lt;a href=&quot;#Blabla&quot; data-index=&quot;1&quot;&gt;
     &lt;img src=&quot;http://bla.bla/img/img.svg&quot; style=&quot;height:auto&quot; width=&quot;200px&quot;/&gt;
 &lt;/a&gt;
+
+</code></pre>
+<p>We can do this like so:</p>
+<pre><code class="language-js">window.location.pathname.split(&quot;/&quot;);
+// [&quot;&quot;, &quot;blog&quot;, &quot;javascript&quot;, &quot;how-to-get-the-last-segment-of-a-url-in-javascript&quot;, &quot;&quot;]
+</code></pre>
+<hr>
+<pre><code class="language-js">function fn() {
+    x = 1;
+    return x;
+    // eslint-disable-next-line no-unreachable
+    x = 3;
+}
+</code></pre>
+<hr>
+<pre><code>&lt;p&gt;&lt;span&gt;Some text&lt;/span&gt;&lt;/p&gt;
+
+</code></pre>
+<p>Copy to Clipboard</p>
+<hr>
+<h4>HTML:</h4>
+<pre><code>&lt;p&gt;Using CSS to change the font color is easy.&lt;/p&gt;
+&lt;pre&gt;
+body {
+color: red;
+}
+&lt;/pre&gt;
+
+</code></pre>
+<p>Copy to Clipboard</p>
+<hr>
+<pre><code class="language-md">---
+title: &quot;Hello! This is the markdown file&quot;
+date: 2021-09-25
+tags: [&quot;react&quot;]
+---
+
+Content of the post goes here.
+
+![Image with alt text](./image.png)
+</code></pre>
+<hr>
+<pre><code class="language-markup">&lt;code class=&quot;language-css&quot;&gt;p { color: red }&lt;/code&gt;
+</code></pre>
+<hr>
+<p>The function <code>selectAll()</code> highlights all the text in the
+input field so the user can, for example, copy or delete the text.</p>
+<p>The <strong><code>&lt;pre&gt;</code></strong> <a href="http://example.com/en-US/docs/Web/HTML">HTML</a> element represents preformatted text.</p>
+<hr>
+<pre><code>
+This is the content:
+&lt;code&gt;_code_&lt;/code&gt;
+&lt;pre&gt;_pre_&lt;/pre&gt;
+Cool!
 
 </code></pre>

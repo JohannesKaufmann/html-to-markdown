@@ -71,8 +71,99 @@ The <img/> tag is used to embed an image.
 
 ```
 
+    <ul>
+        <li data-converter-list-prefix="- ">One</li>
+        <li data-converter-list-prefix="- ">Two</li>
+        <li data-converter-list-prefix="- ">Three</li>
+    </ul>
+
+```
+
+```
+
 <a href="#Blabla" data-index="1">
     <img src="http://bla.bla/img/img.svg" style="height:auto" width="200px"/>
 </a>
+
+```
+
+We can do this like so:
+
+```js
+window.location.pathname.split("/");
+// ["", "blog", "javascript", "how-to-get-the-last-segment-of-a-url-in-javascript", ""]
+```
+
+* * *
+
+```js
+function fn() {
+    x = 1;
+    return x;
+    // eslint-disable-next-line no-unreachable
+    x = 3;
+}
+```
+
+* * *
+
+```
+<p><span>Some text</span></p>
+
+```
+
+Copy to Clipboard
+
+* * *
+
+#### HTML:
+
+```
+<p>Using CSS to change the font color is easy.</p>
+<pre>
+body {
+color: red;
+}
+</pre>
+
+```
+
+Copy to Clipboard
+
+* * *
+
+```md
+---
+title: "Hello! This is the markdown file"
+date: 2021-09-25
+tags: ["react"]
+---
+
+Content of the post goes here.
+
+![Image with alt text](./image.png)
+```
+
+* * *
+
+```markup
+<code class="language-css">p { color: red }</code>
+```
+
+* * *
+
+The function `selectAll()` highlights all the text in the
+input field so the user can, for example, copy or delete the text.
+
+The **`<pre>`** [HTML](http://example.com/en-US/docs/Web/HTML) element represents preformatted text.
+
+* * *
+
+```
+
+This is the content:
+<code>_code_</code>
+<pre>_pre_</pre>
+Cool!
 
 ```
