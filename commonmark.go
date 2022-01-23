@@ -346,6 +346,12 @@ var commonmark = []Rule{
 	{
 		Filter: []string{"hr"},
 		Replacement: func(content string, selec *goquery.Selection, opt *Options) *string {
+			// e.g. `## --- Heading` would look weird, so don't render a divider if inside a heading
+			insideHeading := selec.ParentsFiltered("h1,h2,h3,h4,h5,h6").Length() > 0
+			if insideHeading {
+				return String("")
+			}
+
 			text := "\n\n" + opt.HorizontalRule + "\n\n"
 			return &text
 		},
