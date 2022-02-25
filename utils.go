@@ -367,17 +367,19 @@ func getListPrefix(opt *Options, s *goquery.Selection) string {
 	parent := s.Parent()
 	if parent.Is("ul") {
 		return opt.BulletListMarker + " "
+	} else if parent.Is("ol") {
+		currentIndex := s.Index() + 1
+
+		lastIndex := parent.Children().Last().Index() + 1
+		maxLength := len(strconv.Itoa(lastIndex))
+
+		// pad the numbers so that all prefix numbers in the list take up the same space
+		// `%02d.` -> "01. "
+		format := `%0` + strconv.Itoa(maxLength) + `d. `
+		return fmt.Sprintf(format, currentIndex)
 	}
-
-	currentIndex := s.Index() + 1
-
-	lastIndex := parent.Children().Last().Index() + 1
-	maxLength := len(strconv.Itoa(lastIndex))
-
-	// pad the numbers so that all prefix numbers in the list take up the same space
-	// `%02d.` -> "01. "
-	format := `%0` + strconv.Itoa(maxLength) + `d. `
-	return fmt.Sprintf(format, currentIndex)
+	// If the HTML is malformed and the list element isn't in a ul or ol, return no prefix
+	return ""
 }
 
 // countListParents counts how much space is reserved for the prefixes at all the parent lists.
