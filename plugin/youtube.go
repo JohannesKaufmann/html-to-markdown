@@ -18,7 +18,7 @@ var EXPERIMENTALYoutubeEmbed = []md.Rule{
 		Filter: []string{"iframe"},
 		Replacement: func(content string, selec *goquery.Selection, opt *md.Options) *string {
 			src := selec.AttrOr("src", "")
-			if !strings.Contains(src, "www.youtube.com") {
+			if !strings.Contains(src, "youtube.com") {
 				return nil
 			}
 			alt := selec.AttrOr("title", "")
