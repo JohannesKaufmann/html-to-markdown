@@ -168,8 +168,6 @@ Cool!
 
 * * *
 
-The telnet client should display: `Local Echo is on`
-
 A simple equation: x = y \+ 2
 
 When the process is complete, the utility will output the text
@@ -178,3 +176,10 @@ proceed to the next step.
 
 Use the command `help mycommand` to view documentation
 for the command "mycommand".
+
+The telnet client should display: `Local Echo is on`
+
+The operator `(#)` takes a bit `x` and a
+sequence `a` and produces a new sequence `x # a` with
+`x` as the head and `a` as the tail (very much like the
+built-in operation `(:)` for lists):
