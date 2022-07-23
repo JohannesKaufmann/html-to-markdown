@@ -15,7 +15,7 @@ func Fprint(w io.Writer, a ...interface{}) (n int, err error) {
 </code></pre>
 <p>When <code>x = 3</code>, that means <code>x + 2 = 5</code></p>
 <p>The <code>&lt;img&gt;</code> tag is used to embed an image.</p>
-<p>The <code>&lt;img/&gt;</code> tag is used to embed an image.</p>
+<p>The `` tag is used to embed an image.</p>
 <p>Two variables <code>A</code> <code>B</code></p>
 <p>CSS: <code>body { color: yellow; font-size: 16px; }</code></p>
 <p>CSS: <code>body { color: yellow; font-size: 16px; }</code></p>
@@ -32,21 +32,19 @@ totally ~~~~~~ normal
 <pre><code>
 The &lt;img&gt; tag is used to embed an image.
 
-The &lt;img/&gt; tag is used to embed an image.
+The  tag is used to embed an image.
 
 </code></pre>
 <pre><code>
-    &lt;ul&gt;
-        &lt;li data-converter-list-prefix=&quot;- &quot;&gt;One&lt;/li&gt;
-        &lt;li data-converter-list-prefix=&quot;- &quot;&gt;Two&lt;/li&gt;
-        &lt;li data-converter-list-prefix=&quot;- &quot;&gt;Three&lt;/li&gt;
-    &lt;/ul&gt;
+
+        One
+        Two
+        Three
+
 
 </code></pre>
 <pre><code>
-&lt;a href=&quot;#Blabla&quot; data-index=&quot;1&quot;&gt;
-    &lt;img src=&quot;http://bla.bla/img/img.svg&quot; style=&quot;height:auto&quot; width=&quot;200px&quot;/&gt;
-&lt;/a&gt;
+
 
 </code></pre>
 <p>We can do this like so:</p>
@@ -98,8 +96,8 @@ input field so the user can, for example, copy or delete the text.</p>
 <hr>
 <pre><code>
 This is the content:
-&lt;code&gt;_code_&lt;/code&gt;
-&lt;pre&gt;_pre_&lt;/pre&gt;
+_code_
+_pre_
 Cool!
 
 </code></pre>

@@ -11,7 +11,6 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"golang.org/x/net/html"
-	"golang.org/x/net/html/atom"
 )
 
 /*
@@ -141,17 +140,44 @@ func AddSpaceIfNessesary(selec *goquery.Selection, markdown string) string {
 	return markdown
 }
 
+func isLineCodeDelimiter(chars []rune) bool {
+	if len(chars) < 3 {
+		return false
+	}
+
+	// TODO: If it starts with 4 (instead of 3) fence characters, we should only end it
+	// if we see the same amount of ending fence characters.
+	return chars[0] == '`' && chars[1] == '`' && chars[2] == '`'
+}
+
 // TrimpLeadingSpaces removes spaces from the beginning of a line
 // but makes sure that list items and code blocks are not affected.
 func TrimpLeadingSpaces(text string) string {
-	parts := strings.Split(text, "\n")
-	for i := range parts {
-		b := []byte(parts[i])
+	var insideCodeBlock bool
+
+	lines := strings.Split(text, "\n")
+	for index := range lines {
+		chars := []rune(lines[index])
+
+		if isLineCodeDelimiter(chars) {
+			if !insideCodeBlock {
+				// start the code block
+				insideCodeBlock = true
+			} else {
+				// end the code block
+				insideCodeBlock = false
+			}
+		}
+		if insideCodeBlock {
+			// We are inside a code block and don't want to
+			// disturb that formatting (e.g. python indentation)
+			continue
+		}
 
 		var spaces int
-		for i := 0; i < len(b); i++ {
-			if unicode.IsSpace(rune(b[i])) {
-				if b[i] == '	' {
+		for i := 0; i < len(chars); i++ {
+			if unicode.IsSpace(chars[i]) {
+				if chars[i] == '	' {
 					spaces = spaces + 4
 				} else {
 					spaces++
@@ -160,7 +186,7 @@ func TrimpLeadingSpaces(text string) string {
 			}
 
 			// this seems to be a list item
-			if b[i] == '-' {
+			if chars[i] == '-' {
 				break
 			}
 
@@ -170,13 +196,13 @@ func TrimpLeadingSpaces(text string) string {
 			}
 
 			// remove the space characters from the string
-			b = b[i:]
+			chars = chars[i:]
 			break
 		}
-		parts[i] = string(b)
+		lines[index] = string(chars)
 	}
 
-	return strings.Join(parts, "\n")
+	return strings.Join(lines, "\n")
 }
 
 // TrimTrailingSpaces removes unnecessary spaces from the end of lines.
@@ -263,52 +289,31 @@ func findMax(a []int) (max int) {
 	return max
 }
 
-func stripHighlightTags(doc *html.Node) (string, error) {
-	var render = func(n *html.Node, level int) (content string, skipChilds bool) {
-		if n.Type != html.ElementNode {
-			return "", false
-		}
+func getCodeWithoutTags(startNode *html.Node) []byte {
+	var buf bytes.Buffer
 
-		// Only skip top level code/pre tags
-		if level <= 2 && (n.DataAtom == atom.Code || n.DataAtom == atom.Pre) {
-			return "", false
-		}
-		// Unfortunately span tags are oftentimes used for code highlighting,
-		// so we don't render <span> tags but keep its text content.
-		if n.DataAtom == atom.Span {
-			return "", false
-		}
-
-		// Let the other content be rendered as html
-		var buf bytes.Buffer
-		err := html.Render(&buf, n)
-		if err != nil {
+	var f func(*html.Node)
+	f = func(n *html.Node) {
+		if n.Type == html.ElementNode && (n.Data == "style" || n.Data == "script" || n.Data == "textarea") {
 			return
 		}
-		return buf.String(), true
-	}
+		if n.Type == html.ElementNode && (n.Data == "br" || n.Data == "div") {
+			buf.WriteString("\n")
+		}
 
-	var result strings.Builder
-	var f func(*html.Node, int)
-	f = func(n *html.Node, level int) {
 		if n.Type == html.TextNode {
-			result.WriteString(n.Data)
+			buf.WriteString(n.Data)
 			return
 		}
 
-		content, skipChilds := render(n, level)
-		result.WriteString(content)
-
-		if skipChilds {
-			return
-		}
 		for c := n.FirstChild; c != nil; c = c.NextSibling {
-			f(c, level+1)
+			f(c)
 		}
 	}
-	f(doc, 1)
 
-	return result.String(), nil
+	f(startNode)
+
+	return buf.Bytes()
 }
 
 // getCodeContent gets the content of pre/code and unescapes the encoded characters.
@@ -318,12 +323,9 @@ func getCodeContent(selec *goquery.Selection) string {
 		return ""
 	}
 
-	content, err := stripHighlightTags(selec.Nodes[0])
-	if err != nil {
-		return ""
-	}
+	code := getCodeWithoutTags(selec.Nodes[0])
 
-	return content
+	return string(code)
 }
 
 // delimiterForEveryLine puts the delimiter not just at the start and end of the string

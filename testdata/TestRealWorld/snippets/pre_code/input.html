@@ -1,0 +1,647 @@
+<!-- https://www.joshwcomeau.com/react/wonderful-emails-with-mjml-and-mdx/ -->
+<p class="Paragraph-sc-d2u36h-0 dWwFxy">
+  The MJML tool provides a CLI you can use to transform MJML into HTML:
+</p>
+<pre><div style="margin-bottom: 80px;" class="CodeSnippet__OuterWrapper-sc-1waqm04-0 lHgIv"><div class="StaticCodeWrapper__Language-sc-a0rdei-1 hZdYYS">bash</div><div data-code-snippet="true" style="min-height: 60px; max-height: 75vh;" class="StaticCodeWrapper__Wrapper-sc-a0rdei-0 kWUDUZ"><div class="StaticCodeSnippet__InertEditor-sc-3ndi2-1 cgpjpF" style="position: relative;"><textarea style="margin: 0px;" class="npm__react-simple-code-editor__textarea" disabled="" autocapitalize="none" autocomplete="off" autocorrect="off" spellcheck="false" data-gramm="false">$ mjml input.mjml -o output.html</textarea><pre aria-hidden="true" style="margin: 0px;"><div class="token-line" style="color: var(--syntax-txt); padding: 0px; font-family: var(--font-family-mono);"><span class="token plain">$ mjml input.mjml -o output.html</span></div></pre><style type="text/css">
+/**
+ * Reset the text fill color so that placeholder is visible
+ */
+.npm__react-simple-code-editor__textarea:empty {
+  -webkit-text-fill-color: inherit !important;
+}
+</style></div></div></div></pre>
+<p class="Paragraph-sc-d2u36h-0 dWwFxy">
+  Curiously, all text elements (paragraphs and headings) use the same tag,
+  <code class="InlineCode-sc-187729h-0 YNroS">&lt;mj-text&gt;</code>. You can
+  create headings by applying cosmetic styles as inline attributes, like:
+</p>
+<pre><div style="margin-bottom: 80px;" class="CodeSnippet__OuterWrapper-sc-1waqm04-0 lHgIv"><div class="StaticCodeWrapper__Language-sc-a0rdei-1 hZdYYS">html</div><div data-code-snippet="true" style="min-height: 200px; max-height: 75vh;" class="StaticCodeWrapper__Wrapper-sc-a0rdei-0 kWUDUZ"><div class="StaticCodeSnippet__InertEditor-sc-3ndi2-1 cgpjpF" style="position: relative;"><textarea style="margin: 0px;" class="npm__react-simple-code-editor__textarea" disabled="" autocapitalize="none" autocomplete="off" autocorrect="off" spellcheck="false" data-gramm="false">&lt;mj-text
+  align="center"
+  font-size="32px"
+  font-weight="bold"
+  color="#FF0000"
+&gt;</textarea><pre aria-hidden="true" style="margin: 0px;"><div class="token-line" ><span class="token tag punctuation">&lt;</span><span class="token tag">mj-text</span><span class="token tag" style="color: var(--syntax-prop); font-weight: var(--font-weight-medium);"></span></div><div class="token-line" style="color: var(--syntax-txt); padding: 0px; font-family: var(--font-family-mono);"><span class="token tag" style="color: var(--syntax-prop); font-weight: var(--font-weight-medium);">  </span><span class="token tag attr-name" style="color: var(--syntax-name); font-weight: var(--font-weight-medium);">align</span><span class="token tag attr-value punctuation" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">=</span><span class="token tag attr-value punctuation" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">"</span><span class="token tag attr-value" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">center</span><span class="token tag attr-value punctuation" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">"</span><span class="token tag" style="color: var(--syntax-prop); font-weight: var(--font-weight-medium);"></span></div><div class="token-line" style="color: var(--syntax-txt); padding: 0px; font-family: var(--font-family-mono);"><span class="token tag" style="color: var(--syntax-prop); font-weight: var(--font-weight-medium);">  </span><span class="token tag attr-name" style="color: var(--syntax-name); font-weight: var(--font-weight-medium);">font-size</span><span class="token tag attr-value punctuation" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">=</span><span class="token tag attr-value punctuation" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">"</span><span class="token tag attr-value" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">32px</span><span class="token tag attr-value punctuation" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">"</span><span class="token tag" style="color: var(--syntax-prop); font-weight: var(--font-weight-medium);"></span></div><div class="token-line" style="color: var(--syntax-txt); padding: 0px; font-family: var(--font-family-mono);"><span class="token tag" style="color: var(--syntax-prop); font-weight: var(--font-weight-medium);">  </span><span class="token tag attr-name" style="color: var(--syntax-name); font-weight: var(--font-weight-medium);">font-weight</span><span class="token tag attr-value punctuation" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">=</span><span class="token tag attr-value punctuation" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">"</span><span class="token tag attr-value" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">bold</span><span class="token tag attr-value punctuation" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">"</span><span class="token tag" style="color: var(--syntax-prop); font-weight: var(--font-weight-medium);"></span></div><div class="token-line" style="color: var(--syntax-txt); padding: 0px; font-family: var(--font-family-mono);"><span class="token tag" style="color: var(--syntax-prop); font-weight: var(--font-weight-medium);">  </span><span class="token tag attr-name" style="color: var(--syntax-name); font-weight: var(--font-weight-medium);">color</span><span class="token tag attr-value punctuation" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">=</span><span class="token tag attr-value punctuation" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">"</span><span class="token tag attr-value" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">#FF0000</span><span class="token tag attr-value punctuation" style="color: var(--syntax-val); font-weight: var(--font-weight-medium);">"</span><span class="token tag" style="color: var(--syntax-prop); font-weight: var(--font-weight-medium);"></span></div><div class="token-line" style="color: var(--syntax-txt); padding: 0px; font-family: var(--font-family-mono);"><span class="token tag" style="color: var(--syntax-prop); font-weight: var(--font-weight-medium);"></span><span class="token tag punctuation" style="color: var(--syntax-prop); font-weight: var(--font-weight-medium);">&gt;</span></div></pre><style type="text/css">
+/**
+ * Reset the text fill color so that placeholder is visible
+ */
+.npm__react-simple-code-editor__textarea:empty {
+  -webkit-text-fill-color: inherit !important;
+}
+</style></div></div></div></pre>
+
+<hr />
+
+<!-- https://pkg.go.dev/bytes@go1.18.3 -->
+<div class="Documentation-declaration">
+  <pre>func HasPrefix(s, prefix []<a href="/builtin#byte">byte</a>) <a href="/builtin#bool">bool</a></pre>
+</div>
+
+<hr />
+
+<!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/pre -->
+<h4 id="html">HTML</h4>
+<div class="code-example">
+  <pre
+    class="brush: html notranslate"
+  ><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>Using CSS to change the font color is easy.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>pre</span><span class="token punctuation">&gt;</span></span>
+body {
+  color: red;
+}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>pre</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+  <button type="button" class="icon copy-icon">
+    <span class="visually-hidden">Copy to Clipboard</span></button
+  ><span
+    class="copy-icon-message visually-hidden"
+    role="alert"
+    style="top: 52px"
+  ></span>
+</div>
+
+<div>
+  <p>Using CSS to change the font color is easy.</p>
+  <pre>
+body {
+  color: red;
+}
+</pre
+  >
+</div>
+
+<hr />
+
+<!-- https://www.bookstack.cn/read/the-way-to-go_ZH_CN/eBook-04.3.md -->
+<pre
+  class="prettyprint linenums prettyprinted"
+  style=""
+><button class="btn btn-danger btn-sm btn-copy"><i class="fa fa-copy"></i> 复制代码</button><ol class="linenums"><li class="L0"><code class="lang-go"><span class="kwd">const</span><span class="pln"> </span><span class="typ">Pi</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="lit">3.14159</span></code></li></ol></pre>
+
+<code class="lang-go"
+  ><span class="kwd">const</span><span class="pln"> </span
+  ><span class="typ">Pi</span><span class="pln"> </span
+  ><span class="pun">=</span><span class="pln"> </span
+  ><span class="lit">3.14159</span></code
+>
+<!-- with <li> for every line -->
+<pre
+  class="prettyprint linenums prettyprinted"
+  style=""
+><button class="btn btn-danger btn-sm btn-copy"><i class="fa fa-copy"></i> 复制代码</button><ol class="linenums"><li class="L0"><code class="lang-go"><span class="kwd">var</span><span class="pln"> n </span><span class="kwd">int</span></code></li><li class="L1"><code class="lang-go"><span class="pln">f</span><span class="pun">(</span><span class="pln">n </span><span class="pun">+</span><span class="pln"> </span><span class="lit">5</span><span class="pun">)</span><span class="pln"> </span><span class="com">// 无类型的数字型常量 “5” 它的类型在这里变成了 int</span></code></li></ol></pre>
+
+<hr />
+
+<!-- https://medium.com/benchkram/building-hugo-with-bob-f33d6e208ff0 -->
+<pre
+  class="mk ml mm mn gz mo bt mp"
+><span id="e20d" class="gc mq li ja mr b do ms mt l mu">mkdir hugo-contrib<br>cd hugo-contrib<br>git clone <a class="au lg" href="mailto:git@github.com" rel="noopener ugc nofollow" target="_blank">git@github.com</a>:gohugoio/hugo.git</span></pre>
+<p id="d96c" class="pw-post-body-paragraph">
+  Save the changes and run your first bob command:
+</p>
+<pre
+  class="mk ml mm mn gz mo bt mp"
+><span id="dd05" class="gc mq li ja mr b do ms mt l mu">bob build</span></pre>
+
+<hr />
+
+<!-- https://bob.build/docs/getting-started/installation/ -->
+<p>To confirm that everything went fine, just run:</p>
+<div class="codeBlockContainer_K1bP">
+  <div class="codeBlockContent_hGly shell">
+    <pre
+      tabindex="0"
+      class="prism-code language-shell codeBlock_23N8 thin-scrollbar"
+      style="color: rgb(191, 199, 213); background-color: rgb(41, 45, 62)"
+    ><code class="codeBlockLines_39YC"><span class="token-line" style="color: rgb(191, 199, 213);"><span class="token plain">bob --version</span><br></span></code></pre>
+    <button
+      type="button"
+      aria-label="Copy code to clipboard"
+      class="copyButton_Ue-o clean-btn"
+    >
+      Copy
+    </button>
+  </div>
+</div>
+
+<hr />
+
+<!-- https://moxie.org/2022/01/07/web3-first-impressions.html -->
+<p>
+  For instance, MetaMask displays your recent transactions by making an API call
+  to etherscan:
+</p>
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <pre
+      class="highlight"
+    ><code>GET https://api.etherscan.io/api?module=account&amp;address=0x0208376c899fdaEbA530570c008C4323803AA9E8&amp;offset=40&amp;order=desc&amp;action=txlist&amp;tag=latest&amp;page=1 HTTP/2.0                                                          
+</code></pre>
+  </div>
+</div>
+<p>…displays your account balance by making an API call to Infura:</p>
+<div class="highlighter-rouge">
+  <div class="highlight">
+    <pre
+      class="highlight"
+    ><code>POST https://mainnet.infura.io/v3/d039103314584a379e33c21fbe89b6cb HTTP/2.0
+
+{
+    "id": 2628746552039525,
+    "jsonrpc": "2.0",
+    "method": "eth_getBalance",
+    "params": [
+        "0x0208376c899fdaEbA530570c008C4323803AA9E8",
+        "latest"
+    ]
+}
+</code></pre>
+  </div>
+</div>
+
+<hr />
+
+<!-- https://intuitiveexplanations.com/tech/replit/ -->
+<p>
+  After it was working, I started adding as many different programming languages
+  as I could. As you can see from this excerpt of my project’s version history,
+  I got a little overexcited:
+</p>
+<pre><code>                                                                   languages
+                                                                   ---------
+2020-06-05 df9ba38 Initial commit                                          0
+2020-06-05 5e3a4a4 Install some packages into a Docker image               0
+2020-06-05 e937c8f Simple Express server with "Hello world"                0
+2020-06-06 0961498 Embed terminal on frontend app                          0
+2020-06-06 c66cf63 Embed Monaco editor on frontend                         0
+2020-06-06 27ab1f7 Add "run" button                                        0
+2020-06-06 f417858 You can run Python code now                             1
+2020-06-07 d543081 You can run many languages now                          8
+2020-06-07 e2a3e71 All languages 17 working now                           17
+2020-06-07 473c50c ALL THE LANGUAGES                                      25
+2020-06-08 3718315 even more languages                                    33
+2020-06-08 548c1c1 repl.it superiority!!                                  38
+2020-06-08 1ae424f More languages, we need all the languages              48
+2020-06-09 c34ccf2 A lot more languages                                   77
+2020-06-09 846caf2 At this point the number of languages is absurd        79
+</code></pre>
+
+<hr />
+
+<!-- https://nee.lv/2021/02/28/How-I-cut-GTA-Online-loading-times-by-70/ -->
+<p>
+  Disassembling the now-less-obfuscated dump reveals that one of the addresses
+  has a label pulled out of somewhere! It’s <code>strlen</code>? Going down the
+  call stack the next one is labeled <code>vscan_fn</code> and after that the
+  labels end, tho I’m fairly confident it’s
+  <a
+    target="_blank"
+    rel="noopener"
+    href="https://github.com/chakra-core/ChakraCore/blob/master/pal/src/safecrt/sscanf.c#L47"
+    ><code>sscanf</code></a
+  >.
+</p>
+<figure class="highlight">
+  <span
+    class="btn-copy tooltipped tooltipped-sw"
+    aria-label="Copy to clipboard!"
+    ><i class="far fa-clone"></i
+  ></span>
+  <table>
+    <tbody>
+      <tr>
+        <td class="gutter">
+          <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+        </td>
+        <td class="code">
+          <pre><span class="line">...,</span><br><span class="line">{</span><br><span class="line">    <span class="attr">"key"</span>: <span class="string">"WP_WCT_TINT_21_t2_v9_n2"</span>,</span><br><span class="line">    <span class="attr">"price"</span>: <span class="number">45000</span>,</span><br><span class="line">    <span class="attr">"statName"</span>: <span class="string">"CHAR_KIT_FM_PURCHASE20"</span>,</span><br><span class="line">    <span class="attr">"storageType"</span>: <span class="string">"BITFIELD"</span>,</span><br><span class="line">    <span class="attr">"bitShift"</span>: <span class="number">7</span>,</span><br><span class="line">    <span class="attr">"bitSize"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">"category"</span>: [<span class="string">"CATEGORY_WEAPON_MOD"</span>]</span><br><span class="line">},</span><br><span class="line">...</span><br></pre>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<hr />
+
+<!-- https://stackoverflow.com/questions/4611591/code-vs-pre-vs-samp-for-inline-and-block-code-snippets -->
+<div class="snippet" data-lang="js">
+  <div class="snippet-code">
+    <pre
+      class="snippet-code-html lang-html s-code-block"
+    ><code class="hljs language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>This is the <span class="hljs-tag">&lt;<span class="hljs-name">code</span>&gt;</span>Panel<span class="hljs-tag">&lt;/<span class="hljs-name">code</span>&gt;</span> constructor:<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">pre</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">code</span>&gt;</span>function Panel(element, canClose, closeHandler) {
+      this.element = element;
+      this.canClose = canClose;
+      this.closeHandler = function () { if (closeHandler) closeHandler() };
+    }<span class="hljs-tag">&lt;/<span class="hljs-name">code</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span></code></pre>
+    <div class="snippet-result">
+      <div class="snippet-ctas">
+        <button type="button" class="s-btn s-btn__primary">
+          <span class="icon-play-white _hover"></span
+          ><span> Run code snippet</span></button
+        ><input
+          class="copySnippet s-btn s-btn__filled"
+          type="button"
+          value="Copy snippet to answer"
+          style="display: none"
+        /><button type="button" class="s-btn hideResults" style="display: none">
+          Hide results
+        </button>
+        <div class="popout-code">
+          <a class="snippet-expand-link">Expand snippet</a>
+        </div>
+      </div>
+      <div class="snippet-result-code" style="display: none">
+        <iframe
+          name="sif1"
+          sandbox="allow-forms allow-modals allow-scripts"
+          class="snippet-box-edit snippet-box-result"
+          frameborder="0"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="comment-body js-comment-edit-hide">
+  <span class="comment-copy"
+    >Problem with <code>&lt;pre&gt;</code> is it modifies whitespace processing
+    as well: all spaces are preserved, and wrapping is switched off. Unless
+    there's a way to switch this off?</span
+  >
+</div>
+<br />
+<p>
+  <strong>Use the <code>&lt;textarea&gt;</code> element to share code</strong>,
+  like so:
+</p>
+<pre
+  class="lang-html s-code-block"
+><code class="hljs language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">textarea</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"code"</span> <span class="hljs-attr">contenteditable</span>=<span class="hljs-string">"true"</span> <span class="hljs-attr">spellcheck</span>=<span class="hljs-string">"false"</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">'Code Sample'</span>&gt;</span>
+  My Sample Bookmark:
+  <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#bookmark1"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"b1"</span> <span class="hljs-attr">title</span>=<span class="hljs-string">"View my bookmark"</span> <span class="hljs-attr">target</span>=<span class="hljs-string">"_blank"</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"noreferrer nofollow noopener"</span> <span class="hljs-attr">accesskey</span>=<span class="hljs-string">"a"</span> <span class="hljs-attr">tabindex</span>=<span class="hljs-string">"0"</span> <span class="hljs-attr">aria-label</span>=<span class="hljs-string">"Bookmark"</span>&gt;</span>Got to My Bookmark<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">textarea</span>&gt;</span>
+</code></pre>
+
+<br />
+<hr />
+<hr />
+<br />
+
+<!-- https://lore.kernel.org/linux-nfs/YH+zwQgBBGUJdiVK@unreal/ -->
+<div>
+  <form action="../">
+    <pre><a href="../?t=20210421051032"><b>linux-nfs.vger.kernel.org archive mirror</b></a>
+<input name="q" type="text"><input type="submit" value="search"> <a href="../_/text/help/">help</a> / <a href="../_/text/color/">color</a> / <a id="mirror" href="../_/text/mirror/">mirror</a> / <a href="../new.atom">Atom feed</a></pre>
+  </form>
+  <pre id="b">From: Leon Romanovsky &lt;leon@kernel.org&gt;
+To: "J. Bruce Fields" &lt;bfields@fieldses.org&gt;
+Cc: Greg KH &lt;gregkh@linuxfoundation.org&gt;,
+	Aditya Pakki &lt;pakki001@umn.edu&gt;,
+	Chuck Lever &lt;chuck.lever@oracle.com&gt;,
+	Trond Myklebust &lt;trond.myklebust@hammerspace.com&gt;,
+	Anna Schumaker &lt;anna.schumaker@netapp.com&gt;,
+	"David S. Miller" &lt;davem@davemloft.net&gt;,
+	Jakub Kicinski &lt;kuba@kernel.org&gt;,
+	Dave Wysochanski &lt;dwysocha@redhat.com&gt;,
+	linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: <a href="#r" id="t">Re: [PATCH] SUNRPC: Add a check for gss_release_msg</a>
+Date: Wed, 21 Apr 2021 08:10:25 +0300	<a href="#r">[thread overview]</a>
+Message-ID: &lt;YH+zwQgBBGUJdiVK@unreal&gt; (<a href="raw">raw</a>)
+In-Reply-To: &lt;<a href="../20210420171008.GB4017@fieldses.org/">20210420171008.GB4017@fieldses.org</a>&gt;
+
+On Tue, Apr 20, 2021 at 01:10:08PM -0400, J. Bruce Fields wrote:
+<span class="q">&gt; On Tue, Apr 20, 2021 at 09:15:23AM +0200, Greg KH wrote:
+&gt; &gt; If you look at the code, this is impossible to have happen.
+&gt; &gt; 
+&gt; &gt; Please stop submitting known-invalid patches.  Your professor is playing
+&gt; &gt; around with the review process in order to achieve a paper in some
+&gt; &gt; strange and bizarre way.
+&gt; &gt; 
+&gt; &gt; This is not ok, it is wasting our time, and we will have to report this,
+&gt; &gt; AGAIN, to your university...
+&gt; 
+&gt; What's the story here?
+</span>
+Those commits are part of the following research:
+<a href="https://github.com/QiushiWu/QiushiWu.github.io/blob/main/papers/OpenSourceInsecurity.pdf">https://github.com/QiushiWu/QiushiWu.github.io/blob/main/papers/OpenSourceInsecurity.pdf</a>
+
+They introduce kernel bugs on purpose. Yesterday, I took a look on 4
+accepted patches from Aditya and 3 of them added various severity security
+"holes".
+
+Thanks
+
+<span class="q">&gt; 
+&gt; --b.
+</span></pre>
+  <hr />
+  <pre><a href="../YH+7ZydHv4+Y1hlx@kroah.com/" rel="next">next</a> <a href="../20210420171008.GB4017@fieldses.org/" rel="prev">prev parent</a> <a href="#R">reply</a>	other threads:[<a href="../?t=20210421051032">~2021-04-21  5:10 UTC</a>|<a href="../">newest</a>]
+
+<b>Thread overview: </b>49+ messages / expand[<a href="T/#u">flat</a>|<a href="t/#u">nested</a>]  <a href="t.mbox.gz">mbox.gz</a>  <a href="t.atom">Atom feed</a>  <a href="#b">top</a>
+2021-04-07  0:16 <a href="../20210407001658.2208535-1-pakki001@umn.edu/">Aditya Pakki</a>
+2021-04-07 15:34 ` <a href="../20210407153458.GA28924@fieldses.org/">J. Bruce Fields</a>
+2021-04-08 15:01 ` <a href="../c0de0985c0bf09a96efc538da2146f86e6fa7037.camel@hammerspace.com/">Trond Myklebust</a>
+2021-04-08 15:24   ` <a href="../CAN-5tyETkDBVfYQrBOm1veAzMdo-9K37bfgL+QZTPW=d2OAP9A@mail.gmail.com/">Olga Kornievskaia</a>
+2021-04-08 16:02     ` <a href="../717504ebff4d1c7506897d1fd8e6550d9969d983.camel@hammerspace.com/">Trond Myklebust</a>
+2021-04-20  7:15 ` <a href="../YH5%2Fi7OvsjSmqADv@kroah.com/">Greg KH</a>
+2021-04-20 17:10   ` <a href="../20210420171008.GB4017@fieldses.org/">J. Bruce Fields</a>
+<b>2021-04-21  5:10     ` <a id="r" href="#t">Leon Romanovsky [this message]</a></b>
+2021-04-21  5:43       ` <a href="../YH+7ZydHv4+Y1hlx@kroah.com/">Greg KH</a>
+2021-04-21  6:08         ` <a href="../YH%2FBVW9Kdr9nY5Bs@unreal/">Leon Romanovsky</a>
+     [not found]         ` &lt;<a href="../CA+EnHHSw4X+ubOUNYP2zXNpu70G74NN1Sct2Zin6pRgq--TqhA@mail.gmail.com/">CA+EnHHSw4X+ubOUNYP2zXNpu70G74NN1Sct2Zin6pRgq--TqhA@mail.gmail.com</a>&gt;
+2021-04-21  8:15           ` <a href="../YH%2FfM%2FTsbmcZzwnX@kroah.com/">Greg KH</a>
+2021-04-21 10:07         ` <a href="../CADVatmNgU7t-Co84tSS6VW=3NcPu=17qyVyEEtVMVR_g51Ma6Q@mail.gmail.com/">Sudip Mukherjee</a>
+2021-04-21 10:21           ` <a href="../YH%2F8jcoC1ffuksrf@kroah.com/">Greg KH</a>
+2021-04-21 11:58             ` <a href="../3B9A54F7-6A61-4A34-9EAC-95332709BAE7@northeastern.edu/">Shelat, Abhi</a>
+2021-04-21 12:08               ` <a href="../YIAV1hqp3rkBxVWA@kroah.com/">Greg KH</a>
+2021-04-21 12:19               ` <a href="../YIAYThdIoAPu2h7b@unreal/">Leon Romanovsky</a>
+2021-04-21 13:11                 ` <a href="../6530850bc6f0341d1f2d5043ba1dd04e242cff66.camel@hammerspace.com/">Trond Myklebust</a>
+2021-04-21 13:20                   ` <a href="../YIAmrgZ4Bnqo%2FnmI@unreal/">Leon Romanovsky</a>
+2021-04-21 13:42                     ` <a href="../20210421094241.1bb65758@gandalf.local.home/">Steven Rostedt</a>
+2021-04-21 13:21                   ` <a href="../YIAmy0zgrQW%2F44Hz@kroah.com/">gregkh</a>
+2021-04-21 13:34                     ` <a href="../YIApyFQNCBOgNkhU@unreal/">Leon Romanovsky</a>
+2021-04-21 13:50                       ` <a href="../YIAtwtOpy%2FemQWr2@kroah.com/">gregkh</a>
+2021-04-21 14:12                         ` <a href="../YIAy1tH0miFxEJEk@unreal/">Leon Romanovsky</a>
+2021-04-21 18:50                         ` <a href="../821177ec-dba0-e411-3818-546225511a00@grundis.de/">Alexander Grund</a>
+2021-04-21 13:37               ` <a href="../20210421133727.GA27929@fieldses.org/">J. Bruce Fields</a>
+2021-04-21 13:49                 ` <a href="../YIAta3cRl8mk%2FRkH@unreal/">Leon Romanovsky</a>
+2021-04-21 13:56                   ` <a href="../20210421135637.GB27929@fieldses.org/">J. Bruce Fields</a>
+2021-04-22 19:39                     ` <a href="../20210422193950.GA25415@fieldses.org/">J. Bruce Fields</a>
+2021-04-23 17:25                       ` <a href="../YIMDCNx4q6esHTYt@unreal/">Leon Romanovsky</a>
+2021-04-23 18:07                         ` <a href="../20210423180727.GD10457@fieldses.org/">J. Bruce Fields</a>
+2021-04-23 19:29                           ` <a href="../YIMgMHwYkVBdrICs@unreal/">Leon Romanovsky</a>
+2021-04-23 21:48                             ` <a href="../20210423214850.GI10457@fieldses.org/">J. Bruce Fields</a>
+2021-04-24  7:21                               ` <a href="../YIPHBZj%2F0Tn4nWVe@unreal/">Leon Romanovsky</a>
+2021-04-24 18:34                               ` <a href="../YIRkxQCVr6lFM3r3@zeniv-ca.linux.org.uk/">Al Viro</a>
+2021-04-24 21:34                                 ` <a href="../20210424213454.GA4239@fieldses.org/">J. Bruce Fields</a>
+2021-04-25  0:41                                   ` <a href="../YIS6t+X1DOKlB+Z%2F@mit.edu/">Theodore Ts'o</a>
+2021-04-25  6:29                                     ` <a href="../YIUMYYcf%2FVW4a28k@kroah.com/">Greg KH</a>
+     [not found]                                       ` &lt;<a href="../20210426133605.GD21222@fieldses.org/">20210426133605.GD21222@fieldses.org</a>&gt;
+2021-04-26 13:47                                         ` <a href="../20210426134711.GE21222@fieldses.org/">J. Bruce Fields</a>
+2021-04-22  8:10             ` <a href="../CADVatmORofURmrLiV7GRW2ZchzL6zdQopwxAh2YSVT0y69KuHA@mail.gmail.com/">Sudip Mukherjee</a>
+2021-04-22  8:27               ` <a href="../YIEzZQR0hTSxmpAz@kroah.com/">Greg KH</a>
+2021-04-21 12:51       ` <a href="../CAFX2JfnGCbanTaGurArBw-5F2MynPD=GpwkfU6wVoNKr9ffzRg@mail.gmail.com/">Anna Schumaker</a>
+2021-04-21 14:15         ` <a href="../YIAzfsMx6bn5Twu8@unreal/">Leon Romanovsky</a>
+2021-04-21 15:48           ` <a href="../YIBJXjCbJ1ntH1RF@mit.edu/">Theodore Ts'o</a>
+2021-04-21 17:34             ` <a href="../YIBiQ3p9z7y6PeqT@kernel.org/">Mike Rapoport</a>
+2021-04-22  3:57               ` <a href="../YID0Fg3f0PzckJI9@unreal/">Leon Romanovsky</a>
+2021-04-21 22:52 ` <a href="../20210421225240.GA117423@roeck-us.net/">Guenter Roeck</a>
+     [not found] &lt;<a href="../CAHr+ZK-ayy2vku9ovuSB4egtOxrPEKxCdVQN3nFqMK07+K5_8g@mail.gmail.com/">CAHr+ZK-ayy2vku9ovuSB4egtOxrPEKxCdVQN3nFqMK07+K5_8g@mail.gmail.com</a>&gt;
+2021-04-21 19:49 ` <a href="../YICB3wiptvvtTeA5@mit.edu/">Theodore Ts'o</a>
+2021-04-22  7:50   ` <a href="../YIEqt8iAPVq8sG+t@sol.localdomain/">Eric Biggers</a>
+2021-04-21 20:27 <a href="../CAHr+ZK8xp5QU8wQHzuNkJdsP20fC=nW4B33gwMUwHY82f_u5WA@mail.gmail.com/">Weikeng Chen</a>
+</pre>
+  <hr />
+  <pre id="R"><b>Reply instructions:</b>
+
+You may reply publicly to <a href="#t">this message</a> via plain-text email
+using any one of the following methods:
+
+* Save the following mbox file, import it into your mail client,
+  and reply-to-all from there: <a href="raw">mbox</a>
+
+  Avoid top-posting and favor interleaved quoting:
+  <a href="https://en.wikipedia.org/wiki/Posting_style#Interleaved_style">https://en.wikipedia.org/wiki/Posting_style#Interleaved_style</a>
+
+* Reply using the <b>--to</b>, <b>--cc</b>, and <b>--in-reply-to</b>
+  switches of git-send-email(1):
+
+  git send-email \
+    --in-reply-to=YH+zwQgBBGUJdiVK@unreal \
+    --to=leon@kernel.org \
+    --cc=anna.schumaker@netapp.com \
+    --cc=bfields@fieldses.org \
+    --cc=chuck.lever@oracle.com \
+    --cc=davem@davemloft.net \
+    --cc=dwysocha@redhat.com \
+    --cc=gregkh@linuxfoundation.org \
+    --cc=kuba@kernel.org \
+    --cc=linux-kernel@vger.kernel.org \
+    --cc=linux-nfs@vger.kernel.org \
+    --cc=netdev@vger.kernel.org \
+    --cc=pakki001@umn.edu \
+    --cc=trond.myklebust@hammerspace.com \
+    --subject='Re: [PATCH] SUNRPC: Add a check for gss_release_msg' \
+    /path/to/YOUR_REPLY
+
+  <a href="https://kernel.org/pub/software/scm/git/docs/git-send-email.html">https://kernel.org/pub/software/scm/git/docs/git-send-email.html</a>
+
+* If your mail client supports setting the <b>In-Reply-To</b> header
+  via mailto: links, try the <a href="mailto:leon%40kernel.org?In-Reply-To=%3CYH+zwQgBBGUJdiVK@unreal%3E&amp;Cc=anna.schumaker%40netapp.com%2Cbfields%40fieldses.org%2Cchuck.lever%40oracle.com%2Cdavem%40davemloft.net%2Cdwysocha%40redhat.com%2Cgregkh%40linuxfoundation.org%2Ckuba%40kernel.org%2Clinux-kernel%40vger.kernel.org%2Clinux-nfs%40vger.kernel.org%2Cnetdev%40vger.kernel.org%2Cpakki001%40umn.edu%2Ctrond.myklebust%40hammerspace.com&amp;Subject=Re%3A%20%5BPATCH%5D%20SUNRPC%3A%20Add%20a%20check%20for%20gss_release_msg">mailto: link</a>
+</pre>
+  <hr />
+  <pre>This is a public inbox, see <a href="../_/text/mirror/">mirroring instructions</a>
+for how to clone and mirror all data and code used for this inbox;
+as well as URLs for NNTP newsgroup(s).</pre>
+</div>
+
+<hr />
+
+<!-- http://xmlrpc.com/spec.md -->
+<p>Here's an example of an XML-RPC request:</p>
+<pre><code class="language-xml">POST /RPC2 HTTP/1.0
+User-Agent: Frontier/5.1.2 (WinNT)
+Host: betty.userland.com
+Content-Type: text/xml
+Content-length: 181
+
+&lt;?xml version="1.0"?&gt;
+&lt;methodCall&gt;
+    &lt;methodName&gt;examples.getStateName&lt;/methodName&gt;
+    &lt;params&gt;
+        &lt;param&gt;
+            &lt;value&gt;&lt;i4&gt;41&lt;/i4&gt;&lt;/value&gt;
+            &lt;/param&gt;
+        &lt;/params&gt;
+    &lt;/methodCall&gt;
+</code></pre>
+
+<hr />
+
+<!-- https://github.com/cube2222/octosql -->
+<p dir="auto">For example, running:</p>
+<div
+  class="highlight highlight-source-shell notranslate position-relative overflow-auto"
+>
+  <pre>octosql <span class="pl-s"><span class="pl-pds">"</span>SELECT email, COUNT(*) as invoice_count</span>
+<span class="pl-s">         FROM invoices.csv JOIN mydb.customers ON invoices.customer_id = customers.id</span>
+<span class="pl-s">         WHERE first_name &lt;= 'D'</span>
+<span class="pl-s">         GROUP BY email</span>
+<span class="pl-s">         ORDER BY invoice_count DESC<span class="pl-pds">"</span></span> --explain 1</pre>
+  <div class="zeroclipboard-container position-absolute right-0 top-0">
+    <clipboard-copy
+      aria-label="Copy"
+      class="ClipboardButton btn js-clipboard-copy m-2 p-0 tooltipped-no-delay"
+      data-copy-feedback="Copied!"
+      data-tooltip-direction="w"
+      value="octosql &quot;SELECT email, COUNT(*) as invoice_count
+         FROM invoices.csv JOIN mydb.customers ON invoices.customer_id = customers.id
+         WHERE first_name <= 'D'
+         GROUP BY email
+         ORDER BY invoice_count DESC&quot; --explain 1"
+      tabindex="0"
+      role="button"
+    >
+      <svg
+        aria-hidden="true"
+        height="16"
+        viewBox="0 0 16 16"
+        version="1.1"
+        width="16"
+        data-view-component="true"
+        class="octicon octicon-copy js-clipboard-copy-icon m-2"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"
+        ></path>
+        <path
+          fill-rule="evenodd"
+          d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"
+        ></path>
+      </svg>
+      <svg
+        aria-hidden="true"
+        height="16"
+        viewBox="0 0 16 16"
+        version="1.1"
+        width="16"
+        data-view-component="true"
+        class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none m-2"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"
+        ></path>
+      </svg>
+    </clipboard-copy>
+  </div>
+</div>
+
+<hr />
+
+<!-- https://deno.com/blog/v1.23 -->
+<p>
+  If you really want this functionality, you can implement it by using the
+  following function:
+</p>
+<div class="highlight">
+  <pre><span class="token keyword">function</span> <span class="token function">sleepSync</span><span class="token punctuation">(</span><span class="token">timeout</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> sab <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SharedArrayBuffer</span><span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> int32 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Int32Array</span><span class="token punctuation">(</span>sab<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Atomics<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span>int32<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> timeout<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></pre>
+</div>
+
+<hr />
+
+<!-- https://blog.cloudflare.com/announcing-wasi-on-workers/ -->
+<p>
+  It doesn’t get much simpler than this. You’ll notice we only define a main()
+  function followed by a println to stdout.
+</p>
+<!--kg-card-begin: markdown-->
+<pre
+  class="language-rust"
+><code class=" language-rust"><span class="token keyword">fn</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">println!</span><span class="token punctuation">(</span><span class="token string">"Hello, world!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<!--kg-card-end: markdown-->
+
+<hr />
+
+<!-- https://www.ruby-lang.org/en/ -->
+<div id="code">
+  <figure class="highlight">
+    <pre><code class="language-ruby" data-lang="ruby"><span class="c1"># Ruby knows what you</span>
+<span class="c1"># mean, even if you</span>
+<span class="c1"># want to do math on</span>
+<span class="c1"># an entire Array</span>
+<span class="n">cities</span>  <span class="o">=</span> <span class="sx">%w[ London
+              Oslo
+              Paris
+              Amsterdam
+              Berlin ]</span>
+<span class="n">visited</span> <span class="o">=</span> <span class="sx">%w[Berlin Oslo]</span>
+
+<span class="nb">puts</span> <span class="s2">"I still need "</span> <span class="o">+</span>
+     <span class="s2">"to visit the "</span> <span class="o">+</span>
+     <span class="s2">"following cities:"</span><span class="p">,</span>
+     <span class="n">cities</span> <span class="o">-</span> <span class="n">visited</span></code></pre>
+  </figure>
+</div>
+
+<hr />
+
+<!-- https://news.ycombinator.com/item?id=32113825 -->
+<p>The equivalent portion is just these two lines:</p>
+<p></p>
+<pre><code>  var btn = new Gtk.Button.with_label("Hello World");
+  btn.click.connect(win.close);</code></pre>
+
+<hr />
+
+<!-- https://highlightjs.org/usage/ -->
+<p>To preserve linebreaks inside a <code>div</code> using CSS:</p>
+<pre><code class="language-css hljs"><span class="hljs-selector-tag">div</span><span class="hljs-selector-class">.code</span> {
+  <span class="hljs-attribute">white-space</span>: pre;
+}
+</code></pre>
+
+<hr />
+
+<!-- https://prismjs.com/plugins/autolinker/ -->
+<pre
+  class="language-css"
+  tabindex="0"
+><code class="language-css"><span class="token atrule"><span class="token rule">@font-face</span></span> <span class="token punctuation">{</span>
+	<span class="token property">src</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><a class="token url-link" href="http://lea.verou.me/logo.otf">http://lea.verou.me/logo.otf</a><span class="token punctuation">)</span></span><span class="token punctuation">;</span>
+	<span class="token property">font-family</span><span class="token punctuation">:</span> <span class="token string">'LeaVerou'</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+
+<hr />
+
+<!-- https://prismjs.com/plugins/line-numbers/ -->
+<pre
+  class="line-numbers language-none"
+  tabindex="0"
+><code class="language-none">This raw text
+is not highlighted
+but it still has
+line numbers<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr />
+
+<!-- https://reactjs.org/ -->
+<div class="react-live">
+  <div class="css-1rx7ryx">
+    <div class="css-rlak57">
+      <div class="css-xj6x4o">
+        <div class="css-krwajx">
+          Live JSX Editor<label class="css-7qz0p2"
+            ><input type="checkbox" checked="" /> JSX?</label
+          >
+        </div>
+      </div>
+      <div class="gatsby-highlight css-t5ws0a">
+        <pre
+          class="prism-code"
+          spellcheck="false"
+          contenteditable="true"
+        ><span class="token keyword">class</span> <span class="token class-name">HelloMessage</span> <span class="token keyword">extends</span> <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
+  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">&gt;</span></span>Hello <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>name<span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+root<span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>HelloMessage</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Taylor<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</pre>
+      </div>
+    </div>
+    <div class="css-1bx1f1e">
+      <div class="css-ljjjy7"><div class="css-14mg9l4">Result</div></div>
+      <div id="hello-example" class="css-l12faq"><div>Hello Taylor</div></div>
+    </div>
+  </div>
+</div>

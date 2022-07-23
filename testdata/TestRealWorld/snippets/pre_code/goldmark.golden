@@ -1,0 +1,404 @@
+<p>The MJML tool provides a CLI you can use to transform MJML into HTML:</p>
+<pre><code>
+bash
+
+$ mjml input.mjml -o output.html
+</code></pre>
+<p>Curiously, all text elements (paragraphs and headings) use the same tag,
+<code>&lt;mj-text&gt;</code>. You can
+create headings by applying cosmetic styles as inline attributes, like:</p>
+<pre><code>
+html
+
+&lt;mj-text
+  align=&quot;center&quot;
+  font-size=&quot;32px&quot;
+  font-weight=&quot;bold&quot;
+  color=&quot;#FF0000&quot;
+&gt;
+</code></pre>
+<hr>
+<pre><code>func HasPrefix(s, prefix []byte) bool
+</code></pre>
+<hr>
+<h4>HTML</h4>
+<pre><code>&lt;p&gt;Using CSS to change the font color is easy.&lt;/p&gt;
+&lt;pre&gt;
+body {
+  color: red;
+}
+&lt;/pre&gt;
+
+</code></pre>
+<p>Copy to Clipboard</p>
+<p>Using CSS to change the font color is easy.</p>
+<pre><code>body {
+  color: red;
+}
+
+</code></pre>
+<hr>
+<pre><code class="language-lang-go"> 复制代码const Pi = 3.14159
+</code></pre>
+<p><code>const Pi = 3.14159</code></p>
+<pre><code class="language-lang-go"> 复制代码var n intf(n + 5) // 无类型的数字型常量 “5” 它的类型在这里变成了 int
+</code></pre>
+<hr>
+<pre><code>mkdir hugo-contrib
+cd hugo-contrib
+git clone git@github.com:gohugoio/hugo.git
+</code></pre>
+<p>Save the changes and run your first bob command:</p>
+<pre><code>bob build
+</code></pre>
+<hr>
+<p>To confirm that everything went fine, just run:</p>
+<pre><code class="language-codeBlockLines_39YC">bob --version
+
+</code></pre>
+<p>Copy</p>
+<hr>
+<p>For instance, MetaMask displays your recent transactions by making an API call
+to etherscan:</p>
+<pre><code>GET https://api.etherscan.io/api?module=account&amp;address=0x0208376c899fdaEbA530570c008C4323803AA9E8&amp;offset=40&amp;order=desc&amp;action=txlist&amp;tag=latest&amp;page=1 HTTP/2.0
+
+</code></pre>
+<p>…displays your account balance by making an API call to Infura:</p>
+<pre><code>POST https://mainnet.infura.io/v3/d039103314584a379e33c21fbe89b6cb HTTP/2.0
+
+{
+    &quot;id&quot;: 2628746552039525,
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,
+    &quot;method&quot;: &quot;eth_getBalance&quot;,
+    &quot;params&quot;: [
+        &quot;0x0208376c899fdaEbA530570c008C4323803AA9E8&quot;,
+        &quot;latest&quot;
+    ]
+}
+
+</code></pre>
+<hr>
+<p>After it was working, I started adding as many different programming languages
+as I could. As you can see from this excerpt of my project’s version history,
+I got a little overexcited:</p>
+<pre><code>                                                                   languages
+                                                                   ---------
+2020-06-05 df9ba38 Initial commit                                          0
+2020-06-05 5e3a4a4 Install some packages into a Docker image               0
+2020-06-05 e937c8f Simple Express server with &quot;Hello world&quot;                0
+2020-06-06 0961498 Embed terminal on frontend app                          0
+2020-06-06 c66cf63 Embed Monaco editor on frontend                         0
+2020-06-06 27ab1f7 Add &quot;run&quot; button                                        0
+2020-06-06 f417858 You can run Python code now                             1
+2020-06-07 d543081 You can run many languages now                          8
+2020-06-07 e2a3e71 All languages 17 working now                           17
+2020-06-07 473c50c ALL THE LANGUAGES                                      25
+2020-06-08 3718315 even more languages                                    33
+2020-06-08 548c1c1 repl.it superiority!!                                  38
+2020-06-08 1ae424f More languages, we need all the languages              48
+2020-06-09 c34ccf2 A lot more languages                                   77
+2020-06-09 846caf2 At this point the number of languages is absurd        79
+
+</code></pre>
+<hr>
+<p>Disassembling the now-less-obfuscated dump reveals that one of the addresses
+has a label pulled out of somewhere! It’s <code>strlen</code>? Going down the
+call stack the next one is labeled <code>vscan_fn</code> and after that the
+labels end, tho I’m fairly confident it’s
+<a href="https://github.com/chakra-core/ChakraCore/blob/master/pal/src/safecrt/sscanf.c#L47"><code>sscanf</code></a>.</p>
+<pre><code>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+
+</code></pre>
+<pre><code>...,
+{
+    &quot;key&quot;: &quot;WP_WCT_TINT_21_t2_v9_n2&quot;,
+    &quot;price&quot;: 45000,
+    &quot;statName&quot;: &quot;CHAR_KIT_FM_PURCHASE20&quot;,
+    &quot;storageType&quot;: &quot;BITFIELD&quot;,
+    &quot;bitShift&quot;: 7,
+    &quot;bitSize&quot;: 1,
+    &quot;category&quot;: [&quot;CATEGORY_WEAPON_MOD&quot;]
+},
+...
+
+</code></pre>
+<hr>
+<pre><code class="language-hljs">&lt;p&gt;This is the &lt;code&gt;Panel&lt;/code&gt; constructor:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function Panel(element, canClose, closeHandler) {
+      this.element = element;
+      this.canClose = canClose;
+      this.closeHandler = function () { if (closeHandler) closeHandler() };
+    }&lt;/code&gt;&lt;/pre&gt;
+</code></pre>
+<p>Run code snippet
+Hide results</p>
+<p>Expand snippet</p>
+<p>Problem with <code>&lt;pre&gt;</code> is it modifies whitespace processing
+as well: all spaces are preserved, and wrapping is switched off. Unless
+there's a way to switch this off?</p>
+<p><strong>Use the <code>&lt;textarea&gt;</code> element to share code</strong>,
+like so:</p>
+<pre><code class="language-hljs">&lt;textarea class=&quot;code&quot; contenteditable=&quot;true&quot; spellcheck=&quot;false&quot; aria-label='Code Sample'&gt;
+  My Sample Bookmark:
+  &lt;a href=&quot;#bookmark1&quot; id=&quot;b1&quot; title=&quot;View my bookmark&quot; target=&quot;_blank&quot; rel=&quot;noreferrer nofollow noopener&quot; accesskey=&quot;a&quot; tabindex=&quot;0&quot; aria-label=&quot;Bookmark&quot;&gt;Got to My Bookmark&lt;/a&gt;
+&lt;/textarea&gt;
+
+</code></pre>
+<hr>
+<hr>
+<pre><code>linux-nfs.vger.kernel.org archive mirror
+ help / color / mirror / Atom feed
+</code></pre>
+<pre><code>From: Leon Romanovsky &lt;leon@kernel.org&gt;
+To: &quot;J. Bruce Fields&quot; &lt;bfields@fieldses.org&gt;
+Cc: Greg KH &lt;gregkh@linuxfoundation.org&gt;,
+	Aditya Pakki &lt;pakki001@umn.edu&gt;,
+	Chuck Lever &lt;chuck.lever@oracle.com&gt;,
+	Trond Myklebust &lt;trond.myklebust@hammerspace.com&gt;,
+	Anna Schumaker &lt;anna.schumaker@netapp.com&gt;,
+	&quot;David S. Miller&quot; &lt;davem@davemloft.net&gt;,
+	Jakub Kicinski &lt;kuba@kernel.org&gt;,
+	Dave Wysochanski &lt;dwysocha@redhat.com&gt;,
+	linux-nfs@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] SUNRPC: Add a check for gss_release_msg
+Date: Wed, 21 Apr 2021 08:10:25 +0300	[thread overview]
+Message-ID: &lt;YH+zwQgBBGUJdiVK@unreal&gt; (raw)
+In-Reply-To: &lt;20210420171008.GB4017@fieldses.org&gt;
+
+On Tue, Apr 20, 2021 at 01:10:08PM -0400, J. Bruce Fields wrote:
+&gt; On Tue, Apr 20, 2021 at 09:15:23AM +0200, Greg KH wrote:
+&gt; &gt; If you look at the code, this is impossible to have happen.
+&gt; &gt;
+&gt; &gt; Please stop submitting known-invalid patches.  Your professor is playing
+&gt; &gt; around with the review process in order to achieve a paper in some
+&gt; &gt; strange and bizarre way.
+&gt; &gt;
+&gt; &gt; This is not ok, it is wasting our time, and we will have to report this,
+&gt; &gt; AGAIN, to your university...
+&gt;
+&gt; What's the story here?
+
+Those commits are part of the following research:
+https://github.com/QiushiWu/QiushiWu.github.io/blob/main/papers/OpenSourceInsecurity.pdf
+
+They introduce kernel bugs on purpose. Yesterday, I took a look on 4
+accepted patches from Aditya and 3 of them added various severity security
+&quot;holes&quot;.
+
+Thanks
+
+&gt;
+&gt; --b.
+
+</code></pre>
+<hr>
+<pre><code>next prev parent reply	other threads:[~2021-04-21  5:10 UTC|newest]
+
+Thread overview: 49+ messages / expand[flat|nested]  mbox.gz  Atom feed  top
+2021-04-07  0:16 Aditya Pakki
+2021-04-07 15:34 ` J. Bruce Fields
+2021-04-08 15:01 ` Trond Myklebust
+2021-04-08 15:24   ` Olga Kornievskaia
+2021-04-08 16:02     ` Trond Myklebust
+2021-04-20  7:15 ` Greg KH
+2021-04-20 17:10   ` J. Bruce Fields
+2021-04-21  5:10     ` Leon Romanovsky [this message]
+2021-04-21  5:43       ` Greg KH
+2021-04-21  6:08         ` Leon Romanovsky
+     [not found]         ` &lt;CA+EnHHSw4X+ubOUNYP2zXNpu70G74NN1Sct2Zin6pRgq--TqhA@mail.gmail.com&gt;
+2021-04-21  8:15           ` Greg KH
+2021-04-21 10:07         ` Sudip Mukherjee
+2021-04-21 10:21           ` Greg KH
+2021-04-21 11:58             ` Shelat, Abhi
+2021-04-21 12:08               ` Greg KH
+2021-04-21 12:19               ` Leon Romanovsky
+2021-04-21 13:11                 ` Trond Myklebust
+2021-04-21 13:20                   ` Leon Romanovsky
+2021-04-21 13:42                     ` Steven Rostedt
+2021-04-21 13:21                   ` gregkh
+2021-04-21 13:34                     ` Leon Romanovsky
+2021-04-21 13:50                       ` gregkh
+2021-04-21 14:12                         ` Leon Romanovsky
+2021-04-21 18:50                         ` Alexander Grund
+2021-04-21 13:37               ` J. Bruce Fields
+2021-04-21 13:49                 ` Leon Romanovsky
+2021-04-21 13:56                   ` J. Bruce Fields
+2021-04-22 19:39                     ` J. Bruce Fields
+2021-04-23 17:25                       ` Leon Romanovsky
+2021-04-23 18:07                         ` J. Bruce Fields
+2021-04-23 19:29                           ` Leon Romanovsky
+2021-04-23 21:48                             ` J. Bruce Fields
+2021-04-24  7:21                               ` Leon Romanovsky
+2021-04-24 18:34                               ` Al Viro
+2021-04-24 21:34                                 ` J. Bruce Fields
+2021-04-25  0:41                                   ` Theodore Ts'o
+2021-04-25  6:29                                     ` Greg KH
+     [not found]                                       ` &lt;20210426133605.GD21222@fieldses.org&gt;
+2021-04-26 13:47                                         ` J. Bruce Fields
+2021-04-22  8:10             ` Sudip Mukherjee
+2021-04-22  8:27               ` Greg KH
+2021-04-21 12:51       ` Anna Schumaker
+2021-04-21 14:15         ` Leon Romanovsky
+2021-04-21 15:48           ` Theodore Ts'o
+2021-04-21 17:34             ` Mike Rapoport
+2021-04-22  3:57               ` Leon Romanovsky
+2021-04-21 22:52 ` Guenter Roeck
+     [not found] &lt;CAHr+ZK-ayy2vku9ovuSB4egtOxrPEKxCdVQN3nFqMK07+K5_8g@mail.gmail.com&gt;
+2021-04-21 19:49 ` Theodore Ts'o
+2021-04-22  7:50   ` Eric Biggers
+2021-04-21 20:27 Weikeng Chen
+
+</code></pre>
+<hr>
+<pre><code>Reply instructions:
+
+You may reply publicly to this message via plain-text email
+using any one of the following methods:
+
+* Save the following mbox file, import it into your mail client,
+  and reply-to-all from there: mbox
+
+  Avoid top-posting and favor interleaved quoting:
+  https://en.wikipedia.org/wiki/Posting_style#Interleaved_style
+
+* Reply using the --to, --cc, and --in-reply-to
+  switches of git-send-email(1):
+
+  git send-email \
+    --in-reply-to=YH+zwQgBBGUJdiVK@unreal \
+    --to=leon@kernel.org \
+    --cc=anna.schumaker@netapp.com \
+    --cc=bfields@fieldses.org \
+    --cc=chuck.lever@oracle.com \
+    --cc=davem@davemloft.net \
+    --cc=dwysocha@redhat.com \
+    --cc=gregkh@linuxfoundation.org \
+    --cc=kuba@kernel.org \
+    --cc=linux-kernel@vger.kernel.org \
+    --cc=linux-nfs@vger.kernel.org \
+    --cc=netdev@vger.kernel.org \
+    --cc=pakki001@umn.edu \
+    --cc=trond.myklebust@hammerspace.com \
+    --subject='Re: [PATCH] SUNRPC: Add a check for gss_release_msg' \
+    /path/to/YOUR_REPLY
+
+  https://kernel.org/pub/software/scm/git/docs/git-send-email.html
+
+* If your mail client supports setting the In-Reply-To header
+  via mailto: links, try the mailto: link
+
+</code></pre>
+<hr>
+<pre><code>This is a public inbox, see mirroring instructions
+for how to clone and mirror all data and code used for this inbox;
+as well as URLs for NNTP newsgroup(s).
+</code></pre>
+<hr>
+<p>Here's an example of an XML-RPC request:</p>
+<pre><code class="language-xml">POST /RPC2 HTTP/1.0
+User-Agent: Frontier/5.1.2 (WinNT)
+Host: betty.userland.com
+Content-Type: text/xml
+Content-length: 181
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;methodCall&gt;
+    &lt;methodName&gt;examples.getStateName&lt;/methodName&gt;
+    &lt;params&gt;
+        &lt;param&gt;
+            &lt;value&gt;&lt;i4&gt;41&lt;/i4&gt;&lt;/value&gt;
+            &lt;/param&gt;
+        &lt;/params&gt;
+    &lt;/methodCall&gt;
+
+</code></pre>
+<hr>
+<p>For example, running:</p>
+<pre><code>octosql &quot;SELECT email, COUNT(*) as invoice_count
+         FROM invoices.csv JOIN mydb.customers ON invoices.customer_id = customers.id
+         WHERE first_name &lt;= 'D'
+         GROUP BY email
+         ORDER BY invoice_count DESC&quot; --explain 1
+</code></pre>
+<hr>
+<p>If you really want this functionality, you can implement it by using the
+following function:</p>
+<pre><code>function sleepSync(timeout) {
+  const sab = new SharedArrayBuffer(1024);
+  const int32 = new Int32Array(sab);
+  Atomics.wait(int32, 0, 0, timeout);
+}
+</code></pre>
+<hr>
+<p>It doesn’t get much simpler than this. You’ll notice we only define a main()
+function followed by a println to stdout.</p>
+<pre><code class="language-rust">fn main() {
+    println!(&quot;Hello, world!&quot;);
+}
+
+</code></pre>
+<hr>
+<pre><code class="language-ruby"># Ruby knows what you
+# mean, even if you
+# want to do math on
+# an entire Array
+cities  = %w[ London
+              Oslo
+              Paris
+              Amsterdam
+              Berlin ]
+visited = %w[Berlin Oslo]
+
+puts &quot;I still need &quot; +
+     &quot;to visit the &quot; +
+     &quot;following cities:&quot;,
+     cities - visited
+</code></pre>
+<hr>
+<p>The equivalent portion is just these two lines:</p>
+<pre><code>  var btn = new Gtk.Button.with_label(&quot;Hello World&quot;);
+  btn.click.connect(win.close);
+</code></pre>
+<hr>
+<p>To preserve linebreaks inside a <code>div</code> using CSS:</p>
+<pre><code class="language-css">div.code {
+  white-space: pre;
+}
+
+</code></pre>
+<hr>
+<pre><code class="language-css">@font-face {
+	src: url(http://lea.verou.me/logo.otf);
+	font-family: 'LeaVerou';
+}
+</code></pre>
+<hr>
+<pre><code class="language-none">This raw text
+is not highlighted
+but it still has
+line numbers
+</code></pre>
+<hr>
+<p>Live JSX Editor JSX?</p>
+<pre><code>class HelloMessage extends React.Component {
+  render() {
+    return &lt;div&gt;Hello {this.props.name}&lt;/div&gt;;
+  }
+}
+
+root.render(&lt;HelloMessage name=&quot;Taylor&quot; /&gt;);
+
+</code></pre>
+<p>Result</p>
+<p>Hello Taylor</p>

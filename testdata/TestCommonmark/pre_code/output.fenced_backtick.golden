@@ -27,7 +27,7 @@ When `x = 3`, that means `x + 2 = 5`
 
 The `<img>` tag is used to embed an image.
 
-The `<img/>` tag is used to embed an image.
+The `` tag is used to embed an image.
 
 Two variables `A` `B`
 
@@ -65,25 +65,23 @@ totally ~~~~~~ normal
 
 The <img> tag is used to embed an image.
 
-The <img/> tag is used to embed an image.
+The  tag is used to embed an image.
 
 ```
 
 ```
 
-    <ul>
-        <li data-converter-list-prefix="- ">One</li>
-        <li data-converter-list-prefix="- ">Two</li>
-        <li data-converter-list-prefix="- ">Three</li>
-    </ul>
+
+        One
+        Two
+        Three
+
 
 ```
 
 ```
 
-<a href="#Blabla" data-index="1">
-    <img src="http://bla.bla/img/img.svg" style="height:auto" width="200px"/>
-</a>
+
 
 ```
 
@@ -162,8 +160,8 @@ The **`<pre>`** [HTML](http://example.com/en-US/docs/Web/HTML) element represent
 ```
 
 This is the content:
-<code>_code_</code>
-<pre>_pre_</pre>
+_code_
+_pre_
 Cool!
 
 ```
