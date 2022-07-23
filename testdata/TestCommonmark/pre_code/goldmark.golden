@@ -101,3 +101,11 @@ _pre_
 Cool!
 
 </code></pre>
+<hr>
+<p>The telnet client should display: <code>Local Echo is on</code></p>
+<p>A simple equation: x = y + 2</p>
+<p>When the process is complete, the utility will output the text
+<code>Scan complete. Found N results.</code> You can then
+proceed to the next step.</p>
+<p>Use the command <code>help mycommand</code> to view documentation
+for the command &quot;mycommand&quot;.</p>

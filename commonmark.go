@@ -294,7 +294,7 @@ var commonmark = []Rule{
 		},
 	},
 	{
-		Filter: []string{"code"},
+		Filter: []string{"code", "kbd", "samp", "tt"},
 		Replacement: func(_ string, selec *goquery.Selection, opt *Options) *string {
 			code := getCodeContent(selec)
 

@@ -165,3 +165,16 @@ _pre_
 Cool!
 
 ~~~
+
+* * *
+
+The telnet client should display: `Local Echo is on`
+
+A simple equation: x = y \+ 2
+
+When the process is complete, the utility will output the text
+`Scan complete. Found N results.` You can then
+proceed to the next step.
+
+Use the command `help mycommand` to view documentation
+for the command "mycommand".
