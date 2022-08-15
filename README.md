@@ -18,11 +18,15 @@ go get github.com/JohannesKaufmann/html-to-markdown
 ## Usage
 
 ```go
-import md "github.com/JohannesKaufmann/html-to-markdown"
+import (
+	"log"
+	"fmt"
+    md "github.com/JohannesKaufmann/html-to-markdown"
+)
 
 converter := md.NewConverter("", true, nil)
 
-html = `<strong>Important</strong>`
+html := `<strong>Important</strong>`
 
 markdown, err := converter.ConvertString(html)
 if err != nil {
