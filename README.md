@@ -19,9 +19,10 @@ go get github.com/JohannesKaufmann/html-to-markdown
 
 ```go
 import (
-	"log"
 	"fmt"
-    md "github.com/JohannesKaufmann/html-to-markdown"
+	"log"
+
+	md "github.com/JohannesKaufmann/html-to-markdown"
 )
 
 converter := md.NewConverter("", true, nil)
