@@ -279,10 +279,6 @@ func TestRealWorld(t *testing.T) {
 			Name:   "golang.org",
 			Domain: "golang.org",
 		},
-		{
-			Name:   "bonnerruderverein.de",
-			Domain: "bonnerruderverein.de",
-		},
 		// + all the test on disk that are added automatically
 	}
 	RunGoldenTest(t, tests)

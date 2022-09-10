@@ -1,10 +1,10 @@
 <h1>Aktuelles</h1>
-<p><a href="http://www.bonnerruderverein.de/wp-content/uploads/2015/09/BRV-abend.jpg" title="BRV-abend">BRV-abend</a></p>
+<p><a href="http://example.com/img.jpg" title="Event Title">Event Title</a></p>
 <p>25 Mai</p>
-<p><img src="http://www.bonnerruderverein.de/wp-content/uploads/2015/09/BRV-abend.jpg" alt=""></p>
-<h3><a href="http://www.bonnerruderverein.de/bonner-nachtlauf/">9. Bonner Nachtlauf - Einschränkungen am Bootshaus</a></h3>
-<p>am Mittwoch, dem 30. Mai 2018 findet am Bonner Rheinufer der 9. ...
-<a href="http://www.bonnerruderverein.de/bonner-nachtlauf/">More</a></p>
+<p><img src="http://example.com/img.jpg" alt=""></p>
+<h3><a href="http://example.com/event">Event Title</a></h3>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ...
+<a href="http://example.com/event1">More</a></p>
 <hr>
 <h1>Aktuelles</h1>
 <h3><a href="http://example.com/some_url">Title</a></h3>
