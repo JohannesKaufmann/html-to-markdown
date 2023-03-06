@@ -7,6 +7,6 @@ require (
 	github.com/sebdah/goldie/v2 v2.5.3
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/yuin/goldmark v1.5.4
-	golang.org/x/net v0.0.0-20220909164309-bea034e7d591
+	golang.org/x/net v0.8.0
 	gopkg.in/yaml.v2 v2.4.0
 )
