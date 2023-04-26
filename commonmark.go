@@ -88,7 +88,9 @@ var commonmark = []Rule{
 			// normal text be indented and thus be a code block.
 			text = multipleSpacesR.ReplaceAllString(text, " ")
 
-			text = escape.MarkdownCharacters(text)
+			if opt.EscapeMode == "basic" {
+				text = escape.MarkdownCharacters(text)
+			}
 
 			// if its inside a list, trim the spaces to not mess up the indentation
 			parent := selec.Parent()

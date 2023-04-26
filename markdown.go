@@ -92,6 +92,10 @@ type Options struct {
 	// default: full
 	LinkReferenceStyle string
 
+	// basic, disabled
+	// default: basic
+	EscapeMode string
+
 	domain string
 
 	// GetAbsoluteURL parses the `rawURL` and adds the `domain` to convert relative (/page.html)

@@ -173,6 +173,9 @@ func NewConverter(domain string, enableCommonmark bool, options *Options) *Conve
 	if options.LinkReferenceStyle == "" {
 		options.LinkReferenceStyle = "full"
 	}
+	if options.EscapeMode == "" {
+		options.EscapeMode = "basic"
+	}
 
 	// for now, store it in the options
 	options.domain = domain
