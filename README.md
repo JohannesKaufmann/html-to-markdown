@@ -129,9 +129,9 @@ Determines which elements are to be removed altogether i.e. converted to an empt
 
 ## Escaping
 
-Some characters have a special meaning in markdown. For example, the character "\*" can be used for lists, emphasis and dividers. By placing a backlash before that character (e.g. "\\\*") you can "escape" it. Then the character is going to render as a raw "\*", without the _"markdown meaning"_ applied.
+Some characters have a special meaning in markdown. For example, the character "\*" can be used for lists, emphasis and dividers. By placing a backlash before that character (e.g. "\\\*") you can "escape" it. Then the character will render as a raw "\*" without the _"markdown meaning"_ applied.
 
-But why is "escaping" even nessesary?
+But why is "escaping" even necessary?
 
 <!-- prettier-ignore -->
 ```md
@@ -147,7 +147,7 @@ The markdown above doesn't seem that problematic. But "Paragraph 1" (with only o
 <p>Paragraph 2</p>
 ```
 
-A well placed backslash character would prevent that...
+A well-placed backslash character would prevent that...
 
 <!-- prettier-ignore -->
 ```md
@@ -186,7 +186,7 @@ With escaping **disabled**, the fake and real bold can't be distinguished in the
 
 ---
 
-So know you know the purpose of escaping. However if you encounter some content were the escaping breaks, you have the option to manually disable it. But please also open an issue!
+So now you know the purpose of escaping. However, if you encounter some content where the escaping breaks, you can manually disable it. But please also open an issue!
 
 ## Issues
 
