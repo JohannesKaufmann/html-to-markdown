@@ -6,7 +6,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/sebdah/goldie/v2 v2.5.3
 	github.com/sergi/go-diff v1.2.0 // indirect
-	github.com/yuin/goldmark v1.5.5
+	github.com/yuin/goldmark v1.6.0
 	golang.org/x/net v0.14.0
 	gopkg.in/yaml.v2 v2.4.0
 )
