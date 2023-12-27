@@ -27,6 +27,38 @@
 24. ![](http://example.com/example.png)
 25. 22
 
+10. 10
+11. 11
+12. 12
+13. 13
+
+1. 1
+2. 2
+3. 3
+4. 4
+
+1. 1
+2. 2
+3. 3
+4. 4
+
+0. 0
+1. 1
+2. 2
+3. 3
+
+3. Echo the word "foo"
+
+```
+echo('foo')
+```
+
+4. Now echo "bar"
+
+```
+echo('bar')
+```
+
 - Link: [example](https://example.com) works
 - Link:
    [example](https://example.com)

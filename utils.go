@@ -359,6 +359,26 @@ func isWrapperListItem(s *goquery.Selection) bool {
 	return noOwnText && childIsList
 }
 
+// getListStart returns the integer from which the counting
+// for for the list items should start from.
+// -> https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ol#start
+func getListStart(parent *goquery.Selection) int {
+	val := parent.AttrOr("start", "")
+	if val == "" {
+		return 1
+	}
+
+	num, err := strconv.Atoi(val)
+	if err != nil {
+		return 1
+	}
+
+	if num < 0 {
+		return 1
+	}
+	return num
+}
+
 // getListPrefix returns the appropriate prefix for the list item.
 // For example "- ", "* ", "1. ", "01. ", ...
 func getListPrefix(opt *Options, s *goquery.Selection) string {
@@ -370,7 +390,8 @@ func getListPrefix(opt *Options, s *goquery.Selection) string {
 	if parent.Is("ul") {
 		return opt.BulletListMarker + " "
 	} else if parent.Is("ol") {
-		currentIndex := s.Index() + 1
+		start := getListStart(parent)
+		currentIndex := start + s.Index()
 
 		lastIndex := parent.Children().Last().Index() + 1
 		maxLength := len(strconv.Itoa(lastIndex))

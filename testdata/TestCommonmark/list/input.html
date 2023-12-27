@@ -44,6 +44,47 @@
 </ol>
 
 
+<!--ordered list with different start-->
+<ol start="10">
+    <li>10</li>
+    <li>11</li>
+    <li>12</li>
+    <li>13</li>
+</ol>
+
+<!--ordered list with invalid start-->
+<ol start="abc">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+</ol>
+
+<!--ordered list with negative start-->
+<ol start="-2">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+</ol>
+
+<!--for the programmers start at zero-->
+<ol start="0">
+    <li>0</li>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+</ol>
+
+<!--usage of start-->
+<div>
+    <ol start=3><li>Echo the word "foo"</ol></li>
+    <pre><code>echo('foo')</code></pre>
+    <ol start=4><li>Now echo "bar"</ol></li>
+    <pre><code>echo('bar')</code></pre>
+</div>
+
+
 <!--ul list with link inside-->
 <ul>
     <li>Link: <a href="https://example.com" target="_blank">example</a> works</li>
