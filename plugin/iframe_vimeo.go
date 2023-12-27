@@ -54,9 +54,9 @@ const (
 	VimeoWithDescription
 )
 
-// EXPERIMENTALVimeoEmbed registers a rule (for iframes) and
+// VimeoEmbed registers a rule (for iframes) and
 // returns a markdown compatible representation (link to video, ...).
-func EXPERIMENTALVimeoEmbed(variation vimeoVariation) md.Plugin {
+func VimeoEmbed(variation vimeoVariation) md.Plugin {
 	return func(c *md.Converter) []md.Rule {
 		getVimeoData := func(id string) (*vimeoVideo, error) {
 			u := fmt.Sprintf("http://vimeo.com/api/oembed.json?url=https://vimeo.com/%s", id)

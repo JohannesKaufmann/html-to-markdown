@@ -8,7 +8,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-// TableCompat is a compatibility plugon for environments where
+// TableCompat is a compatibility plugin for environments where
 // only commonmark markdown (without Tables) is supported.
 //
 // Note: In an environment that supports "real" Tables, like GitHub's Flavored Markdown
@@ -132,10 +132,10 @@ func Table() md.Plugin {
 }
 
 // A tr is a heading row if:
-// - the parent is a THEAD
-// - or if its the first child of the TABLE or the first TBODY (possibly
-//   following a blank THEAD)
-// - and every cell is a TH
+//   - the parent is a THEAD
+//   - or if its the first child of the TABLE or the first TBODY (possibly
+//     following a blank THEAD)
+//   - and every cell is a TH
 func isHeadingRow(s *goquery.Selection) bool {
 	parent := s.Parent()
 

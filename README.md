@@ -103,6 +103,32 @@ converter.Use(plugin.Strikethrough(""))
 
 For more information have a look at the example [github_flavored](/examples/github_flavored/main.go).
 
+---
+
+These are the plugins located in the [plugin folder](/plugin) which you can use by importing "github.com/JohannesKaufmann/html-to-markdown/plugin".
+
+| Name                  | Description                                                                                 |
+| --------------------- | ------------------------------------------------------------------------------------------- |
+| GitHubFlavored        | GitHub's Flavored Markdown contains `TaskListItems`, `Strikethrough` and `Table`.           |
+| TaskListItems         | (Included in `GitHubFlavored`). Converts `<input>` checkboxes into `- [x] Task`.            |
+| Strikethrough         | (Included in `GitHubFlavored`). Converts `<strike>`, `<s>`, and `<del>` to the `~~` syntax. |
+| Table                 | (Included in `GitHubFlavored`). Convert a `<table>` into something like this...             |
+| TableCompat           |                                                                                             |
+|                       |                                                                                             |
+| VimeoEmbed            |                                                                                             |
+| YoutubeEmbed          |                                                                                             |
+|                       |                                                                                             |
+| ConfluenceCodeBlock   | Converts `<ac:structured-macro>` elements that are used in Atlassian’s Wiki "Confluence".   |
+| ConfluenceAttachments | Converts `<ri:attachment ri:filename=""/>` elements.                                        |
+
+These are the plugins in other repositories:
+
+| Name                         | Description         |
+| ---------------------------- | ------------------- |
+| \[Plugin Name\]\(Your Link\) | A short description |
+
+I you write a plugin, feel free to open a PR that adds your Plugin to this list.
+
 ## Writing Plugins
 
 Have a look at the [plugin folder](/plugin) for a reference implementation. The most basic one is [Strikethrough](/plugin/strikethrough.go).
