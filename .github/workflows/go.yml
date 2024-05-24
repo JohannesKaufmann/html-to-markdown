@@ -8,36 +8,52 @@ on:
 
 jobs:
 
-  build:
-    name: Build
+  # Test the latest go version
+  # and upload the test coverage.
+  test_latest:
+    name: Go latest stable
+
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+          check-latest: true
 
-    - name: Set up Go 1.x
-      uses: actions/setup-go@v2
-      with:
-        go-version: ^1.13
-      id: go
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+      - name: Build
+        run: go build -v .
 
-    - name: Get dependencies
-      run: |
-        go get -v -t -d ./...
-        if [ -f Gopkg.toml ]; then
-            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-            dep ensure
-        fi
+      - name: Test
+        run: go test ./... -v -race -coverprofile=coverage.txt -covermode=atomic
+     
+      - uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.txt
+          token: ${{ secrets.CODECOV_TOKEN }}
 
-    - name: Build
-      run: go build -v .
+  # Test the latest three golang version
+  # on different operating systems.
+  test_versions:
+    strategy:
+      matrix:
+        go: ['1.20', '1.21', '1.22']
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    name: Go ${{ matrix.go }} on ${{ matrix.os }}
 
-    - name: Test
-      run: go test -v -race -coverprofile=coverage.txt -covermode=atomic .
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
 
-    - name: Upload Coverage report to CodeCov
-      uses: codecov/codecov-action@v2
-      with:
-        token: ${{secrets.CODECOV_TOKEN}}
-        file: ./coverage.txt
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test
+        run: go test ./... -v -race -cover
+
