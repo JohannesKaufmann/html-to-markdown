@@ -21,18 +21,15 @@ func YoutubeEmbed() md.Plugin {
 				Replacement: func(content string, selec *goquery.Selection, opt *md.Options) *string {
 					src := selec.AttrOr("src", "")
 					if !strings.Contains(src, "youtube.com") && !strings.Contains(src, "youtube-nocookie.com") {
-						fmt.Println("Not a YouTube iframe:", src)
 						return nil
 					}
 					alt := selec.AttrOr("title", "")
 					parts := youtubeID.FindStringSubmatch(src)
 					if len(parts) != 2 {
-						fmt.Println("YouTube ID not found in src:", src)
 						return nil
 					}
 					id := parts[1]
 					text := fmt.Sprintf("[![%s](https://img.youtube.com/vi/%s/0.jpg)](https://www.youtube.com/watch?v=%s)", alt, id, id)
-					fmt.Println("YouTube video embedded:", text)
 					return &text
 				},
 			},
