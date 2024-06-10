@@ -6,7 +6,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.9.2
 	github.com/sebdah/goldie/v2 v2.5.3
 	github.com/yuin/goldmark v1.7.1
-	golang.org/x/net v0.25.0
+	golang.org/x/net v0.26.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
