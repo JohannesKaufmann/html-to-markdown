@@ -125,7 +125,7 @@ These are the plugins in other repositories:
 
 | Name                         | Description         |
 | ---------------------------- | ------------------- |
-| \[Plugin Name\]\(Your Link\) | A short description |
+| [WordPressCaptionConverter](https://github.com/ashishb/wp2hugo/blob/main/src/wp2hugo/internal/hugogenerator/hugopage/wordpress_caption_converter.go) | Converts the WordPress's caption shortcode to Hugo shortcode "figure" |
 
 I you write a plugin, feel free to open a PR that adds your Plugin to this list.
 
