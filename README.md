@@ -17,6 +17,18 @@
 
 ## Golang Library
 
+### Installation
+
+```bash
+go get -u github.com/JohannesKaufmann/html-to-markdown/v2
+```
+
+_Or if you want a specific commit add the suffix `/v2@commithash`_
+
+### Usage
+
+[![Go V2 Reference](https://pkg.go.dev/badge/github.com/JohannesKaufmann/html-to-markdown/v2.svg)](https://pkg.go.dev/github.com/JohannesKaufmann/html-to-markdown/v2)
+
 ```go
 package main
 
@@ -90,7 +102,17 @@ Using the Golang library provides the most customization, while the CLI is the s
 
 ### Installation
 
+#### Homebrew Tap
+
+```bash
+brew install JohannesKaufmann/tap/html2markdown
+```
+
+#### Manually
+
 Download the pre-compiled binaries from the [releases page](https://github.com/JohannesKaufmann/html-to-markdown/releases) and copy them to the desired location.
+
+### Version
 
 ```bash
 html2markdown --version
@@ -99,7 +121,7 @@ html2markdown --version
 > [!NOTE]  
 > Make sure that `--version` prints `2.X.X` as there is a different CLI for V2 of the converter.
 
-## Usage
+### Usage
 
 ```bash
 $ echo "<strong>important</strong>" | html2markdown
