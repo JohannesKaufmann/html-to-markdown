@@ -1,0 +1,191 @@
+<div>
+  <p>A paragraph</p>
+  <ul>
+    <li>1</li>
+    <li></li>
+    <li>
+      <p>2</p>
+    </li>
+    <li>
+      <ul>
+        <li>3.1</li>
+        <li>3.2</li>
+      </ul>
+    </li>
+    <li>
+      <span>4 Before</span>
+      <ul>
+        <li>4.1</li>
+        <li>
+          <p>4.2</p>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <ul>
+        <li>5.1</li>
+      </ul>
+      <p>5 After</p>
+    </li>
+    <li>
+      <span>
+        6 Before <br />
+        6 also Before
+      </span>
+      <ul>
+        <li>6A.1</li>
+      </ul>
+      <span>6 Between</span>
+      <ul>
+        <li>6B.1</li>
+      </ul>
+      <p>6 After</p>
+      <p>6 also After</p>
+    </li>
+    <li>7</li>
+  </ul>
+</div>
+
+
+<hr />
+
+
+<div>
+  <p>And also other lists...</p>
+
+  <ul>
+    <li>First</li>
+    <li>
+      <p>Someone once said:</p>
+      <blockquote>My famous quote</blockquote>
+      <span>- someone</span>
+    </li>
+  </ul>
+  <ol start="9">
+    <li>Nine</li>
+    <li>Ten</li>
+    <li>
+      <ol start="111">
+        <li>Eleven.A</li>
+        <li>Eleven.B</li>
+      </ol>
+    </li>
+    <li>
+      <p>Someone once said:</p>
+      <blockquote>My famous quote</blockquote>
+      <span>- someone</span>
+    </li>
+    <li>Thirteen</li>
+  </ol>
+
+  <li>List Item without Container</li>
+</div>
+
+
+<hr />
+
+
+<!-- parsing the number fails -->
+<ol start="text">
+  <li>one</li>
+  <li>two</li>
+</ol>
+
+
+<hr />
+
+
+<div>
+  <!-- the max is one character: "9" -->
+  <ol start="8">
+    <li>a</li>
+    <li>b</li>
+  </ol>
+
+  <!-- the max is two characters: "10" -->
+  <ol start="9">
+    <li>a</li>
+    <li>b</li>
+  </ol>
+</div>
+
+
+<hr />
+
+
+<div>
+  <ul>
+    <li>Before
+      text after</li>
+    <li>Before
+      <a href="/page">text</a> after</li>
+  </ul>
+</div>
+
+
+<hr />
+
+
+<ul><li>A double <code>**</code> <a href="/page">can open strong emphasis</a></li></ul>
+
+
+<hr />
+
+
+<div>
+  <ul><li>List 1</li></ul>
+  <ul><li>List 2</li></ul>
+  <ul></ul>
+  <ul><li>List 3</li></ul>
+
+  <div>
+    <div>
+      <ul><li>List 4</li></ul>
+      <p><span>text between</span></p>
+      <ul><li>List 5</li></ul>
+      <p>  </p>
+      <ul><li>List 6</li></ul>
+      <p><br/></p>
+      <ul><li>List 7</li></ul>
+    </div>
+  </div>
+
+  <hr />
+
+  <ul>
+    <li>
+      <ul><li>List 1</li></ul>
+      <ul><li>List 2</li></ul>
+      <ul><li>List 3</li></ul>
+    </li>
+  </ul>
+</div>
+
+
+<ul>
+  <li>
+      <p>Start Line</p>
+      <br /><br /><br />
+      <span> </span>
+      <br /><br /><br />
+      <p>End Line</p>
+  </li>
+</ul>
+
+
+
+<!--------------------------------------
+            Special Characters
+--------------------------------------->
+
+<p>1.</p>
+<p>-</p>
+<p>+</p>
+<p>*</p>
+
+<hr />
+
+<p>1. not a list</p>
+<p>- not a list</p>
+<p>+ not a list</p>
+<p>* not a list</p>

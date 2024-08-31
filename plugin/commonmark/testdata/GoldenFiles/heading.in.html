@@ -1,0 +1,149 @@
+<!--------------------------------------
+                Basics
+--------------------------------------->
+
+
+<!--simple headings-->
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6>Heading 6</h6>
+<h7>Heading 7</h7>
+
+
+<!--------------------------------------
+                Whitespace
+--------------------------------------->
+
+<h1></h1>
+<h1> </h1>
+<h1>  </h1>
+<h1>a</h1>
+<h1> a </h1>
+<h1>  a  </h1>
+<h1> <br/> </h1>
+
+
+<!--with whitespace-->
+<h2>  heading with spaces  </h2>
+<h2>  heading   with    spaces		and		tabs  </h2>
+
+
+<h2>
+
+    heading
+    with
+    newlines
+
+</h2>
+
+<h2>heading<br /><br />with<br />breaks</h2>
+<h2><br /><br />heading with breaks<br /><br /></h2>
+
+
+
+
+<!--------------------------------------
+            Special Characters
+--------------------------------------->
+
+
+<h1>#hashtag</h1>
+<h1># Heading</h1>
+
+<!-- just a # sign -->
+<h1>#</h1>
+<h1>  #  </h1>
+
+<!-- a # sign at the end would be removed -->
+<h1># Heading #</h1>
+<h1>Heading #</h1>
+<h1>Heading ##</h1>
+<!-- already escaped -->
+<h1>Heading \#</h1>
+
+
+<hr />
+
+
+<p>These should not be recognized as headings:</p>
+<p>not title<br/>===</p>
+<p>not title<br/>=</p>
+
+<p>not title<br/>---</p>
+<p>not title<br/>-</p>
+
+<p>#not title</p>
+<p># not title</p>
+<p>## not title</p>
+
+
+
+
+
+<!--------------------------------------
+                Combinations
+--------------------------------------->
+
+<!--inline elements are allowed-->
+<h2><strong>important</strong> <code>h2</code> <em>heading</em></h2>
+
+
+
+<!--inside a link-->
+<hr />
+
+<blockquote>
+    <a href="/page.html">
+        <h2>Heading 2</h2>
+    </a>
+</blockquote>
+
+<hr />
+
+<blockquote>
+    <a href="/page.html">
+        <h2>Heading 2</h2>
+        <h5>Heading 5</h5>
+    </a>
+</blockquote>
+
+<hr />
+
+<blockquote>
+    <a href="/page.html">
+        <h2>Heading 2</h2>
+        <p>
+            Description Line 1<br/>
+            Description Line 2<br/>
+            Description Line 3<br/>
+        </p>
+        <blockquote>Some quote</blockquote>
+    </a>
+</blockquote>
+
+<hr />
+
+
+
+<!--with a divider-->
+<h4><hr>More posts from around the site:</h4>
+
+
+
+<hr />
+
+
+<!--inside inline element-->
+<div>
+    <span>
+        <div>
+            <span>
+                <h3><b>Heading</b></h3>
+            </span>
+        </div>
+    </span>
+</div>
+

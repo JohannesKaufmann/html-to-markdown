@@ -1,0 +1,7 @@
+
+error: unknown arguments: README.md SECURITY.md a.html b.html c.html d.html e.html f.html
+
+Here is how you can use the CLI:
+
+    echo "<strong>important</strong>" | html2markdown
+

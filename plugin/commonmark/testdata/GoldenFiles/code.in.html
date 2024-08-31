@@ -1,0 +1,287 @@
+<!--------------------------------------
+                Basics
+--------------------------------------->
+
+<!--different tags-->
+<div><code>inline code</code></div>
+
+<div><var>variable</var></div>
+
+<div><samp>sample output</samp></div>
+
+<div><kbd>keyboard input</kbd></div>
+
+<div><tt>teletype text</tt></div>
+
+
+
+<hr />
+
+
+<!--code tag inlined in a text-->
+<div>When <code>x = 3</code>, that means <code>x + 2 = 5</code></div>
+
+<div>A simple equation: <var>x</var> = <var>y</var> + 2 </div>
+
+
+
+<!--------------------------------------
+                Adjacent
+--------------------------------------->
+
+<!--code tags close to each other-->
+<div>before <code>A</code> middle <code>B</code> after</div>
+<div>before<code>A</code>middle<code>B</code>after</div>
+
+<!--code tags next to each other-->
+<div>before <code>A</code> <code>B</code> after</div>
+<div>before<code>A</code><code>B</code>after</div>
+
+
+<div><code>A</code><var>B</var><samp>C</samp><kbd>D</kbd><tt>E</tt></div>
+
+
+
+<!--------------------------------------
+            Other Tags (outside)
+--------------------------------------->
+
+<div>before<strong><code>inline code</code></strong>after</div>
+<div>before<em><code>inline code</code></em>after</div>
+
+<div>before<strong>a<code>inline code</code>b</strong>after</div>
+<div>before<strong><span>a</span><code>inline code</code><span>b</span></strong>after</div>
+<div>before<strong><span></span><code>inline code</code><span></span></strong>after</div>
+<div>before<strong><span> </span><code>inline code</code><span> </span></strong>after</div>
+
+<div>before<em><code>inline code</code> and <code>inline code</code></em>after</div>
+<div>before<em><span></span><code>inline code</code> and <code>inline code</code><span></span></em>after</div>
+
+
+<hr />
+
+
+<div>before <strong><code>inline code</code></strong> after</div>
+<div>before <em><code>inline code</code></em> after</div>
+
+<div>before  <strong>  <code>inline code</code>  </strong>  after</div>
+<div>before  <em>  <code>inline code</code>  </em>  after</div>
+
+
+<hr />
+
+
+<div>before <strong><code>&lt;pre&gt;</code></strong> after</div>
+
+
+<!--------------------------------------
+            Other Tags (inside)
+--------------------------------------->
+
+<!--code tag with other tags inside-->
+<div>before <code>&lt;img&gt;</code> after</div>
+<div>before <code><img /></code> after</div>
+<div>before <samp>A <em>middle</em> B</samp> after</div>
+
+
+<!--code tag with pre and other tags inside-->
+<pre><code>
+The &lt;img&gt; tag is used to embed an image.
+
+The <img> tag is used to embed an image.
+</code></pre>
+
+
+<!--list inside code block-->
+<pre><code>
+    <ul>
+        <li>List Item One</li>
+        <li>List Item Two</li>
+        <li>List Item Three</li>
+    </ul>
+</code></pre>
+
+
+<!--------------------------------------
+    Whitespace & Special Characters
+--------------------------------------->
+
+<!--empty tags-->
+<div>An inline code that is empty except spaces:</div>
+<div>before<code></code>after</div>
+<div>before <code></code> after</div>
+<div>before  <code></code>  after</div>
+
+<div>before<code> </code>after</div>
+<div>before <code> </code> after</div>
+<div>before  <code> </code>  after</div>
+
+<div>before<code>  </code>after</div>
+<div>before <code>  </code> after</div>
+<div>before  <code>  </code>  after</div>
+
+
+<div>before<code><img></code>after</div>
+<div>before <code><img></code> after</div>
+<div>before  <code><img></code>  after</div>
+
+
+<pre><code></code></pre>
+<pre><code> </code></pre>
+<pre><code>  </code></pre>
+<pre><code>
+  
+</code></pre>
+
+
+<pre><code>Beginning of code
+ 
+  
+  
+
+
+End of code</code></pre>
+
+<pre><code>Start of many newlines
+
+
+
+
+
+
+End of many newlines</code></pre>
+
+
+
+<hr />
+
+
+<!--white spaces at edges-->
+<div><code>inline code</code></div>
+<div><code> inline code</code></div>
+<div><code>inline code </code></div>
+<div><code> inline code </code></div>
+<div><code>  inline code  </code></div>
+
+
+<hr />
+
+
+<!--code tag with backtick-->
+<div>An inline code that contains backticks:</div>
+<div><code>with ` backtick</code></div>
+<div><code>with `` backticks</code></div>
+<div><code>a ``` b ```` c ` d</code></div>
+<div><code>`starting & ending with a backtick`</code></div>
+
+
+<hr />
+
+
+<div>An inline code that just contains backticks:</div>
+<div>before<code>``</code>after</div>
+<div>before<code> `` </code>after</div>
+<div>before<code>  ``  </code>after</div>
+
+<div>before <code>``</code> after</div>
+<div>before <code> `` </code> after</div>
+<div>before <code>  ``  </code> after</div>
+
+<div>before  <code>``</code>  after</div>
+<div>before  <code> `` </code>  after</div>
+<div>before  <code>  ``  </code>  after</div>
+
+
+<hr />
+
+
+<!--with fence characters-->
+<pre><code>```</code></pre>
+
+<pre><code>~~~</code></pre>
+
+<pre><code>
+Some ```
+totally `````` normal
+` code
+</code></pre>
+
+<pre><code>
+Some ~~~
+totally ~~~~~~ normal
+~ code
+</code></pre>
+
+
+
+<!--------------------------------------
+            Combinations
+--------------------------------------->
+
+<div>before <code>just code</code> after</div>
+<div>before <pre>just pre</pre> after</div>
+
+<div>before <code><pre>code inside pre</pre></code> after</div>
+<div>before <pre><code>pre inside code</code></pre> after</div>
+
+
+<hr />
+
+
+<div>before <code>
+// just code
+// another line
+</code> after</div>
+
+<div>before <pre>
+// just pre
+// another line
+</pre> after</div>
+
+<div>before <code><pre>
+// code inside pre
+// another line
+</pre></code> after</div>
+
+<div>before <pre><code>
+// pre inside code
+// another line
+</code></pre> after</div>
+
+
+
+<!--------------------------------------
+            Languages
+--------------------------------------->
+
+<div><pre class="language-one"><code class="language-two">content</code></pre></div>
+<div><code class="language-one"><pre class="language-two">content</pre></code></div>
+
+
+<!--------------------------------------
+            With Highlighting
+--------------------------------------->
+
+
+<div><pre><code>Line 0
+    Line 1 <span>A</span><span>B</span> <span>C</span>
+    Line 2 <span>A</span><span>B</span> <span>C</span>
+Line 3</code></pre></div>
+
+<hr />
+
+<div><pre><code>
+    Line 1 <span>A</span><span>B</span> <span>C</span>
+    Line 2 <span>A</span><span>B</span> <span>C</span>
+</code></pre></div>
+
+<hr />
+
+<div><pre><code>
+    Line 1 <span>A</span><span>B</span> <span>C</span>
+    Line 2 <span>A</span><span>B</span> <span>C</span>
+
+</code></pre></div>
+
+
+

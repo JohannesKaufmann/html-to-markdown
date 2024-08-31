@@ -1,0 +1,7 @@
+
+error: the html input should be piped into the cli
+
+Here is how you can use the CLI:
+
+    echo "<strong>important</strong>" | html2markdown
+

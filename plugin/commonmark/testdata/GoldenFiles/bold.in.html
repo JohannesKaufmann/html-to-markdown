@@ -1,0 +1,152 @@
+<!--------------------------------------
+                Basics
+--------------------------------------->
+
+
+<!-- inside a normal text -->
+<p>some <b>bold</b> and <strong>bold</strong> text</p>
+
+<!-- with many spaces -->
+<p>some  <b>  bold  </b>  and  <strong>  bold  </strong>  text</p>
+
+<!-- without spaces -->
+<p>some<b>bold</b>and<strong>bold</strong>text</p>
+
+
+<hr />
+
+
+<!-- empty -->
+<p>some <strong></strong> text</p>
+<p>some <strong> </strong> text</p>
+<p>some <strong>  </strong> text</p>
+
+<p>some<strong></strong>text</p>
+<p>some<strong> </strong>text</p>
+<p>some<strong>  </strong>text</p>
+
+
+
+<!--------------------------------------
+                Intra-Word
+--------------------------------------->
+<p> normal<b>bold</b>normal </p>
+
+<p> <b>bold</b>normal<b>bold</b> </p>
+
+
+
+<!--------------------------------------
+                Nested
+--------------------------------------->
+<p><strong><strong>very bold text</strong></strong></p>
+
+<p><b><b>very bold text</b></b></p>
+
+
+
+
+<!-- crazy nesting-->
+<p>
+	<b><b><i><b>hello</b></i></b></b>
+
+    <hr />
+
+    <b><u><b><i><u><i>hello</i></u></i></b></u></b>
+</p>
+
+
+<!--------------------------------------
+                Adjacent
+--------------------------------------->
+<div>
+    <!-- next to each other -->
+    <strong>bold one</strong><strong>bold two</strong>
+</div>
+
+
+<p>
+    <b><i>one</i></b>
+    <span>
+        <b><i>two</i></b>
+    </span>
+</p>
+
+<div>
+    <!-- next to each other, but nested in spans -->
+    <p><strong>a</strong><span><strong>b</strong></span></p>
+    <p><strong>a</strong><span><strong>b</strong></span></p>
+    <p><strong>a</strong><span><strong>b</strong></span><span><span><strong>c</strong></span></span></p>
+    <hr />
+    <p><strong>a</strong><span> <strong>b</strong></span></p>
+</div>
+
+
+<p>
+    <span>
+        <strong>Von Max Mustermann,  </strong>
+    </span>
+    <strong>
+        <span>Berlin</span>
+    </strong>
+</p>
+
+
+<!--------------------------------------
+                Combinations
+--------------------------------------->
+<p>
+	<b><i>bold and italic</i></b>
+</p>
+
+<p>
+	<i><b>italic and bold</b></i>
+</p>
+
+
+
+<!--------------------------------------
+        Punctuation at Edges 
+--------------------------------------->
+
+<div>
+    <p>before<em>middle</em>after</p>
+    <hr />
+    <p>before<em>.middle</em>after</p> 
+    <p>before<em>middle.</em>after</p>
+    <p>before<em>.middle.</em>after</p>
+    <hr />
+    <p>before<em> .middle </em>after</p> 
+    <p>before<em> middle. </em>after</p>
+    <p>before<em> .middle. </em>after</p>
+    <hr />
+    <p>before<em>?!!middle?!!</em>after</p>
+    <hr />
+    <p>before-<em>middle</em>-after</p>
+    <p>before<em>-middle-</em>after</p>
+    <hr />
+    <p>check it out<em>.</em></p>
+    <p>check it out<em>?</em></p>
+    <p>check it out<em>!!!</em></p>
+
+    <p><em>!</em>just after</p>
+    <p>just before<em>!</em></p>
+
+    <hr />
+
+    <h4>heading</h4><em>!italic!</em><h4>heading</h4>
+
+    <strong>see here:</strong><blockquote>blockquote</blockquote>
+
+    <strong>see here:</strong><p>paragraph</p>
+
+    <em><a href="/">one.</a></em><a href="/"><span>two</span></a>
+
+    <a href="/"><em>one.</em></a><a href="/"><span>two</span></a>
+
+    <hr />
+
+    <!-- TODO: the movement of this puncuation is not really nessesary... -->
+    <div>before<p><em>!paragraph!</em></p>after</div>
+</div>
+

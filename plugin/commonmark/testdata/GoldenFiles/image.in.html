@@ -1,0 +1,118 @@
+<!--------------------------------------
+                Basics
+--------------------------------------->
+
+<!--no src attributes-->
+<p><img /></p>
+<p><img src="" /></p>
+
+<!--basics-->
+<p><img src="/relative_url" /></p>
+<p><img src="www.example.com/absolute_url" /></p>
+
+
+<!--other attributes-->
+<p><img src="/url" alt="alt text" /></p>
+<p><img src="/url" title="title text" /></p>
+<p><img src="/url" alt="alt text" title="title text" /></p>
+
+
+<!--------------------------------------
+            Special Characters
+--------------------------------------->
+
+<p><img src="/url" alt="  the  alt  attribute  " /></p>
+<p><img src="/url" alt='the alt "attribute"' /></p>
+<p><img src="/url" alt="the alt 'attribute'" /></p>
+<p><img src="/url" alt="the
+alt
+attribute" /></p>
+<p><img src="/url" alt="the [alt] attribute" /></p>
+<p><img src="/url" alt="the (alt) attribute" /></p>
+<p><img src="/url" alt="the ](alt) attribute" /></p>
+
+
+<hr />
+
+
+<p><img src="/url" title="  the  title  attribute  " /></p>
+<p><img src="/url" title='the title "attribute"' /></p>
+<p><img src="/url" title="the title 'attribute'" /></p>
+<p><img src="/url" title="the
+title
+attribute" /></p>
+<p><img src="/url" title="the [title] attribute" /></p>
+<p><img src="/url" title="the (title) attribute" /></p>
+<p><img src="/url" title="the )(title) attribute" /></p>
+
+
+<!--------------------------------------
+                Weird URLs
+--------------------------------------->
+
+<!--image with data uri-->
+<p><img src="data:image/gif;base64,abcdefghij" /></p>
+
+<p><img src="data:image/svg+xml;utf8,&lt;svg xmlns=&#39;http://www.w3.org/2000/svg&#39; width=&#39;1080&#39; height=&#39;956&#39;&gt;&lt;/svg&gt;" /></p>
+
+
+<!--------------------------------------
+            Combinations
+--------------------------------------->
+
+<!-- link with just image -->
+<p>
+	<a><i><img src="/search.svg" alt="Such Icon" /></i></a>
+	<a><i><img src="/email.svg" alt="Email Icon" /></i></a>
+</p>
+
+<p>
+	<i><a><img src="/search.svg" alt="Such Icon" /></a></i>
+	<i><a><img src="/email.svg" alt="Email Icon" /></a></i>
+</p>
+
+
+<hr />
+
+
+<p>
+	<!--image inside a link-->
+	<a href="/page.html" title="link title text">
+		<img src="/image.jpg" alt="image alt text" title="image title text" />
+	</a>
+
+	<br />
+
+	<!--image inside an empty link-->
+	<a href="" title="link title text">
+		<img src="/src" alt="image alt text" />
+	</a>
+</p>
+
+
+
+
+<!--------------------------------------
+            Picture / Figure
+--------------------------------------->
+<picture>
+	<source srcset="/image.webp 960w, /image.webp 520w" sizes="(max-width: 519px) 100vw" type="image/webp" />
+	<img src="/image.jpg" title="title text" alt="alt text" />
+</picture>
+
+
+<hr />
+
+
+<figure>
+	<div>
+		<picture>
+			<source srcset="/image.webp 960w, /image.webp 520w" sizes="(max-width: 519px) 100vw" type="image/webp" />
+			<img src="/image.jpg" title="title text" alt="alt text" />
+		</picture>
+	</div>
+	<figcaption>
+		caption text
+	</figcaption>
+</figure>
+

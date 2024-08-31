@@ -1,0 +1,267 @@
+<!--------------------------------------
+                Basics
+--------------------------------------->
+
+<!--no href attributes-->
+<p><a>no href</a></p>
+<p><a href="">no href</a></p>
+<p><a href="" title="link title">no href</a></p>
+
+<hr />
+
+<!--no content-->
+<p><a href="/no_content"></a></p>
+<p><a href="/no_content"> </a></p>
+<p><a href="/no_content">  </a></p>
+<p><a href="/no_content">
+
+</a></p>
+<p><a href="/no_content"><br /></a></p>
+
+<!--no content but fallback-->
+<p><a href="/no_content" title="link title"></a></p>
+
+
+<hr />
+
+
+<p><a href="/page.html">relative link</a></p>
+<p><a href="http://simple.org/">absolute link</a></p>
+<p><a href="/page?b=1&a=2">query params</a></p>
+<p><a href="#heading">fragment heading</a></p>
+<p><a href="#">fragment</a></p>
+<p>
+  Wir freuen uns über eine
+  <a href="mailto:hi@example.com?body=Hello
+Johannes		">Mail</a>!
+</p>
+
+
+
+<!--link with broken href-->
+<p><a href="/page
+
+">broken link</a></p>
+<p><a href="/page
+
+.html">broken link</a></p>
+
+
+<p><a href="  example.com  ">with whitespace around</a></p>
+
+<p><a href="http://Open Demo">with space inside</a></p>
+
+
+
+<!--------------------------------------
+            Attributes
+--------------------------------------->
+
+<!--link with title-->
+<p><a href="/" title="link title">content</a></p>
+<p><a href="/" title="  link title  ">content</a></p>
+
+<!--link with multiline title-->
+<p><a href="/" title="
+link
+
+title
+">content</a></p>
+<p><a href="/" title="&quot;link title&quot;">content</a></p>
+<p><a href="/" title="'link title'">content</a></p>
+<p><a href="/" title='"link title"'>content</a></p>
+
+
+
+
+<!--------------------------------------
+            Escaping
+--------------------------------------->
+<!--list with link-->
+<ul>
+    <li><a href="/page.html">a(b)[c]</a></li>
+    <p><a href="/page.html">a]</a></p>
+</ul>
+
+<!--TODO: list with paragraph-->
+
+<!--link-->
+<div>
+    <p><a href="/page.html">a(b)[c]</a></p>
+    <p><a href="/page.html">a]</a></p>
+</div>
+
+<!--paragraph-->
+<div>
+    <p>a(b)[c]</p>
+
+	<p>[a]</p>
+	<p>[a</p>
+    <p>a]</p>
+	
+	<p>(a)</p>
+	<p>(a</p>
+	<p>a)</p>
+</div>
+
+
+<!--------------------------------------
+            Adjacent
+--------------------------------------->
+<p><a href="/">A</a><a href="/">B</a></p>
+<p><a href="/">A</a> <a href="/">B</a></p>
+
+<p>before<a href="/">A</a>middle<a href="/">B</a>after</p>
+<p>before <a href="/">A</a> middle <a href="/">B</a> after</p>
+<p>before  <a href="/">A</a>  middle  <a href="/">B</a>  after</p>
+
+
+
+<!--------------------------------------
+        Content and Combinations
+--------------------------------------->
+
+<!--link with space-->
+<p>before<a href="/"> content </a>after</p>
+<p>before <a href="/"> content </a> after</p>
+<p>before  <a href="/">  content  </a>  after</p>
+
+
+<hr />
+
+
+<!--link with inline styles-->
+<p><a href="/"><strong>bold</strong> and <em>italic</em> text</a></p>
+<p><strong>bold <a href="/">and <em>italic</em></a> text</strong></p>
+
+
+<!--multiline link with too many newlines-->
+<a href="/">
+	<p>Start Line</p>
+    <br /><br /><br />
+    <span> </span>
+    <br /><br /><br />
+    <p>End Line</p>
+</a>
+
+<!--newlines inside link-->
+<a href="/">
+	<br /><br /><br />
+	<p>newlines around the link content</p>
+    <br /><br /><br />
+</a>
+
+<!--multiline link inside a list item-->
+<ul>
+	<li>
+		<a href="/">
+			<p>first text</p>
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<p>second text</p>
+		</a>
+	</li>
+</ul>
+
+
+<!--link with image-->
+<p><a href="/page.html"><img src="/image.jpg"></a></p>
+
+<!--multiline link-->
+<div>
+	<a href="/page.html">
+		<p>first text</p>
+		<img src="/image.jpg">
+		<p>second text</p>
+	</a>
+</div>
+
+<!--link with headings-->
+<div>
+	<a href="/page.html">
+		<h4>Heading A</h4>
+		<h3>Heading B</h3>
+	</a>
+</div>
+
+<!--link with an svg-->
+<div>
+	<a aria-label="aria label" title="title" href="/">
+		<svg height="24" viewBox="0 0 16 16" version="1.1" width="24" aria-hidden="true"><path fill-rule="evenodd" d="..."></path></svg>
+	</a>
+</div>
+
+
+<!-- link and strong inside word -->
+<p>before <strong><a href="/">a inside strong</a></strong> after</p>
+<p>before<strong><a href="/">a inside strong</a></strong>after</p>
+
+<p>before <a href="/"><strong>strong inside a</strong></a> after</p>
+<p>before<a href="/"><strong>strong inside a</strong></a>after</p>
+
+
+<div>
+	<p>before  <strong><a href="/">middle</a></strong>  after</p>
+	<p>before <strong><a href="/">middle</a></strong> after</p>
+	<p>before<strong><a href="/">middle</a></strong>after</p>
+
+	<p>before  <strong><a href="/">  middle  </a></strong>  after</p>
+	<p>before <strong><a href="/">  middle  </a></strong> after</p>
+	<p>before<strong><a href="/">  middle  </a></strong>after</p>
+
+	<p>before<strong><span></span><a href="/">with empty span</a><span></span></strong>after</p>
+	<p>before<strong><span>  </span><a href="/">with empty span</a><span>  </span></strong>after</p>
+	<p>before<strong><span><span>  </span> </span><a href="/">with empty span</a><span><span>  </span> </span></strong>after</p>
+
+	<hr />
+
+	<p>before<strong><a href="/">a</a> b</strong>after</p>
+	<p>before<strong><a href="/">a</a>b</strong>after</p>
+	<p>before<strong><a href="/">a</a> b <a href="/">c</a></strong>after</p>
+</div>
+
+<hr />
+
+<p>before<i><a href="/">a inside italic</a></i>after</p>
+<p>before<a href="/"><i>italic inside a</i></a>after</p>
+
+<p>before<b><a href="/">a inside b</a></b>after</p>
+<p>before<a href="/"><b>b inside a</b></a>after</p>
+
+<p>before<b><a href="/"><strong>already bold</strong></a></b>after</p>
+
+<hr />
+
+<p>before<b><span><a href="/">middle</a></span></b>after</p>
+<p>before<b><i><a href="/">inside bold & italic</a></i></b>after</p>
+<p>before<b><i><a href="/">inside bold & italic</a>a</i>b</b>after</p>
+<p>before<b><span><a href="/">inside bold & italic</a></span></b>after</p>
+<p>before<b>a<i>b<a href="/">c</a>d</i>e</b>after</p>
+
+<hr />
+
+<p>before<b><i>italic</i><a href="/">link</a><strong>strong</strong></b>after</p>
+
+
+<!--------------------------------------
+                Nesting
+--------------------------------------->
+
+<a href="/a">
+	<table>
+		<tr>
+			<td>
+				<p>before</p>
+				<a href="/b">another link</a>
+				<p>after</p>
+			</td>
+		</tr>
+	</table>
+</a>
+

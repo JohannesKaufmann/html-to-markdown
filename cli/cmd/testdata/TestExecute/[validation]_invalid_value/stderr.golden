@@ -1,0 +1,3 @@
+
+error: invalid value for --opt-strong-delimiter="1234" must be exactly 2 characters of "**" or "__"
+

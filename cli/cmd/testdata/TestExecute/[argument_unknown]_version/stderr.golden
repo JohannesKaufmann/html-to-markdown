@@ -1,0 +1,7 @@
+
+error: unknown arguments: version
+
+Here is how you can use the CLI:
+
+    echo "<strong>important</strong>" | html2markdown
+
