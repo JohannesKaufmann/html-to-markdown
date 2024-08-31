@@ -92,6 +92,10 @@ func main() {
 > [!NOTE]  
 > If you use `NewConverter` directly make sure to also **register the commonmark plugin**.
 
+### Plugins
+
+TODO: info about plugins
+
 ---
 
 ---
@@ -140,3 +144,67 @@ This domain is for use in illustrative examples in documents. You may use this d
 ```
 
 _(The cli does not support every option yet. Over time more customization will be added)_
+
+---
+
+---
+
+## FAQ
+
+### Extending with Plugins
+
+- Need your own logic? Write your own code and then **register** it.
+- Don't like the **defaults** that the library uses? You can use `PriorityEarly` to run you logic _earlier_ than others.
+- If you believe that you logic could also benefit others, you can package it up into a **plugin**.
+
+🗒️ [WRITING_PLUGINS.md](/WRITING_PLUGINS.md)
+
+### Bugs
+
+You found a bug?
+
+[Open an issue](https://github.com/JohannesKaufmann/html-to-markdown/issues/new/choose) with the HTML snippet that does not produce the expected results. Please, please, plase _submit the HTML snippet_ that caused the problem. Otherwise it is very difficult to reproduce and fix...
+
+### Security
+
+This library produces markdown that is readable and can be changed by humans.
+
+Once you convert this markdown back to HTML (e.g. using [goldmark](https://github.com/yuin/goldmark) or [blackfriday](https://github.com/russross/blackfriday)) you need to be careful of malicious content.
+
+This library does NOT sanitize untrusted content. Use an HTML sanitizer such as [bluemonday](https://github.com/microcosm-cc/bluemonday) before displaying the HTML in the browser.
+
+🗒️ [SECURITY.md](/SECURITY.md) if you find a security vulnerability
+
+### Goroutines
+
+You can use the `Converter` from (multiple) goroutines. Internally a mutex is used & there is a test to verify that behaviour.
+
+### Escaping & Backslash
+
+The backslash `\` character is used to escape characters. That is perfectly safe and won't be displayed in the final render.
+
+### Contributing
+
+You want to contribute? Thats great to hear! There are many ways to help:
+
+Helping to answer questions, triaging issues, writing documentation, writing code, ...
+
+If you want to make a code change: Please first discuss the change you wish to make, by opening an issue. I'm also happy to guide you to where a change is most likely needed. There are also extensive tests (see below) so you can freely experiment 🧑‍🔬
+
+_Note: The outside API should not change because of backwards compatibility..._
+
+## Testing
+
+You don't have to be afraid of breaking the converter, since there are many "Golden File" tests:
+
+Add your problematic HTML snippet to one of the `.in.html` files in the `testdata` folders. Then run `go test -update` and have a look at which `.out.md` files changed in GIT.
+
+You can now change the internal logic and inspect what impact your change has by running `go test -update` again.
+
+_Note: Before submitting your change as a PR, make sure that you run those tests and check the files into GIT..._
+
+## License
+
+Unless otherwise specified, the project is licensed under the terms of the MIT license.
+
+🗒️ [LICENSE](/LICENSE)
