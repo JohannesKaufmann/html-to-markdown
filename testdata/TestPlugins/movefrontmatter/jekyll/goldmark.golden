@@ -1,4 +1,0 @@
-<p>+++
-food: Pizza
-+++</p>
-<h1>{{ page.food }}</h1>
