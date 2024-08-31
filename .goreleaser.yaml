@@ -38,6 +38,13 @@ archives:
       - goos: windows
         format: zip
 
+brews:
+  - name: html2markdown
+    repository:
+      owner: JohannesKaufmann
+      name: homebrew-tap
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+
 changelog:
   sort: asc
   filters:
