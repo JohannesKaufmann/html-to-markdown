@@ -42,6 +42,11 @@ func (conv *Converter) getError() error {
 
 var errNoRenderHandlers = errors.New("no render handlers are registered. did you forget to register the commonmark plugin?")
 
+// ConvertNode converts a `*html.Node` to a markdown byte slice.
+//
+// If you have already parsed an HTML page using the `html.Parse()` function
+// from the "golang.org/x/net/html" package then you can pass this node
+// directly to the converter.
 func (conv *Converter) ConvertNode(doc *html.Node, opts ...convertOptionFunc) ([]byte, error) {
 
 	if err := conv.getError(); err != nil {
@@ -98,6 +103,9 @@ func (conv *Converter) ConvertNode(doc *html.Node, opts ...convertOptionFunc) ([
 	return result, nil
 }
 
+// ConvertReader converts the html from the reader to markdown.
+//
+// Under the hood `html.Parse()` is used to parse the HTML.
 func (conv *Converter) ConvertReader(r io.Reader, opts ...convertOptionFunc) ([]byte, error) {
 	doc, err := html.Parse(r)
 	if err != nil {
@@ -107,6 +115,9 @@ func (conv *Converter) ConvertReader(r io.Reader, opts ...convertOptionFunc) ([]
 	return conv.ConvertNode(doc, opts...)
 }
 
+// ConvertString converts a html-string to a markdown-string.
+//
+// Under the hood `html.Parse()` is used to parse the HTML.
 func (conv *Converter) ConvertString(htmlInput string, opts ...convertOptionFunc) (string, error) {
 	r := strings.NewReader(htmlInput)
 	output, err := conv.ConvertReader(r, opts...)
