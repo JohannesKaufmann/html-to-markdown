@@ -15,6 +15,9 @@ const (
 var placeholderByte byte = marker.BytesMarkerEscaping[0]
 
 func (conv *Converter) escapeContent(chars []byte) []byte {
+	if conv.escapeMode == EscapeDisabled {
+		return chars
+	}
 
 	newChars := make([]byte, 0, len(chars))
 	for index := 0; index < len(chars); index++ {
@@ -38,6 +41,10 @@ func (conv *Converter) escapeContent(chars []byte) []byte {
 }
 
 func (conv *Converter) unEscapeContent(chars []byte) []byte {
+	if conv.escapeMode == EscapeDisabled {
+		return chars
+	}
+
 	checkElements := func(index int) int {
 		for _, handler := range conv.getUnEscapeHandlers() {
 			if skip := handler.Value(chars, index); skip != -1 {

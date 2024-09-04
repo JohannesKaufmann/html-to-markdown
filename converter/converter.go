@@ -18,6 +18,8 @@ type Converter struct {
 
 	tagStrategies map[string]tagStrategy
 
+	escapeMode escapeMode
+
 	Register register
 }
 
@@ -41,4 +43,30 @@ func NewConverter(opts ...converterOption) *Converter {
 	}
 
 	return conv
+}
+
+type escapeMode string
+
+const (
+	EscapeDisabled escapeMode = "disabled"
+	EscapeSmart    escapeMode = "smart"
+)
+
+// WithEscapeMode changes the strictness of the "escaping".
+//
+// Some characters have a special meaning in markdown.
+// For example, the character "*" can be used for lists, emphasis and dividers.
+// By placing a backlash before that character (e.g. "\*") you can "escape" it.
+// Then the character will render as a raw "*" without the "markdown meaning" applied.
+//
+// Learn more in the documentation
+//
+//	"disabled" or "smart"
+//
+//	default: "smart"
+func WithEscapeMode(mode escapeMode) converterOption {
+	return func(c *Converter) error {
+		c.escapeMode = mode
+		return nil
+	}
 }

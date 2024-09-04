@@ -70,7 +70,6 @@ func WithCodeBlockFence(fence string) OptionFunc {
 // "setext" or "atx"
 //
 // default: "atx"
-// HeadingStyle string
 func WithHeadingStyle(style headingStyle) OptionFunc {
 	return func(config *config) {
 		config.HeadingStyle = style

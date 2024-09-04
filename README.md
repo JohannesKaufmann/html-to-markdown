@@ -181,7 +181,9 @@ You can use the `Converter` from (multiple) goroutines. Internally a mutex is us
 
 ### Escaping & Backslash
 
-The backslash `\` character is used to escape characters. That is perfectly safe and won't be displayed in the final render.
+Some characters have a special meaning in markdown (e.g. "\*" for emphasis). The backslash `\` character is used to "escape" those characters. That is perfectly safe and won't be displayed in the final render.
+
+🗒️ [ESCAPING.md](/ESCAPING.md)
 
 ### Contributing
 
@@ -193,7 +195,7 @@ If you want to make a code change: Please first discuss the change you wish to m
 
 _Note: The outside API should not change because of backwards compatibility..._
 
-## Testing
+### Testing
 
 You don't have to be afraid of breaking the converter, since there are many "Golden File" tests:
 
@@ -203,7 +205,7 @@ You can now change the internal logic and inspect what impact your change has by
 
 _Note: Before submitting your change as a PR, make sure that you run those tests and check the files into GIT..._
 
-## License
+### License
 
 Unless otherwise specified, the project is licensed under the terms of the MIT license.
 
