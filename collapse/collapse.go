@@ -50,16 +50,8 @@ import (
 	"golang.org/x/net/html"
 )
 
-// Note: Originally in the javascript version, this just checked for "pre".
-// I changed it, to also return true for "code"
-func isPreOrCode(node *html.Node) bool {
-	name := dom.NodeName(node)
-
-	return name == "pre" || name == "code"
-}
-
-func next(prev *html.Node, current *html.Node) *html.Node {
-	if (prev != nil && prev.Parent == current) || isPreOrCode(current) {
+func nextNode(prev *html.Node, current *html.Node, domFuncs *DomFuncs) *html.Node {
+	if (prev != nil && prev.Parent == current) || domFuncs.IsPreformattedNode(current) {
 		if current.NextSibling != nil {
 			return current.NextSibling
 		}
@@ -77,37 +69,7 @@ func next(prev *html.Node, current *html.Node) *html.Node {
 	return current.Parent
 }
 
-var blockElements = []string{
-	"address", "article", "aside", "audio", "blockquote", "body", "canvas", "center", "dd", "dir", "div", "dl", "dt", "fieldset", "figcaption", "figure", "footer", "form", "frameset", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "hr", "html", "isindex", "li", "main", "menu", "nav", "noframes", "noscript", "ol", "output", "p", "pre", "section", "table", "tbody", "td", "tfoot", "th", "thead", "tr", "ul",
-}
-
-var voidElements = []string{
-	// Note: Compared to the javascript implementation, I removed "source"
-	"area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "meta", "param" /* "source, "*/, "track", "wbr",
-}
-
-func isBlock(node *html.Node) bool {
-	name := dom.NodeName(node)
-
-	for _, elem := range blockElements {
-		if elem == name {
-			return true
-		}
-	}
-	return false
-}
-func isVoid(node *html.Node) bool {
-	name := dom.NodeName(node)
-
-	for _, elem := range voidElements {
-		if elem == name {
-			return true
-		}
-	}
-	return false
-}
-
-func remove(node *html.Node) *html.Node {
+func removeNode(node *html.Node) *html.Node {
 	next := node.NextSibling
 	if next == nil {
 		next = node.Parent
@@ -119,8 +81,33 @@ func remove(node *html.Node) *html.Node {
 
 }
 
-func Collapse(element *html.Node) {
-	if element.FirstChild == nil || isPreOrCode(element) {
+type DomFuncs struct {
+	IsBlockNode        func(node *html.Node) bool
+	IsVoidNode         func(node *html.Node) bool
+	IsPreformattedNode func(node *html.Node) bool
+}
+
+func fillDefaultDomFuncs(domFuncs *DomFuncs) *DomFuncs {
+	if domFuncs == nil {
+		domFuncs = &DomFuncs{}
+	}
+	if domFuncs.IsBlockNode == nil {
+		domFuncs.IsBlockNode = defaultIsBlockNode
+	}
+	if domFuncs.IsVoidNode == nil {
+		domFuncs.IsVoidNode = defaultIsVoidNode
+	}
+	if domFuncs.IsPreformattedNode == nil {
+		domFuncs.IsPreformattedNode = defaultIsPreformattedNode
+	}
+	return domFuncs
+
+}
+func Collapse(element *html.Node, domFuncs *DomFuncs) {
+	domFuncs = fillDefaultDomFuncs(domFuncs)
+	// - - - - - - - - - - - - - - - - - - //
+
+	if element.FirstChild == nil || domFuncs.IsPreformattedNode(element) {
 		return
 	}
 
@@ -128,7 +115,7 @@ func Collapse(element *html.Node) {
 	var keepLeadingWs = false
 
 	var prev *html.Node = nil
-	var node = next(prev, element)
+	var node = nextNode(prev, element, domFuncs)
 
 	for node != element {
 		if node.Type == html.TextNode /* node.nodeType == 4 */ { // Node.TEXT_NODE or Node.CDATA_SECTION_NODE
@@ -141,7 +128,7 @@ func Collapse(element *html.Node) {
 
 			// `text` might be empty at this point.
 			if text == "" {
-				node = remove(node)
+				node = removeNode(node)
 				continue
 			}
 
@@ -149,14 +136,14 @@ func Collapse(element *html.Node) {
 
 			prevText = node
 		} else if node.Type == html.ElementNode { // Node.ELEMENT_NODE
-			if isBlock(node) || dom.NodeName(node) == "br" {
+			if domFuncs.IsBlockNode(node) || dom.NodeName(node) == "br" {
 				if prevText != nil {
 					prevText.Data = strings.TrimSuffix(prevText.Data, " ")
 				}
 
 				prevText = nil
 				keepLeadingWs = false
-			} else if isVoid(node) || isPreOrCode(node) || node.Data == "code" {
+			} else if domFuncs.IsVoidNode(node) || domFuncs.IsPreformattedNode(node) || dom.NodeName(node) == "code" {
 				// Avoid trimming space around non-block, non-BR void elements and inline PRE.
 				prevText = nil
 				keepLeadingWs = true
@@ -169,11 +156,11 @@ func Collapse(element *html.Node) {
 		} else {
 			// E.g. DoctypeNode
 
-			node = remove(node)
+			node = removeNode(node)
 			continue
 		}
 
-		var nextNode = next(prev, node)
+		var nextNode = nextNode(prev, node, domFuncs)
 		prev = node
 		node = nextNode
 	}
@@ -181,7 +168,7 @@ func Collapse(element *html.Node) {
 	if prevText != nil {
 		prevText.Data = strings.TrimSuffix(prevText.Data, " ")
 		if prevText.Data == "" {
-			remove(prevText)
+			removeNode(prevText)
 		}
 	}
 }

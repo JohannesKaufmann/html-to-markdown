@@ -26,7 +26,7 @@ func TestTagType_Priority(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			expected := "This \n\n<strong>bold</strong>\n\n and *italic* text"
+			expected := "This\n\n<strong>bold</strong>\n\nand *italic* text"
 			if output != expected {
 				t.Errorf("expected %q but got %q", expected, output)
 			}

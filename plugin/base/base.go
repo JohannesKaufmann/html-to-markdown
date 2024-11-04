@@ -83,7 +83,17 @@ func (b *base) preRenderRemove(ctx converter.Context, doc *html.Node) {
 }
 
 func (b *base) preRenderCollapse(ctx converter.Context, doc *html.Node) {
-	collapse.Collapse(doc)
+	collapse.Collapse(doc, &collapse.DomFuncs{
+		IsBlockNode: func(node *html.Node) bool {
+			tagName := dom.NodeName(node)
+			tagType, ok := ctx.GetTagType(tagName)
+			if ok {
+				return tagType == converter.TagTypeBlock
+			}
+
+			return dom.NameIsBlockNode(tagName)
+		},
+	})
 }
 
 var characterEntityReplacer = strings.NewReplacer(

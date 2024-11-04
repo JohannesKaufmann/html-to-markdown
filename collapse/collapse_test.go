@@ -35,7 +35,7 @@ func TestCollapse_DocType(t *testing.T) {
 		t.Error(err)
 	}
 
-	Collapse(doc)
+	Collapse(doc, nil)
 
 	var buf bytes.Buffer
 	err = html.Render(&buf, doc)
@@ -55,7 +55,7 @@ func TestCollapse_NoFirstChild(t *testing.T) {
 		Data: "strong",
 	}
 
-	Collapse(boldNode)
+	Collapse(boldNode, nil)
 
 	var buf bytes.Buffer
 	err := html.Render(&buf, boldNode)
@@ -80,7 +80,7 @@ func TestCollapse_StartWithCode(t *testing.T) {
 	}
 	codeNode.AppendChild(textNode)
 
-	Collapse(codeNode)
+	Collapse(codeNode, nil)
 
 	var buf bytes.Buffer
 	err := html.Render(&buf, codeNode)
@@ -111,7 +111,7 @@ func TestCollapse_TwoTextNodes(t *testing.T) {
 	node1.AppendChild(node2)
 	node1.AppendChild(node3)
 
-	Collapse(node1)
+	Collapse(node1, nil)
 
 	var buf bytes.Buffer
 	err := html.Render(&buf, node1)
@@ -142,7 +142,7 @@ func TestCollapse_LastTextIsEmpty(t *testing.T) {
 	node1.AppendChild(node2)
 	node1.AppendChild(node3)
 
-	Collapse(node1)
+	Collapse(node1, nil)
 
 	var buf bytes.Buffer
 	err := html.Render(&buf, node1)
@@ -273,7 +273,7 @@ func TestCollapse_Table(t *testing.T) {
 				t.Error(err)
 			}
 
-			Collapse(doc)
+			Collapse(doc, nil)
 
 			var buf bytes.Buffer
 			err = html.Render(&buf, getBody(doc))

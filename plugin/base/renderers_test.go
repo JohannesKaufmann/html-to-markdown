@@ -50,8 +50,7 @@ func TestRenderAsX(t *testing.T) {
 			desc:       "RenderAsHTML Inline",
 			isInline:   true,
 			renderFunc: base.RenderAsHTML,
-			// TODO: Connect the collapse function to the tagType map. Then we can also use "TagTypeInline" for a node that is actually a block node
-			expected: "# heading\n\n<footer><strong>bold text</strong></footer>",
+			expected:   "# heading\n\n<footer><strong>bold text</strong></footer>",
 		},
 
 		{
