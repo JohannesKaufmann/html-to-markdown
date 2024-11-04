@@ -15,7 +15,7 @@ const (
 var placeholderByte byte = marker.BytesMarkerEscaping[0]
 
 func (conv *Converter) escapeContent(chars []byte) []byte {
-	if conv.escapeMode == EscapeDisabled {
+	if conv.escapeMode == EscapeModeDisabled {
 		return chars
 	}
 
@@ -41,7 +41,7 @@ func (conv *Converter) escapeContent(chars []byte) []byte {
 }
 
 func (conv *Converter) unEscapeContent(chars []byte) []byte {
-	if conv.escapeMode == EscapeDisabled {
+	if conv.escapeMode == EscapeModeDisabled {
 		return chars
 	}
 

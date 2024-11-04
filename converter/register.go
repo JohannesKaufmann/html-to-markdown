@@ -50,6 +50,23 @@ func (r *register) Renderer(fn HandleRenderFunc, priority int) {
 	handler := prioritized(fn, priority)
 	r.conv.renderHandlers = append(r.conv.renderHandlers, handler)
 }
+
+// RendererFor registers a renderer for a specific tag (e.g. "div").
+// It is a small wrapper around `TagType()` and `Renderer()`.
+func (r *register) RendererFor(tagName string, tagType tagType, renderFn HandleRenderFunc, priority int) {
+
+	// 1. we add the "tagType" to the map
+	r.TagType(tagName, tagType, priority)
+
+	// 2. we register the render function
+	r.Renderer(func(ctx Context, w Writer, n *html.Node) RenderStatus {
+		if dom.NodeName(n) == tagName {
+			return renderFn(ctx, w, n)
+		}
+		return RenderTryNext
+	}, priority)
+}
+
 func (conv *Converter) getRenderHandlers() prioritizedSlice[HandleRenderFunc] {
 	conv.m.RLock()
 	defer conv.m.RUnlock()
@@ -143,29 +160,42 @@ func (conv *Converter) getUnEscapeHandlers() prioritizedSlice[HandleUnEscapeFunc
 	return handlers
 }
 
-// - - - - - - - - - - - - - Tag Strategy - - - - - - - - - - - - - //
+// - - - - - - - - - - - - - Tag Type - - - - - - - - - - - - - //
 
-func (r *register) TagStrategy(tagName string, strategy tagStrategy) {
+type tagType string
+
+const (
+	TagTypeBlock  tagType = "block"
+	TagTypeInline tagType = "inline"
+
+	// TagTypeRemove will remove that node in the _PreRender_ phase with a high priority.
+	TagTypeRemove tagType = "remove"
+)
+
+func (r *register) TagType(tagName string, tagType tagType, priority int) {
 	r.conv.m.Lock()
 	defer r.conv.m.Unlock()
 
-	r.conv.tagStrategies[tagName] = strategy
+	val := prioritized(tagType, priority)
+	r.conv.tagTypes[tagName] = append(r.conv.tagTypes[tagName], val)
 }
-func (conv *Converter) getTagStrategy(tagName string) (tagStrategy, bool) {
+func (conv *Converter) getTagType(tagName string) (tagType, bool) {
 	conv.m.RLock()
 	defer conv.m.RUnlock()
 
-	strategy, ok := conv.tagStrategies[tagName]
-	return strategy, ok
-}
-func (conv *Converter) getTagStrategyWithFallback(tagName string) tagStrategy {
-	decision, ok := conv.getTagStrategy(tagName)
-	if ok {
-		return decision
+	types, ok := conv.tagTypes[tagName]
+	if !ok || len(types) == 0 {
+
+		if dom.NameIsBlockNode(tagName) {
+			return TagTypeBlock, true
+		} else if dom.NameIsInlineNode(tagName) {
+			return TagTypeInline, true
+		}
+		return "", false
 	}
 
-	if dom.NameIsBlockNode(tagName) {
-		return StrategyMarkdownBlock
-	}
-	return StrategyMarkdownLeaf
+	types.Sort()
+	firstType := types[0].Value
+
+	return firstType, true
 }

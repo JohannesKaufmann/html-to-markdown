@@ -16,7 +16,7 @@ type Converter struct {
 	markdownChars    map[rune]interface{}
 	unEscapeHandlers prioritizedSlice[HandleUnEscapeFunc]
 
-	tagStrategies map[string]tagStrategy
+	tagTypes map[string]prioritizedSlice[tagType]
 
 	escapeMode escapeMode
 
@@ -28,11 +28,9 @@ type converterOption = func(c *Converter) error
 func NewConverter(opts ...converterOption) *Converter {
 	conv := &Converter{
 		markdownChars: make(map[rune]interface{}),
-		tagStrategies: make(map[string]tagStrategy),
+		tagTypes:      make(map[string]prioritizedSlice[tagType]),
 	}
 	conv.Register = register{conv}
-
-	conv.registerBase()
 
 	for _, opt := range opts {
 		err := opt(conv)
@@ -48,8 +46,8 @@ func NewConverter(opts ...converterOption) *Converter {
 type escapeMode string
 
 const (
-	EscapeDisabled escapeMode = "disabled"
-	EscapeSmart    escapeMode = "smart"
+	EscapeModeDisabled escapeMode = "disabled"
+	EscapeModeSmart    escapeMode = "smart"
 )
 
 // WithEscapeMode changes the strictness of the "escaping".

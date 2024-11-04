@@ -9,6 +9,7 @@ import (
 type Element string
 
 const (
+	// TODO: shorter value? Or maybe atom? Or nodeName "img" / "a"?
 	ElementLink  Element = "ElementLink"
 	ElementImage Element = "ElementImage"
 )

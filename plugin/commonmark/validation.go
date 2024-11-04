@@ -14,6 +14,8 @@ func contains(values []string, searchVal string) bool {
 	return false
 }
 
+// TODO: should this be with the commonmark package? Or more general?
+// TODO: Maybe make it an interface? And also have a GetPluginName function?
 type ValidateConfigError struct {
 	Key   string
 	Value string
@@ -86,7 +88,7 @@ func validateConfig(cfg *config) error {
 		}
 	}
 
-	possibleLinkStyles := []string{string(LinkInlined), string(LinkReferencedIndex), string(LinkReferencedShort)}
+	possibleLinkStyles := []string{string(LinkStyleInlined), string(LinkStyleReferencedIndex), string(LinkStyleReferencedShort)}
 	if !contains(possibleLinkStyles, string(cfg.LinkStyle)) {
 		return &ValidateConfigError{
 			Key:                "LinkStyle",

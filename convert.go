@@ -2,6 +2,7 @@ package htmltomarkdown
 
 import (
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
+	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/base"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/commonmark"
 	"golang.org/x/net/html"
 )
@@ -11,7 +12,10 @@ import (
 // Under the hood `html.Parse()` is used to parse the HTML.
 func ConvertString(htmlInput string) (string, error) {
 	conv := converter.NewConverter(
-		converter.WithPlugins(commonmark.NewCommonmarkPlugin()),
+		converter.WithPlugins(
+			base.NewBasePlugin(),
+			commonmark.NewCommonmarkPlugin(),
+		),
 	)
 
 	return conv.ConvertString(htmlInput)
@@ -24,7 +28,10 @@ func ConvertString(htmlInput string) (string, error) {
 // directly to the converter.
 func ConvertNode(doc *html.Node) ([]byte, error) {
 	conv := converter.NewConverter(
-		converter.WithPlugins(commonmark.NewCommonmarkPlugin()),
+		converter.WithPlugins(
+			base.NewBasePlugin(),
+			commonmark.NewCommonmarkPlugin(),
+		),
 	)
 
 	return conv.ConvertNode(doc)

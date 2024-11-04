@@ -7,17 +7,22 @@ import (
 	htmltomarkdown "github.com/JohannesKaufmann/html-to-markdown/v2"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/internal/tester"
+	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/base"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/commonmark"
 )
 
 func TestGoldenFiles(t *testing.T) {
 	goldenFileConvert := func(htmlInput []byte) ([]byte, error) {
 		conv := converter.NewConverter(
-			converter.WithPlugins(commonmark.NewCommonmarkPlugin()),
+			converter.WithPlugins(
+				base.NewBasePlugin(),
+				commonmark.NewCommonmarkPlugin(),
+			),
 		)
 
-		// This makes the testcases easier to read
-		conv.Register.TagStrategy("#comment", converter.StrategyHTMLBlock)
+		// It makes the testcases easier to read if we keep the <!-- comment --> as raw html block.
+		// To override the setting from the base it needs to run *early*
+		conv.Register.RendererFor("#comment", converter.TagTypeBlock, base.RenderAsHTML, converter.PriorityEarly)
 
 		return conv.ConvertReader(bytes.NewReader(htmlInput))
 	}
@@ -110,7 +115,7 @@ func TestOptionFunc(t *testing.T) {
 			expected: "* list a\n\n<!--THE END-->\n\n* list b",
 		},
 		{
-			desc: "WithBulletListMarker(*)",
+			desc: "WithBulletListMarker(*) and WithListEndComment(false)",
 			options: []commonmark.OptionFunc{
 				commonmark.WithBulletListMarker("*"),
 				commonmark.WithListEndComment(false),
@@ -159,6 +164,7 @@ func TestOptionFunc(t *testing.T) {
 		t.Run(tC.desc, func(t *testing.T) {
 			conv := converter.NewConverter(
 				converter.WithPlugins(
+					base.NewBasePlugin(),
 					commonmark.NewCommonmarkPlugin(
 						tC.options...,
 					),
@@ -263,6 +269,7 @@ func TestOptionFunc_ValdationError(t *testing.T) {
 		t.Run(tC.desc, func(t *testing.T) {
 			conv := converter.NewConverter(
 				converter.WithPlugins(
+					base.NewBasePlugin(),
 					commonmark.NewCommonmarkPlugin(
 						tC.options...,
 					),

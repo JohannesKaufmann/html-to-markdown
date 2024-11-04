@@ -9,6 +9,7 @@ import (
 
 	htmltomarkdown "github.com/JohannesKaufmann/html-to-markdown/v2"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
+	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/base"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/commonmark"
 	"golang.org/x/net/html"
 )
@@ -75,7 +76,7 @@ func TestConvertString_WindowsCarriageReturn(t *testing.T) {
 		t.Run(tC.desc, func(t *testing.T) {
 			output, err := htmltomarkdown.ConvertString(tC.input)
 			if err != nil {
-				log.Fatal(err)
+				t.Fatal(err)
 			}
 			if output != tC.expected {
 				t.Errorf("expected %q but got %q", tC.expected, output)
@@ -86,7 +87,10 @@ func TestConvertString_WindowsCarriageReturn(t *testing.T) {
 
 func TestDataRaceDetector(t *testing.T) {
 	conv := converter.NewConverter(
-		converter.WithPlugins(commonmark.NewCommonmarkPlugin()),
+		converter.WithPlugins(
+			base.NewBasePlugin(),
+			commonmark.NewCommonmarkPlugin(),
+		),
 	)
 
 	input := `<i>italic text</i>`
@@ -122,7 +126,7 @@ func TestDataRaceDetector(t *testing.T) {
 				converter.PriorityStandard,
 			)
 
-			conv.Register.TagStrategy("script", converter.StrategyHTMLBlock)
+			conv.Register.TagType("script", converter.TagTypeBlock, converter.PriorityStandard)
 
 			output, err := conv.ConvertString(input, converter.WithDomain("example.com"))
 			if err != nil {

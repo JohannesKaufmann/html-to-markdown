@@ -5,6 +5,7 @@ import (
 
 	"github.com/JohannesKaufmann/dom"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
+	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/base"
 	"golang.org/x/net/html"
 )
 
@@ -75,4 +76,62 @@ func TestConvertString_ErrNoRenderHandlers(t *testing.T) {
 	if err != nil {
 		t.Fatal("did not expect an error since we registered a renderer")
 	}
+}
+
+func TestWithEscapeMode(t *testing.T) {
+	mockRenderer := func(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
+		return converter.RenderTryNext
+	}
+	mockUnEscaper := func(chars []byte, index int) int {
+		if chars[index] != '|' {
+			return -1
+		}
+
+		// A bit too simplistic for demonstration purposes.
+		// Normally here would be content to check if the escaping is necessary...
+		return 1
+	}
+
+	input := "a|b"
+	expectedWithSmart := "a\\|b"
+	expectedWithDisabled := "a|b"
+
+	t.Run("EscapeSmart", func(t *testing.T) {
+		conv := converter.NewConverter(
+			converter.WithPlugins(
+				base.NewBasePlugin(),
+			),
+			converter.WithEscapeMode(converter.EscapeModeSmart), // <--
+		)
+		conv.Register.Renderer(mockRenderer, converter.PriorityStandard)
+		conv.Register.EscapedChar('|')
+		conv.Register.UnEscaper(mockUnEscaper, converter.PriorityStandard)
+
+		output, err := conv.ConvertString(input)
+		if err != nil {
+			t.Error(err)
+		}
+		if output != expectedWithSmart {
+			t.Errorf("expected %q but got %q", expectedWithSmart, output)
+		}
+	})
+	t.Run("EscapeDisabled", func(t *testing.T) {
+		conv := converter.NewConverter(
+			converter.WithPlugins(
+				base.NewBasePlugin(),
+			),
+			converter.WithEscapeMode(converter.EscapeModeDisabled), // <--
+		)
+		conv.Register.Renderer(mockRenderer, converter.PriorityStandard)
+		conv.Register.EscapedChar('|')
+		conv.Register.UnEscaper(mockUnEscaper, converter.PriorityStandard)
+
+		output, err := conv.ConvertString(input)
+		if err != nil {
+			t.Error(err)
+		}
+		if output != expectedWithDisabled {
+			t.Errorf("expected %q but got %q", expectedWithDisabled, output)
+		}
+	})
 }

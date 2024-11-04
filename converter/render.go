@@ -5,7 +5,21 @@ import (
 	"golang.org/x/net/html"
 )
 
+func (conv *Converter) handleRenderNodes(ctx Context, w Writer, nodes ...*html.Node) {
+	for _, node := range nodes {
+		conv.handleRenderNode(ctx, w, node)
+	}
+}
+
 func (conv *Converter) handleRenderNode(ctx Context, w Writer, node *html.Node) RenderStatus {
+	name := dom.NodeName(node)
+
+	// - - A: the #text node - - //
+	if name == "#text" {
+		return conv.handleRenderText(ctx, w, node)
+	}
+
+	// - - B: the render handlers - - //
 	for _, handler := range conv.getRenderHandlers() {
 		status := handler.Value(ctx, w, node)
 		if status == RenderSuccess {
@@ -13,53 +27,35 @@ func (conv *Converter) handleRenderNode(ctx Context, w Writer, node *html.Node) 
 		}
 	}
 
-	return conv.fallbackRender(ctx, w, node)
-}
-func (conv *Converter) handleRenderNodes(ctx Context, w Writer, nodes ...*html.Node) {
-	for _, node := range nodes {
-		conv.handleRenderNode(ctx, w, node)
-	}
+	// - - C: the fallback - - //
+	// If nothing works we fallback to this:
+	return conv.handleRenderFallback(ctx, w, node)
 }
 
-func (conv *Converter) fallbackRender(ctx Context, w Writer, node *html.Node) RenderStatus {
+func (conv *Converter) handleRenderFallback(ctx Context, w Writer, node *html.Node) RenderStatus {
 
-	name := dom.NodeName(node)
-	decision := conv.getTagStrategyWithFallback(name)
+	tagName := dom.NodeName(node)
+	tagType, _ := ctx.GetTagType(tagName)
 
-	if decision == StrategyHTMLBlockWithMarkdown {
-		w.WriteString("<")
-		w.WriteString(name)
-		// TODO: also render the attributes?
-		w.WriteString(">\n\n")
-
-		conv.handleRenderNodes(ctx, w, dom.AllChildNodes(node)...)
-
-		w.WriteString("\n\n</")
-		w.WriteString(name)
-		w.WriteString(">")
-		return RenderSuccess
+	if tagType == TagTypeBlock {
+		w.WriteRune('\n')
+		w.WriteRune('\n')
+	}
+	ctx.RenderChildNodes(ctx, w, node)
+	if tagType == TagTypeBlock {
+		w.WriteRune('\n')
+		w.WriteRune('\n')
 	}
 
-	if decision == StrategyHTMLBlock {
-		w.WriteRune('\n')
-		w.WriteRune('\n')
-		_ = html.Render(w, node) // TODO: what to do with error?
-		w.WriteRune('\n')
-		w.WriteRune('\n')
-		return RenderSuccess
+	return RenderSuccess
+}
+func (conv *Converter) handleRenderText(ctx Context, w Writer, node *html.Node) RenderStatus {
+	content := node.Data
+
+	for _, handler := range conv.getTextTransformHandlers() {
+		content = handler.Value(ctx, content)
 	}
 
-	if decision == StrategyMarkdownBlock {
-		w.WriteRune('\n')
-		w.WriteRune('\n')
-		conv.handleRenderNodes(ctx, w, dom.AllChildNodes(node)...)
-		w.WriteRune('\n')
-		w.WriteRune('\n')
-
-		return RenderSuccess
-	} else {
-		conv.handleRenderNodes(ctx, w, dom.AllChildNodes(node)...)
-
-		return RenderSuccess
-	}
+	w.WriteString(content)
+	return RenderSuccess
 }

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
+	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/base"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/commonmark"
 )
 
@@ -117,7 +118,10 @@ func TestNewCommonmarkPlugin_Italic(t *testing.T) {
 	for _, run := range runs {
 		t.Run(run.desc, func(t *testing.T) {
 			conv := converter.NewConverter(
-				converter.WithPlugins(commonmark.NewCommonmarkPlugin()),
+				converter.WithPlugins(
+					base.NewBasePlugin(),
+					commonmark.NewCommonmarkPlugin(),
+				),
 			)
 
 			out, err := conv.ConvertString(run.input)

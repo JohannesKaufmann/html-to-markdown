@@ -62,10 +62,11 @@ func (conv *Converter) ConvertNode(doc *html.Node, opts ...convertOptionFunc) ([
 	}
 	conv.m.Unlock()
 
-	// If there are no render handlers registered (apart from the base) this is
+	// If there are no render handlers registered this is
 	// usually a user error - since people want the Commonmark Plugin in 99% of cases.
-	countBaseRenderHandlers := 1
-	if len(conv.getRenderHandlers()) == countBaseRenderHandlers {
+	if len(conv.getRenderHandlers()) == 0 {
+		// TODO: Add Name() to the interface & check for the presence of *both* the Base & Commonmark Plugin
+		// TODO: What if just the base plugin is registered?
 		return nil, errNoRenderHandlers
 	}
 

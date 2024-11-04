@@ -6,6 +6,7 @@ import (
 
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/internal/tester"
+	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/base"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/commonmark"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/strikethrough"
 )
@@ -45,7 +46,10 @@ func TestNewStrikethroughPlugin(t *testing.T) {
 	for _, run := range runs {
 		t.Run(run.desc, func(t *testing.T) {
 			conv := converter.NewConverter(
-				converter.WithPlugins(strikethrough.NewStrikethroughPlugin()),
+				converter.WithPlugins(
+					base.NewBasePlugin(),
+					strikethrough.NewStrikethroughPlugin(),
+				),
 			)
 
 			out, err := conv.ConvertString(run.input)
@@ -61,6 +65,7 @@ func TestNewStrikethroughPlugin(t *testing.T) {
 func TestWithDelimiter(t *testing.T) {
 	conv := converter.NewConverter(
 		converter.WithPlugins(
+			base.NewBasePlugin(),
 			strikethrough.NewStrikethroughPlugin(
 				strikethrough.WithDelimiter("=="),
 			),
@@ -83,6 +88,7 @@ func TestGoldenFiles(t *testing.T) {
 	goldenFileConvert := func(htmlInput []byte) ([]byte, error) {
 		conv := converter.NewConverter(
 			converter.WithPlugins(
+				base.NewBasePlugin(),
 				commonmark.NewCommonmarkPlugin(),
 				strikethrough.NewStrikethroughPlugin(),
 			),

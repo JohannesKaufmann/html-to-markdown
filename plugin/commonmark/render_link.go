@@ -89,7 +89,7 @@ func (c *commonmark) renderLink(ctx converter.Context, w converter.Writer, n *ht
 	l.after = rightExtra
 
 	switch c.LinkStyle {
-	case LinkInlined:
+	case LinkStyleInlined:
 		return c.renderLinkInlined(w, l)
 	default:
 		return converter.RenderTryNext

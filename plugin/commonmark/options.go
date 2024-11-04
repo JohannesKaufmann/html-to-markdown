@@ -6,25 +6,25 @@ const (
 	// For example:
 	//
 	//  [view more](/about.html)
-	LinkInlined linkStyle = "inlined"
+	LinkStyleInlined linkStyle = "inlined"
 
-	LinkReferencedIndex linkStyle = "referenced_index"
-	LinkReferencedShort linkStyle = "referenced_short"
+	LinkStyleReferencedIndex linkStyle = "referenced_index"
+	LinkStyleReferencedShort linkStyle = "referenced_short"
 )
 
 type headingStyle string
 
 const (
-	// HeadingATX is the heading style of prefixing the heading with "#" signs indicating the level. For example:
+	// HeadingStyleATX is the heading style of prefixing the heading with "#" signs indicating the level. For example:
 	//
 	//  ## Heading
-	HeadingATX headingStyle = "atx"
+	HeadingStyleATX headingStyle = "atx"
 
-	// HeadingSetext is the heading style of putting "=" or "-" on the followed line. For example:
+	// HeadingStyleSetext is the heading style of putting "=" or "-" on the followed line. For example:
 	//
 	//  Heading
 	//  -------
-	HeadingSetext headingStyle = "setext"
+	HeadingStyleSetext headingStyle = "setext"
 )
 
 // config to customize the output. You can change stuff like
@@ -73,12 +73,6 @@ type config struct {
 	//
 	// default: inlined
 	LinkStyle linkStyle
-
-	// ----//
-	// basic, disabled
-	// default: basic
-	// TODO: EscapeMode string
-	// TODO: AssembleAbsoluteURL
 }
 
 func fillInDefaultConfig(cfg *config) config {
@@ -111,7 +105,7 @@ func fillInDefaultConfig(cfg *config) config {
 	}
 
 	if cfg.LinkStyle == "" {
-		cfg.LinkStyle = LinkInlined
+		cfg.LinkStyle = LinkStyleInlined
 	}
 
 	return *cfg

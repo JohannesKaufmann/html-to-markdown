@@ -114,7 +114,7 @@ func (c *commonmark) renderHeading(ctx converter.Context, w converter.Writer, n 
 		return converter.RenderSuccess
 	}
 
-	if c.HeadingStyle == HeadingSetext && level < 3 {
+	if c.HeadingStyle == HeadingStyleSetext && level < 3 {
 		content = textutils.EscapeMultiLine(content)
 
 		width := getUnderlineWidth(content, 3)

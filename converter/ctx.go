@@ -138,11 +138,12 @@ type Context interface {
 
 	AssembleAbsoluteURL(ctx Context, elem Element, rawURL string) string
 
-	GetTagStrategy(tagName string) (tagStrategy, bool)
+	GetTagType(tagName string) (tagType, bool)
 
 	RenderNodes(ctx Context, w Writer, nodes ...*html.Node)
 	RenderChildNodes(ctx Context, w Writer, n *html.Node)
 
+	EscapeContent(content []byte) []byte
 	UnEscapeContent(content []byte) []byte
 
 	WithValue(key any, val any) Context
@@ -171,8 +172,11 @@ func (c *converterContext) RenderChildNodes(ctx Context, w Writer, n *html.Node)
 	c.conv.handleRenderNodes(ctx, w, dom.AllChildNodes(n)...)
 }
 
-func (c *converterContext) GetTagStrategy(tagName string) (tagStrategy, bool) {
-	return c.conv.getTagStrategy(tagName)
+func (c *converterContext) GetTagType(tagName string) (tagType, bool) {
+	return c.conv.getTagType(tagName)
+}
+func (c *converterContext) EscapeContent(content []byte) []byte {
+	return c.conv.escapeContent(content)
 }
 func (c *converterContext) UnEscapeContent(content []byte) []byte {
 	return c.conv.unEscapeContent(content)
