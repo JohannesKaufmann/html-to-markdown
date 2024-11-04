@@ -9,6 +9,9 @@
 
 Convert HTML into Markdown with Go. It is using an [HTML Parser](https://github.com/PuerkitoBio/goquery) to avoid the use of `regexp` as much as possible. That should prevent some [weird cases](https://stackoverflow.com/a/1732454) and allows it to be used for cases where the input is totally unknown.
 
+> [!TIP]
+> Try the new ["v2" branch](https://github.com/JohannesKaufmann/html-to-markdown/tree/v2) with lots of improvements 🎉
+
 ## Installation
 
 ```
