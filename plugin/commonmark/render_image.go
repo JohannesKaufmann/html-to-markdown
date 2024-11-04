@@ -34,7 +34,7 @@ func (c *commonmark) renderImage(ctx converter.Context, w converter.Writer, n *h
 		return converter.RenderTryNext
 	}
 
-	src = ctx.AssembleAbsoluteURL(ctx, converter.ElementImage, src)
+	src = ctx.AssembleAbsoluteURL(ctx, "img", src)
 
 	title := dom.GetAttributeOr(n, "title", "")
 	title = strings.ReplaceAll(title, "\n", " ")

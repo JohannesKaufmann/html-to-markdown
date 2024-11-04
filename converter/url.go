@@ -6,14 +6,6 @@ import (
 	"strings"
 )
 
-type Element string
-
-const (
-	// TODO: shorter value? Or maybe atom? Or nodeName "img" / "a"?
-	ElementLink  Element = "ElementLink"
-	ElementImage Element = "ElementImage"
-)
-
 var percentEncodingReplacer = strings.NewReplacer(
 	" ", "%20",
 	"[", "%5B",
@@ -24,7 +16,7 @@ var percentEncodingReplacer = strings.NewReplacer(
 	">", "%3E",
 )
 
-func defaultAssembleAbsoluteURL(elem Element, rawURL string, domain string) string {
+func defaultAssembleAbsoluteURL(tagName string, rawURL string, domain string) string {
 	rawURL = strings.TrimSpace(rawURL)
 
 	if rawURL == "#" {

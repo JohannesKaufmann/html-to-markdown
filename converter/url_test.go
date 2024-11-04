@@ -8,7 +8,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 	runs := []struct {
 		desc string
 
-		element Element
+		tagName string
 		input   string
 		domain  string
 
@@ -24,7 +24,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "empty fragment",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "#",
 			domain:  "",
 
@@ -33,7 +33,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "fragment",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "#heading",
 			domain:  "",
 
@@ -42,7 +42,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "fragment with space",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "#my heading",
 			domain:  "",
 
@@ -51,7 +51,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "no domain",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "/page.html?key=val#hash",
 			domain:  "",
 
@@ -60,7 +60,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "with domain",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "/page.html?key=val#hash",
 			domain:  "test.com",
 
@@ -69,7 +69,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "data uri",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7",
 			domain:  "test.com",
 
@@ -78,7 +78,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "data uri (with spaces)",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 56' width='56' height='56' %3E%3C/svg%3E",
 			domain:  "test.com",
 
@@ -87,7 +87,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "URI scheme",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "slack://open?team=abc",
 			domain:  "test.com",
 
@@ -97,7 +97,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "already with http",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "http://www.example.com",
 			domain:  "test.com",
 
@@ -106,7 +106,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "already with https",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "https://www.example.com",
 			domain:  "test.com",
 
@@ -141,7 +141,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "mailto",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "mailto:hi@example.com?subject=Mail&cc=someoneelse@example.com",
 			domain:  "test.com",
 
@@ -150,7 +150,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "invalid url with newline in mailto",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "mailto:hi@example.com?body=Hello\nJohannes",
 			domain:  "test.com",
 
@@ -159,7 +159,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "mailto with already encoded space",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "mailto:hi@example.com?subject=Hello%20Johannes",
 			domain:  "test.com",
 
@@ -168,7 +168,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "mailto with raw space",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "mailto:hi@example.com?subject=Greetings to Johannes",
 			domain:  "test.com",
 
@@ -177,7 +177,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "mailto with german 'ä' character",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "mailto:hi@example.com?subject=Sie können gern einen Screenshot anhängen",
 			domain:  "test.com",
 
@@ -188,7 +188,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "mailto with link",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "mailto:hi@example.com?body=Article: www.website.com/page.html",
 			domain:  "test.com",
 
@@ -197,7 +197,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "brackets inside link #1",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "foo(and(bar)",
 			domain:  "",
 
@@ -206,7 +206,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 		{
 			desc: "brackets inside link #2",
 
-			element: ElementLink,
+			tagName: "a",
 			input:   "[foo](uri)",
 			domain:  "",
 
@@ -215,7 +215,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 	}
 	for _, run := range runs {
 		t.Run(run.desc, func(t *testing.T) {
-			res := defaultAssembleAbsoluteURL(run.element, run.input, run.domain)
+			res := defaultAssembleAbsoluteURL(run.tagName, run.input, run.domain)
 			if res != run.expected {
 				t.Errorf("expected '%s' but got '%s'", run.expected, res)
 			}

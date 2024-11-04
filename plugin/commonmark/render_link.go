@@ -51,7 +51,7 @@ func (c *commonmark) renderLink(ctx converter.Context, w converter.Writer, n *ht
 	href := dom.GetAttributeOr(n, "href", "")
 
 	href = strings.TrimSpace(href)
-	href = ctx.AssembleAbsoluteURL(ctx, converter.ElementLink, href)
+	href = ctx.AssembleAbsoluteURL(ctx, "a", href)
 
 	title := dom.GetAttributeOr(n, "title", "")
 	title = strings.ReplaceAll(title, "\n", " ")

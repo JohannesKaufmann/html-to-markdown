@@ -42,9 +42,9 @@ func GetDomain(ctx context.Context) string {
 
 // - - - - - - - - - - - - - - - - - - - - - //
 
-type AssembleAbsoluteURLFunc func(elem Element, rawURL string, domain string) string
+type AssembleAbsoluteURLFunc func(tagName string, rawURL string, domain string) string
 
-func assembleAbsoluteURL(ctx context.Context, elem Element, rawURL string) string {
+func assembleAbsoluteURL(ctx context.Context, tagName string, rawURL string) string {
 	domain := GetDomain(ctx)
 
 	// TODO: since this gets passed down from the converter, it doesn't have to provided from the ctx anymore
@@ -54,7 +54,7 @@ func assembleAbsoluteURL(ctx context.Context, elem Element, rawURL string) strin
 		return ""
 	}
 
-	return fn(elem, rawURL, domain)
+	return fn(tagName, rawURL, domain)
 }
 
 func provideAssembleAbsoluteURL(ctx context.Context, fn AssembleAbsoluteURLFunc) context.Context {
@@ -136,7 +136,7 @@ func UpdateState[V any](ctx context.Context, key string, fn func(V) V) {
 type Context interface {
 	context.Context
 
-	AssembleAbsoluteURL(ctx Context, elem Element, rawURL string) string
+	AssembleAbsoluteURL(ctx Context, tagName string, rawURL string) string
 
 	GetTagType(tagName string) (tagType, bool)
 
@@ -161,8 +161,8 @@ func newConverterContext(ctx context.Context, conv *Converter) Context {
 	}
 }
 
-func (c *converterContext) AssembleAbsoluteURL(ctx Context, elem Element, rawURL string) string {
-	return assembleAbsoluteURL(ctx, elem, rawURL)
+func (c *converterContext) AssembleAbsoluteURL(ctx Context, tagName string, rawURL string) string {
+	return assembleAbsoluteURL(ctx, tagName, rawURL)
 }
 
 func (c *converterContext) RenderNodes(ctx Context, w Writer, nodes ...*html.Node) {
