@@ -7,6 +7,8 @@ type Converter struct {
 
 	err error
 
+	registeredPlugins []string
+
 	preRenderHandlers  prioritizedSlice[HandlePreRenderFunc]
 	renderHandlers     prioritizedSlice[HandleRenderFunc]
 	postRenderHandlers prioritizedSlice[HandlePostRenderFunc]

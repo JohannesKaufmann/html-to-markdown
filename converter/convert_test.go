@@ -6,6 +6,7 @@ import (
 	"github.com/JohannesKaufmann/dom"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/base"
+	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/commonmark"
 	"golang.org/x/net/html"
 )
 
@@ -61,7 +62,7 @@ func TestConvertString_ErrNoRenderHandlers(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected an error")
 	}
-	if err.Error() != "no render handlers are registered. did you forget to register the commonmark plugin?" {
+	if err.Error() != `no render handlers are registered. did you forget to register the "commonmark" and "base" plugins?` {
 		t.Fatal("expected a different error but got", err)
 	}
 
@@ -75,6 +76,22 @@ func TestConvertString_ErrNoRenderHandlers(t *testing.T) {
 	_, err = conv.ConvertString("<strong>bold text</strong>")
 	if err != nil {
 		t.Fatal("did not expect an error since we registered a renderer")
+	}
+}
+
+func TestConvertString_ErrBasePluginMissing(t *testing.T) {
+	conv := converter.NewConverter(
+		converter.WithPlugins(
+			commonmark.NewCommonmarkPlugin(),
+		),
+	)
+
+	_, err := conv.ConvertString("<strong>bold text</strong>")
+	if err == nil {
+		t.Fatal("expected an error")
+	}
+	if err.Error() != `you registered the "commonmark" plugin but the "base" plugin is also required` {
+		t.Fatal("expected a different error but got", err)
 	}
 }
 

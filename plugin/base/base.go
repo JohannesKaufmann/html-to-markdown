@@ -24,6 +24,9 @@ func NewBasePlugin() converter.Plugin {
 	return &base
 }
 
+func (s *base) Name() string {
+	return "base"
+}
 func (b *base) Init(conv *converter.Converter) error {
 	conv.Register.TagType("#comment", converter.TagTypeRemove, converter.PriorityStandard)
 	conv.Register.TagType("head", converter.TagTypeRemove, converter.PriorityStandard)

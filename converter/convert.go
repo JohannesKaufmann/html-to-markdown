@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"slices"
 	"strings"
 
 	"golang.org/x/net/html"
@@ -40,7 +41,8 @@ func (conv *Converter) getError() error {
 	return conv.err
 }
 
-var errNoRenderHandlers = errors.New("no render handlers are registered. did you forget to register the commonmark plugin?")
+var errNoRenderHandlers = errors.New(`no render handlers are registered. did you forget to register the "commonmark" and "base" plugins?`)
+var errBasePluginMissing = errors.New(`you registered the "commonmark" plugin but the "base" plugin is also required`)
 
 // ConvertNode converts a `*html.Node` to a markdown byte slice.
 //
@@ -65,9 +67,13 @@ func (conv *Converter) ConvertNode(doc *html.Node, opts ...convertOptionFunc) ([
 	// If there are no render handlers registered this is
 	// usually a user error - since people want the Commonmark Plugin in 99% of cases.
 	if len(conv.getRenderHandlers()) == 0 {
-		// TODO: Add Name() to the interface & check for the presence of *both* the Base & Commonmark Plugin
-		// TODO: What if just the base plugin is registered?
 		return nil, errNoRenderHandlers
+	}
+
+	containsCommonmark := slices.Contains(conv.registeredPlugins, "commonmark")
+	containsBase := slices.Contains(conv.registeredPlugins, "base")
+	if containsCommonmark && !containsBase {
+		return nil, errBasePluginMissing
 	}
 
 	// - - - - - - - - - - - - - - - - - - - //

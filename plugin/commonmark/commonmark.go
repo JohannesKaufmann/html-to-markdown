@@ -102,6 +102,9 @@ func NewCommonmarkPlugin(opts ...OptionFunc) converter.Plugin {
 	return &cm
 }
 
+func (s *commonmark) Name() string {
+	return "commonmark"
+}
 func (cm *commonmark) Init(conv *converter.Converter) error {
 	if err := validateConfig(&cm.config); err != nil {
 		return err

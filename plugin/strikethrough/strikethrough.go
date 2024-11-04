@@ -38,6 +38,9 @@ func NewStrikethroughPlugin(opts ...option) converter.Plugin {
 	return plugin
 }
 
+func (s *strikethroughPlugin) Name() string {
+	return "strikethrough"
+}
 func (s *strikethroughPlugin) Init(conv *converter.Converter) error {
 	conv.Register.PreRenderer(s.handlePreRender, converter.PriorityStandard)
 
