@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
+	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/base"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/commonmark"
 )
 
@@ -13,6 +14,7 @@ func main() {
 
 	conv := converter.NewConverter(
 		converter.WithPlugins(
+			base.NewBasePlugin(),
 			commonmark.NewCommonmarkPlugin(
 				commonmark.WithStrongDelimiter("__"),
 				// ...additional configurations for the plugin
