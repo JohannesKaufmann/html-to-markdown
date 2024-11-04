@@ -30,7 +30,6 @@ func (cli *CLI) convert(input []byte) ([]error, error) {
 
 	conv := converter.NewConverter(
 		converter.WithPlugins(
-			// TODO: there should be a golden file test for functionality that needs the base plugin
 			base.NewBasePlugin(),
 			commonmark.NewCommonmarkPlugin(
 				commonmark.WithStrongDelimiter(cli.config.strongDelimiter),

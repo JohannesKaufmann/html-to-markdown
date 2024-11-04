@@ -272,6 +272,18 @@ func TestExecute(t *testing.T) {
 				inputArgs:  []string{"html2markdown", `--opt-strong-delimiter`, `__`},
 			},
 		},
+		{
+			desc: "[convert] collapse",
+
+			input: CLIInput{
+				modeStdin:  modePipe,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: []byte("<p>Some  <strong>   bold   </strong>  text</p>"),
+				inputArgs:  []string{"html2markdown"},
+			},
+		},
 
 		// - - - - - validation of options - - - - - //
 		{
