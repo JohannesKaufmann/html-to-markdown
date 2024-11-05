@@ -1,5 +1,48 @@
 # html-to-markdown
 
+A robust html-to-markdown converter that transforms HTML (even entire websites) into clean, readable Markdown. It supports complex formatting, customizable options, and plugins for full control over the conversion process.
+
+Use the fully extendable [Golang library](#golang-library) or a quick [CLI command](#cli---using-it-on-the-command-line). Try the [demo](https://html-to-markdown.com/demo) to see it in action!
+
+Here are some _cool features_:
+
+- **Bold & Italic:** Supports bold and italic—even within single words.
+
+  ![](./.github/point_bold_italic.png)
+
+- **List:** Handles ordered and unordered lists with full nesting support.
+
+  ![](./.github/point_list.png)
+
+- **Blockquote:** Blockquotes can include other elements, with seamless support for nested quotes.
+
+  ![](./.github/point_blockquote.png)
+
+- **Inline Code & Code Block:** Correctly handles backticks and multi-line code blocks, preserving code structure.
+
+  ![](./.github/point_code.png)
+
+- **Link & Image:** Properly formats multi-line links, adding escapes for blank lines where needed.
+
+  ![](./.github/point_link_image.png)
+
+- **Smart Escaping:** Escapes special characters only when necessary, to avoid accidental Markdown rendering.
+  🗒️ [ESCAPING.md](/ESCAPING.md)
+
+  ![](./.github/point_escaping.png)
+
+- **Remove/Keep HTML:** Choose to strip or retain specific HTML tags for ultimate control over output.
+
+  ![](./.github/point_wrapper.png)
+
+- **Plugins:** Easily extend with plugins. Or create custom ones to enhance functionality.
+
+  ![](./.github/point_strikethrough.png)
+
+---
+
+---
+
 > [!WARNING]
 > This is an **early experimental version** of the library.
 >
