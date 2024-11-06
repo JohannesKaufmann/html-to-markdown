@@ -28,7 +28,7 @@ func TestNewStrikethroughPlugin(t *testing.T) {
 			expected: `~~Text~~`,
 		},
 		{
-			desc:     "with spaces inside",
+			desc:     "with tilde characters inside",
 			input:    `<p><s>~~A~~B~~</s></p>`,
 			expected: `~~\~\~A\~\~B\~\~~~`,
 		},

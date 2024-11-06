@@ -2,59 +2,44 @@
 
 A robust html-to-markdown converter that transforms HTML (even entire websites) into clean, readable Markdown. It supports complex formatting, customizable options, and plugins for full control over the conversion process.
 
-Use the fully extendable [Golang library](#golang-library) or a quick [CLI command](#cli---using-it-on-the-command-line). Try the [demo](https://html-to-markdown.com/demo) to see it in action!
+Use the fully extendable [Golang library](#golang-library) or a quick [CLI command](#cli---using-it-on-the-command-line). Alternatively, try the [Online Demo](https://html-to-markdown.com/demo) or [REST API](https://html-to-markdown.com/api) to see it in action!
 
 Here are some _cool features_:
 
 - **Bold & Italic:** Supports bold and italic—even within single words.
 
-  ![](./.github/point_bold_italic.png)
+  ![](./.github/images/point_bold_italic.png)
 
 - **List:** Handles ordered and unordered lists with full nesting support.
 
-  ![](./.github/point_list.png)
+  ![](./.github/images/point_list.png)
 
 - **Blockquote:** Blockquotes can include other elements, with seamless support for nested quotes.
 
-  ![](./.github/point_blockquote.png)
+  ![](./.github/images/point_blockquote.png)
 
 - **Inline Code & Code Block:** Correctly handles backticks and multi-line code blocks, preserving code structure.
 
-  ![](./.github/point_code.png)
+  ![](./.github/images/point_code.png)
 
 - **Link & Image:** Properly formats multi-line links, adding escapes for blank lines where needed.
 
-  ![](./.github/point_link_image.png)
+  ![](./.github/images/point_link_image.png)
 
 - **Smart Escaping:** Escapes special characters only when necessary, to avoid accidental Markdown rendering.
   🗒️ [ESCAPING.md](/ESCAPING.md)
 
-  ![](./.github/point_escaping.png)
+  ![](./.github/images/point_escaping.png)
 
 - **Remove/Keep HTML:** Choose to strip or retain specific HTML tags for ultimate control over output.
 
-  ![](./.github/point_wrapper.png)
+  ![](./.github/images/point_wrapper.png)
 
 - **Plugins:** Easily extend with plugins. Or create custom ones to enhance functionality.
 
-  ![](./.github/point_strikethrough.png)
+  ![](./.github/images/point_strikethrough.png)
 
 ---
-
----
-
-> [!WARNING]
-> This is an **early experimental version** of the library.
->
-> We encourage testing and bug reporting. However, please note:
->
-> - Not production-ready
->   - Default options are well-tested, but custom configurations have limited coverage
-> - Functionality is currently restricted
->   - Focus is on stabilization and core features
-> - No compatibility guarantee
->   - Only use `htmltomarkdown.ConvertString()` and `htmltomarkdown.ConvertNode()` from the root package. They are _unlikely_ to change.
->   - Other functions and nested packages are _very like_ to change.
 
 ---
 
@@ -67,6 +52,9 @@ go get -u github.com/JohannesKaufmann/html-to-markdown/v2
 ```
 
 _Or if you want a specific commit add the suffix `/v2@commithash`_
+
+> [!NOTE]  
+> This is the documentation for the v2 library. For the old version switch to the ["v1" branch](https://github.com/JohannesKaufmann/html-to-markdown/tree/v1).
 
 ### Usage
 
@@ -96,7 +84,7 @@ func main() {
 
 - 🧑‍💻 [Example code, basics](/examples/basics/main.go)
 
-The function `htmltomarkdown.ConvertString()` is just a small wrapper around `converter.NewConverter()` and `commonmark.NewCommonmarkPlugin()`. If you want more control, use the following:
+The function `htmltomarkdown.ConvertString()` is a _small wrapper_ around `converter.NewConverter()` and the _base_ and _commonmark_ plugins. If you want more control, use the following:
 
 ```go
 package main
@@ -139,7 +127,48 @@ func main() {
 
 ### Plugins
 
-TODO: info about plugins
+#### Published Plugins
+
+These are the plugins located in the [plugin folder](/plugin):
+
+| Name                  | Description                                                                          |
+| --------------------- | ------------------------------------------------------------------------------------ |
+| Base                  | Implements basic shared functionality (e.g. removing nodes)                          |
+| Commonmark            | Implements Markdown according to the [Commonmark Spec](https://spec.commonmark.org/) |
+|                       |                                                                                      |
+| GitHubFlavored        | _planned_                                                                            |
+| TaskListItems         | _planned_                                                                            |
+| Strikethrough         | Converts `<strike>`, `<s>`, and `<del>` to the `~~` syntax.                          |
+| Table                 | _planned_                                                                            |
+|                       |                                                                                      |
+| VimeoEmbed            | _planned_                                                                            |
+| YoutubeEmbed          | _planned_                                                                            |
+|                       |                                                                                      |
+| ConfluenceCodeBlock   | _planned_                                                                            |
+| ConfluenceAttachments | _planned_                                                                            |
+
+> [!NOTE]  
+> Not all the plugins from v1 are already ported to v2. These will soon be implemented...
+
+These are the plugins in other repositories:
+
+| Name                         | Description         |
+| ---------------------------- | ------------------- |
+| \[Plugin Name\]\(Your Link\) | A short description |
+
+#### Writing Plugins
+
+You want to write custom logic?
+
+1. Write your logic and **register** it.
+
+   ![](./.github/images/autocomplete_register.png)
+
+   - 🧑‍💻 [Example code, register](/examples/register/main.go)
+
+2. _Optional:_ Package your logic into a **plugin** and publish it.
+
+   - 🗒️ [WRITING_PLUGINS.md](/WRITING_PLUGINS.md)
 
 ---
 
@@ -199,10 +228,14 @@ _(The cli does not support every option yet. Over time more customization will b
 ### Extending with Plugins
 
 - Need your own logic? Write your own code and then **register** it.
-- Don't like the **defaults** that the library uses? You can use `PriorityEarly` to run you logic _earlier_ than others.
+
+  - Don't like the **defaults** that the library uses? You can use `PriorityEarly` to run you logic _earlier_ than others.
+
+  - 🧑‍💻 [Example code, register](/examples/register/main.go)
+
 - If you believe that you logic could also benefit others, you can package it up into a **plugin**.
 
-🗒️ [WRITING_PLUGINS.md](/WRITING_PLUGINS.md)
+  - 🗒️ [WRITING_PLUGINS.md](/WRITING_PLUGINS.md)
 
 ### Bugs
 
