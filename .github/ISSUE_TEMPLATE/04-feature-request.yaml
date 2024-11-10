@@ -1,0 +1,25 @@
+
+name: ✨ Feature Request
+description: Request a new feature
+
+title: "[Feature]: Your title"
+labels: ["enhancement"]
+
+body:
+  - type: markdown
+    attributes:
+      value: | 
+        ### Thank you for contributing to the project!
+
+        You want want to request a new feature? Great!
+        
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the improvement
+      description: What feature should be implemented? How are other libraries doing it?
+      placeholder: "A clear and concise description of what improvement you wish for."
+    validations:
+      required: true
+

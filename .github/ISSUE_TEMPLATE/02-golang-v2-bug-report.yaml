@@ -1,0 +1,82 @@
+
+name: 🐛 Golang V2 Bug Report
+description: File a bug report for the golang library v2.x.x
+
+title: "[Bug]: Your title"
+labels: ["bug", "v2"]
+
+body:
+  - type: markdown
+    attributes:
+      value: | 
+        ### Thank you for contributing to the project!
+
+        You are creating a issue for the version **v2** of the **Golang** package.
+        
+        The bug report form helps to streamline the process.
+        Please fill out all required fields and choose a *minimal* reproducible example.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: What did you try to do? What did not work? Anything else to be aware of?
+      placeholder: "A clear and concise description of what the bug is."
+      value: |
+        A clear and concise description of what the bug is.
+
+        Also add any other context about the problem here.
+        For example, if you changed the default options or used a plugin. Also adding the version from the `go.mod` is helpful.
+    validations:
+      required: true
+
+  - type: textarea
+    id: example_code_input
+    attributes:
+      label: HTML Input
+      description: Please choose a minimal input that shows the problem. This will be automatically formatted into code, so no need for backticks.
+      placeholder: "<h1>Title</h1>"
+      render: html
+    validations:
+      required: true
+
+  - type: textarea
+    id: example_code_actual
+    attributes:
+      label: Generated Markdown
+      description: The *actual* output of the converter. This will be automatically formatted into code, so no need for backticks.
+      placeholder: "# Title"
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: example_code_expected
+    attributes:
+      label: Expected Markdown
+      description: The *expected* output of the converter. This will be automatically formatted into code, so no need for backticks.
+      placeholder: "# Title!!!"
+      render: markdown
+    validations:
+      required: true
+
+  - type: dropdown
+    id: plugins
+    attributes:
+      label: What plugins did you use?
+      description: You can select multiple.
+      multiple: true
+      options:
+        - base
+        - commonmark
+        - strikethrough
+        - other plugin
+
+  - type: markdown
+    attributes:
+      value: | 
+        ----
+
+        Thanks for taking the time to fill out this bug report!
+
+        *We usually answer you in 2-3 days and then fix it on the weekend.*
