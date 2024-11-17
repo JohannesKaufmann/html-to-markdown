@@ -84,6 +84,34 @@ func main() {
 
 - 🧑‍💻 [Example code, basics](/examples/basics/main.go)
 
+Use `WithDomain` to convert _relative_ links to _absolute_ links:
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	htmltomarkdown "github.com/JohannesKaufmann/html-to-markdown/v2"
+	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
+)
+
+func main() {
+	input := `<img src="/assets/image.png" />`
+
+	markdown, err := htmltomarkdown.ConvertString(
+		input,
+		converter.WithDomain("https://example.com"),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(markdown)
+	// Output: ![](https://example.com/assets/image.png)
+}
+```
+
 The function `htmltomarkdown.ConvertString()` is a _small wrapper_ around `converter.NewConverter()` and the _base_ and _commonmark_ plugins. If you want more control, use the following:
 
 ```go
@@ -216,6 +244,12 @@ This domain is for use in illustrative examples in documents. You may use this d
 
 [More information...](https://www.iana.org/domains/example)
 ```
+
+Use `--help` to learn about the configurations, for example:
+
+- `--domain="https://example.com"` to convert _relative_ links to _absolute_ links.
+- `--exclude-selector=".ad"` to exclude the html elements with `class="ad"` from the conversion.
+- `--include-selector="article"` to only include the `<article>` html elements in the conversion.
 
 _(The cli does not support every option yet. Over time more customization will be added)_
 

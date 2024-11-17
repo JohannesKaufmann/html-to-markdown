@@ -15,14 +15,20 @@ type convertOption struct {
 	domain  string
 	context context.Context
 }
-type convertOptionFunc func(o *convertOption)
+type ConvertOptionFunc func(o *convertOption)
 
-func WithContext(ctx context.Context) convertOptionFunc {
+func WithContext(ctx context.Context) ConvertOptionFunc {
 	return func(o *convertOption) {
 		o.context = ctx
 	}
 }
-func WithDomain(domain string) convertOptionFunc {
+
+// WithDomain provides a base `domain` to the converter and
+// to the `AssembleAbsoluteURL` function.
+//
+// If a *relative* url is encountered (in an image or link) then the `domain` is used
+// to convert it to a *absolute* url.
+func WithDomain(domain string) ConvertOptionFunc {
 	return func(o *convertOption) {
 		o.domain = domain
 	}
@@ -49,7 +55,7 @@ var errBasePluginMissing = errors.New(`you registered the "commonmark" plugin bu
 // If you have already parsed an HTML page using the `html.Parse()` function
 // from the "golang.org/x/net/html" package then you can pass this node
 // directly to the converter.
-func (conv *Converter) ConvertNode(doc *html.Node, opts ...convertOptionFunc) ([]byte, error) {
+func (conv *Converter) ConvertNode(doc *html.Node, opts ...ConvertOptionFunc) ([]byte, error) {
 
 	if err := conv.getError(); err != nil {
 		// There can be errors while calling `Init` on the plugins (e.g. validation errors).
@@ -113,7 +119,7 @@ func (conv *Converter) ConvertNode(doc *html.Node, opts ...convertOptionFunc) ([
 // ConvertReader converts the html from the reader to markdown.
 //
 // Under the hood `html.Parse()` is used to parse the HTML.
-func (conv *Converter) ConvertReader(r io.Reader, opts ...convertOptionFunc) ([]byte, error) {
+func (conv *Converter) ConvertReader(r io.Reader, opts ...ConvertOptionFunc) ([]byte, error) {
 	doc, err := html.Parse(r)
 	if err != nil {
 		return nil, err
@@ -125,7 +131,7 @@ func (conv *Converter) ConvertReader(r io.Reader, opts ...convertOptionFunc) ([]
 // ConvertString converts a html-string to a markdown-string.
 //
 // Under the hood `html.Parse()` is used to parse the HTML.
-func (conv *Converter) ConvertString(htmlInput string, opts ...convertOptionFunc) (string, error) {
+func (conv *Converter) ConvertString(htmlInput string, opts ...ConvertOptionFunc) (string, error) {
 	r := strings.NewReader(htmlInput)
 	output, err := conv.ConvertReader(r, opts...)
 	if err != nil {

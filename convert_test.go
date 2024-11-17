@@ -24,6 +24,22 @@ func ExampleConvertString() {
 	fmt.Println(markdown)
 	// Output: **Bold Text**
 }
+
+func ExampleWithDomain() {
+	input := `<img src="/assets/image.png" />`
+
+	markdown, err := htmltomarkdown.ConvertString(
+		input,
+		// Provide a different domain for every convert call:
+		converter.WithDomain("https://example.com"),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(markdown)
+	// Output: ![](https://example.com/assets/image.png)
+}
+
 func ExampleConvertNode() {
 	input := `<strong>Bold Text</strong>`
 
