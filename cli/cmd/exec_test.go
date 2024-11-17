@@ -454,15 +454,14 @@ func TestExecute_General(t *testing.T) {
 
 			expectedStdout: []byte("![](http://example.com/image.png)\n"),
 		},
-		// TODO: with https domain
-		// {
-		// 	desc: "[domain] with https domain",
-		//
-		// 	inputStdin: []byte(`<img src="/image.png" />`),
-		// 	inputArgs:  []string{"html2markdown", "--domain", "https://example.com"},
-		//
-		// 	expectedStdout: []byte("![](https://example.com/image.png)\n"),
-		// },
+		{
+			desc: "[domain] with https domain",
+
+			inputStdin: []byte(`<img src="/image.png" />`),
+			inputArgs:  []string{"html2markdown", "--domain", "https://example.com"},
+
+			expectedStdout: []byte("![](https://example.com/image.png)\n"),
+		},
 
 		// - - - - - selectors - - - - - //
 		{

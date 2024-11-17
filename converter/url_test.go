@@ -67,6 +67,34 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 			expected: "http://test.com/page.html?key=val#hash",
 		},
 		{
+			desc: "with http domain",
+
+			tagName: "a",
+			input:   "/page.html?key=val#hash",
+			domain:  "http://test.com",
+
+			expected: "http://test.com/page.html?key=val#hash",
+		},
+		{
+			desc: "with https domain",
+
+			tagName: "a",
+			input:   "/page.html?key=val#hash",
+			domain:  "https://test.com",
+
+			expected: "https://test.com/page.html?key=val#hash",
+		},
+		{
+			desc: "with domain that includes path",
+
+			tagName: "a",
+			input:   "/page.html?key=val#hash",
+			domain:  "https://test.com/random_stuff",
+
+			expected: "https://test.com/page.html?key=val#hash",
+		},
+
+		{
 			desc: "data uri",
 
 			tagName: "a",
@@ -223,7 +251,7 @@ func TestDefaultAssembleAbsoluteURL(t *testing.T) {
 	}
 }
 
-func TestParseAndEncode(t *testing.T) {
+func TestParseAndEncodeQuery(t *testing.T) {
 	runs := []struct {
 		desc string
 

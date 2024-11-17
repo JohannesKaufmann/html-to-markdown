@@ -16,6 +16,25 @@ var percentEncodingReplacer = strings.NewReplacer(
 	">", "%3E",
 )
 
+func parseBaseDomain(rawDomain string) *url.URL {
+	if rawDomain == "" {
+		return nil
+	}
+
+	u1, err := url.Parse(rawDomain)
+	if err == nil && u1.Host != "" {
+		// Yes, we got valid domain (probably with a http/https scheme)
+		return u1
+	}
+
+	u2, err := url.Parse("http://" + rawDomain)
+	if err == nil && u2.Host != "" {
+		// Yes, we got a valid domain (by choosing a fallback scheme)
+		return u2
+	}
+
+	return nil
+}
 func defaultAssembleAbsoluteURL(tagName string, rawURL string, domain string) string {
 	rawURL = strings.TrimSpace(rawURL)
 
@@ -51,13 +70,10 @@ func defaultAssembleAbsoluteURL(tagName string, rawURL string, domain string) st
 	// e.g. the email reading "Hi+Johannes" instead of "Hi Johannes"
 	u.RawQuery = strings.ReplaceAll(u.RawQuery, "+", "%20")
 
-	if domain != "" {
-		if u.Scheme == "" {
-			u.Scheme = "http"
-		}
-		if u.Host == "" {
-			u.Host = domain
-		}
+	if base := parseBaseDomain(domain); base != nil {
+		// If a "domain" is provided, we use that to convert relative links
+		// to absolute links.
+		u = base.ResolveReference(u)
 	}
 
 	return percentEncodingReplacer.Replace(u.String())
