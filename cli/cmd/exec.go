@@ -7,6 +7,8 @@ import (
 	"io"
 	"os"
 	"strings"
+
+	"github.com/andybalholm/cascadia"
 )
 
 var (
@@ -22,13 +24,18 @@ type Config struct {
 	// args are the positional (non-flag) command-line arguments.
 	args []string
 
+	// - - - - - General - - - - - //
 	version bool
+	domain  string
 
-	// - - - - //
+	includeSelector cascadia.SelectorGroup
+	excludeSelector cascadia.SelectorGroup
 
+	// - - - - - Options - - - - - //
 	strongDelimiter string
 
-	plugins []string
+	// - - - - - Plugins - - - - - //
+	enablePluginStrikethrough bool
 }
 
 // Release holds the information (from the 3 ldflags) that goreleaser sets.

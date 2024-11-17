@@ -5,49 +5,50 @@ import (
 	"fmt"
 	"io"
 	"strings"
-	"unicode"
+
+	"github.com/andybalholm/cascadia"
 )
 
-type FlagString string
-
-func (a *FlagString) Scan(state fmt.ScanState, verb rune) error {
-	token, err := state.Token(true, func(r rune) bool {
-		return unicode.IsLetter(r) || r == '-'
-	})
-	if err != nil {
-		return err
-	}
-	*a = FlagString(token)
-	return nil
-}
-
-func flagStringSlice(elems *[]string) func(string) error {
-	return func(raw string) error {
-		values := strings.Split(raw, ",")
-
-		for _, val := range values {
-			val = strings.TrimSpace(val)
-			if val == "" {
-				continue
-			}
-
-			*elems = append(*elems, val)
+// selectorFlag sets up a flag that parses a CSS selector string into a cascadia.Selector.
+func (cli *CLI) selectorFlag(target *cascadia.SelectorGroup, name string, usage string) {
+	cli.flags.Func(name, usage, func(flagValue string) error {
+		if strings.TrimSpace(flagValue) == "" {
+			return fmt.Errorf("invalid css selector: empty string")
 		}
+
+		// Compile the provided CSS selector string
+		sel, err := cascadia.ParseGroup(flagValue)
+		if err != nil {
+			return fmt.Errorf("invalid css selector: %w", err)
+		}
+
+		*target = append(*target, sel...)
 		return nil
-	}
+	})
 }
 
 func (cli *CLI) initFlags(progname string) {
 	cli.flags = flag.NewFlagSet(progname, flag.ContinueOnError)
 	cli.flags.SetOutput(io.Discard)
 
-	// - - - //
-
+	// - - - - - General - - - - - //
 	cli.flags.BoolVar(&cli.config.version, "version", false, "display the version")
 	cli.flags.BoolVar(&cli.config.version, "v", false, "display the version")
 
-	// cli.flags.BoolVar(&cli.config.help, "help", false, "display help")
+	// TODO: --tag-type-block=script,style (and check that it is not a selector)
+	// TODO: --tag-type-inline=script,style (and check that it is not a selector)
 
+	cli.flags.StringVar(
+		&cli.config.domain,
+		"domain",
+		"",
+		"domain of the web page, needed for links",
+	)
+
+	cli.selectorFlag(&cli.config.includeSelector, "include-selector", "css query selector to only include parts of the input")
+	cli.selectorFlag(&cli.config.excludeSelector, "exclude-selector", "css query selector to exclude parts of the input")
+
+	// - - - - - Options - - - - - //
 	cli.flags.StringVar(
 		&cli.config.strongDelimiter,
 		"opt-strong-delimiter",
@@ -56,16 +57,10 @@ func (cli *CLI) initFlags(progname string) {
 "**" or "__" (default: "**")`,
 	)
 
-	// cli.flags.StringVar(&cli.config.strongDelimiter, "opt-heading-style", "", "")
-	// cli.flags.StringVar(&cli.config.strongDelimiter, "opt-horizontal-rule", "", "")
-	// cli.flags.StringVar(&cli.config.strongDelimiter, "opt-bullet-list-marker", "", "")
+	// - - - - - Plugins - - - - - //
+	// TODO: --opt-strikethrough-delimiter for the strikethrough plugin
+	cli.flags.BoolVar(&cli.config.enablePluginStrikethrough, "plugin-strikethrough", false, "enable the plugin ~~strikethrough~~")
 
-	// TODO: how to disable commonmark plugin?
-	// --plugin_commonmark=false
-	// --plugin.commonmark=false
-	// --no-plugin="cm" / --disable-plugin="cm"
-	// But what if we have conflicting flags???
-	cli.flags.Func("plugins", "which plugins should be enabled?", flagStringSlice(&cli.config.plugins))
 }
 
 func (cli *CLI) parseFlags(args []string) error {

@@ -31,8 +31,6 @@ func (cli *CLI) getAlternativeFlag(unknownFlag string) string {
 		}
 	})
 
-	fmt.Printf("%q <> %q -> %d \n", unknownFlag, closestFlag, closestDistance)
-
 	if closestDistance >= utf8.RuneCountInString(unknownFlag) {
 		return ""
 	}

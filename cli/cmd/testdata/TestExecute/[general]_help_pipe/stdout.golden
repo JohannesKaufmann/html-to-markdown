@@ -39,12 +39,21 @@ Use a HTML sanitizer before displaying the HTML in the browser!
     --help
 
 
+    --domain
+        domain of the web page, needed for links
+
+    --exclude-selector
+        css query selector to exclude parts of the input
+
+    --include-selector
+        css query selector to only include parts of the input
+
     --opt-strong-delimiter
         Make bold text. Should <strong> be indicated by two asterisks or two underscores?
         "**" or "__" (default: "**")
 
-    --plugins
-        which plugins should be enabled?
+    --plugin-strikethrough
+        enable the plugin ~~strikethrough~~
 
 
 
