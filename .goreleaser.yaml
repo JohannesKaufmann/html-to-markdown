@@ -45,6 +45,20 @@ brews:
       name: homebrew-tap
       token: "{{ .Env.TAP_GITHUB_TOKEN }}"
 
+nfpms:
+  - id: default
+    package_name: html2markdown
+
+    vendor: JohannesKaufmann
+    homepage: https://github.com/JohannesKaufmann/html-to-markdown
+    maintainer: Johannes Kaufmann <johannes@joina.de>
+    description: |
+      Convert HTML to Markdown. Even works with entire websites.
+    license: MIT
+
+    formats:
+      - deb
+
 changelog:
   sort: asc
   filters:
