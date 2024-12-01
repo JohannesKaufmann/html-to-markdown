@@ -43,6 +43,15 @@ Here are some _cool features_:
 
 ---
 
+## Usage
+
+[💻 Golang library](#golang-library) | [📦 CLI](#cli---using-it-on-the-command-line) | [▶️ Hosted Demo](https://html-to-markdown.com/demo) | [🌐 Hosted REST API](https://html-to-markdown.com/api)
+
+> [!TIP]
+> Looking for an all in one cloud solution? We're _sponsored_ by [🔥 Firecrawl](https://html-to-markdown.com/sponsor/firecrawl), where you can scrape any website and turn it into AI friendly markdown with one API call.
+
+---
+
 ## Golang Library
 
 ### Installation
