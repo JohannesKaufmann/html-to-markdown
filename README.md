@@ -223,9 +223,25 @@ Using the Golang library provides the most customization, while the CLI is the s
 brew install JohannesKaufmann/tap/html2markdown
 ```
 
-#### Manually
+#### Debian
 
-Download the pre-compiled binaries from the [releases page](https://github.com/JohannesKaufmann/html-to-markdown/releases) and copy them to the desired location.
+A `deb` package is available. See the [Setup Instructions](https://cloudsmith.io/~html-to-markdown/repos/stable/setup/#formats-deb).
+
+_Note: Support for other Linux distributions is tracked in [#119](https://github.com/JohannesKaufmann/html-to-markdown/issues/119)_
+
+#### Pre-compiled Binaries
+
+Download pre-compiled binaries for Linux, macOS or Windows from the [releases page](https://github.com/JohannesKaufmann/html-to-markdown/releases). Extract the archive and copy the executable to a location in your system PATH (e.g. `/usr/local/bin`).
+
+#### Build from Source
+
+Binaries are automatically built via [GoReleaser](https://goreleaser.com/) and attached to each [release](https://github.com/JohannesKaufmann/html-to-markdown/releases).
+
+To build locally (requires Go):
+
+```bash
+go build -o html2markdown ./cli
+```
 
 ### Version
 
