@@ -48,6 +48,7 @@ func TestOptionFunc(t *testing.T) {
 		options  []commonmark.OptionFunc
 		expected string
 	}{
+		// - - - - - - - - - - Italic & Bold - - - - - - - - - - //
 		{
 			desc: "WithEmDelimiter",
 			options: []commonmark.OptionFunc{
@@ -65,6 +66,7 @@ func TestOptionFunc(t *testing.T) {
 			expected: `__bold__`,
 		},
 
+		// - - - - - - - - - - Horizontal Rule - - - - - - - - - - //
 		{
 			desc: "WithHorizontalRule(***)",
 			options: []commonmark.OptionFunc{
@@ -98,6 +100,7 @@ func TestOptionFunc(t *testing.T) {
 			expected: `___`,
 		},
 
+		// - - - - - - - - - - List - - - - - - - - - - //
 		{
 			desc: "WithBulletListMarker(+)",
 			options: []commonmark.OptionFunc{
@@ -124,6 +127,7 @@ func TestOptionFunc(t *testing.T) {
 			expected: "* list a\n\n* list b",
 		},
 
+		// - - - - - - - - - - Code - - - - - - - - - - //
 		{
 			desc: "WithCodeBlockFence",
 			options: []commonmark.OptionFunc{
@@ -133,6 +137,7 @@ func TestOptionFunc(t *testing.T) {
 			expected: "~~~\nhello world\n~~~",
 		},
 
+		// - - - - - - - - - - Heading - - - - - - - - - - //
 		{
 			desc: "WithHeadingStyle(atx)",
 			options: []commonmark.OptionFunc{
@@ -148,6 +153,41 @@ func TestOptionFunc(t *testing.T) {
 			},
 			input:    `<h1>important<br/>heading</h1>`,
 			expected: "important\n\\\nheading\n=========",
+		},
+
+		// - - - - - - - - - - Link - - - - - - - - - - //
+		{
+			desc: "WithLinkEmptyHrefBehavior(render)",
+			options: []commonmark.OptionFunc{
+				commonmark.WithLinkEmptyHrefBehavior("render"),
+			},
+			input:    `<a href="">the link content</a>`,
+			expected: "[the link content]()",
+		},
+		{
+			desc: "WithLinkEmptyHrefBehavior(skip)",
+			options: []commonmark.OptionFunc{
+				commonmark.WithLinkEmptyHrefBehavior("skip"),
+			},
+			input:    `<a href="">the link content</a>`,
+			expected: "the link content",
+		},
+		// - - - //
+		{
+			desc: "WithLinkEmptyContentBehavior(render)",
+			options: []commonmark.OptionFunc{
+				commonmark.WithLinkEmptyContentBehavior("render"),
+			},
+			input:    `<a href="/page"></a>`,
+			expected: "[](/page)",
+		},
+		{
+			desc: "WithLinkEmptyContentBehavior(skip)",
+			options: []commonmark.OptionFunc{
+				commonmark.WithLinkEmptyContentBehavior("skip"),
+			},
+			input:    `<a href="/page"></a>`,
+			expected: "",
 		},
 
 		// TODO: handle other link styles

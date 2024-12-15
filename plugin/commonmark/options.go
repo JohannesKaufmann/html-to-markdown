@@ -27,6 +27,15 @@ const (
 	HeadingStyleSetext headingStyle = "setext"
 )
 
+type linkRenderingBehavior string
+
+const (
+	// LinkBehaviorRenderAsLink renders the element as a link
+	LinkBehaviorRenderAsLink linkRenderingBehavior = "render"
+	// LinkBehaviorSkipLink skips link rendering and falls back to the other rules (e.g. paragraph)
+	LinkBehaviorSkipLink linkRenderingBehavior = "skip"
+)
+
 // config to customize the output. You can change stuff like
 // the character that is used for strong text.
 type config struct {
@@ -73,6 +82,9 @@ type config struct {
 	//
 	// default: inlined
 	LinkStyle linkStyle
+
+	LinkEmptyHrefBehavior    linkRenderingBehavior
+	LinkEmptyContentBehavior linkRenderingBehavior
 }
 
 func fillInDefaultConfig(cfg *config) config {
@@ -104,6 +116,12 @@ func fillInDefaultConfig(cfg *config) config {
 		cfg.HeadingStyle = "atx"
 	}
 
+	if cfg.LinkEmptyHrefBehavior == "" {
+		cfg.LinkEmptyHrefBehavior = LinkBehaviorRenderAsLink
+	}
+	if cfg.LinkEmptyContentBehavior == "" {
+		cfg.LinkEmptyContentBehavior = LinkBehaviorRenderAsLink
+	}
 	if cfg.LinkStyle == "" {
 		cfg.LinkStyle = LinkStyleInlined
 	}

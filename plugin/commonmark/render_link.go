@@ -53,6 +53,12 @@ func (c *commonmark) renderLink(ctx converter.Context, w converter.Writer, n *ht
 	href = strings.TrimSpace(href)
 	href = ctx.AssembleAbsoluteURL(ctx, "a", href)
 
+	if href == "" && c.config.LinkEmptyHrefBehavior == LinkBehaviorSkipLink {
+		// There is *no href* for the link. Now we have two options:
+		// Continue rendering as a link OR skip to let other renderers take over.
+		return converter.RenderTryNext
+	}
+
 	title := dom.GetAttributeOr(n, "title", "")
 	title = strings.ReplaceAll(title, "\n", " ")
 
@@ -66,12 +72,14 @@ func (c *commonmark) renderLink(ctx converter.Context, w converter.Writer, n *ht
 	ctx.RenderChildNodes(ctx, &buf, n)
 	content := buf.Bytes()
 
-	if bytes.TrimFunc(content, marker.IsSpace) == nil {
+	if len(bytes.TrimFunc(content, marker.IsSpace)) == 0 {
 		// Fallback to the title
 		content = []byte(l.title)
 	}
-	if bytes.TrimSpace(content) == nil {
-		return converter.RenderSuccess
+	if len(bytes.TrimSpace(content)) == 0 && c.config.LinkEmptyContentBehavior == LinkBehaviorSkipLink {
+		// There is *no content* inside the link. Now we have two options:
+		// Continue rendering as a link OR skip to let other renderers take over.
+		return converter.RenderTryNext
 	}
 
 	if l.href == "" {

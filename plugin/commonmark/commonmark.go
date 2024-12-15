@@ -76,6 +76,34 @@ func WithHeadingStyle(style headingStyle) OptionFunc {
 	}
 }
 
+// WithLinkEmptyHrefBehavior configures how links with *empty hrefs* are rendered.
+// Take for example:
+//
+//	<a href="">the link content</a>
+//
+// LinkBehaviorRenderAsLink would result in "[the link content]()""
+//
+// LinkBehaviorSkipLink would result in "the link content"
+func WithLinkEmptyHrefBehavior(behavior linkRenderingBehavior) OptionFunc {
+	return func(config *config) {
+		config.LinkEmptyHrefBehavior = behavior
+	}
+}
+
+// WithLinkEmptyContentBehavior configures how links *without content* are rendered.
+// Take for example:
+//
+//	<a href="/page"></a>
+//
+// LinkBehaviorRenderAsLink would result in "[](/page)""
+//
+// LinkBehaviorSkipLink would result in an empty string.
+func WithLinkEmptyContentBehavior(behavior linkRenderingBehavior) OptionFunc {
+	return func(config *config) {
+		config.LinkEmptyContentBehavior = behavior
+	}
+}
+
 // TODO: allow changing the link style once the render logic is implemented
 //
 // "inlined" or "referenced_index" or "referenced_short"
