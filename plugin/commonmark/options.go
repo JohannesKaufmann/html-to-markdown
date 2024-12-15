@@ -30,10 +30,10 @@ const (
 type linkRenderingBehavior string
 
 const (
-	// LinkBehaviorRenderAsLink renders the element as a link
-	LinkBehaviorRenderAsLink linkRenderingBehavior = "render"
-	// LinkBehaviorSkipLink skips link rendering and falls back to the other rules (e.g. paragraph)
-	LinkBehaviorSkipLink linkRenderingBehavior = "skip"
+	// LinkBehaviorRender renders the element as a link
+	LinkBehaviorRender linkRenderingBehavior = "render"
+	// LinkBehaviorSkip skips link rendering and falls back to the other rules (e.g. paragraph)
+	LinkBehaviorSkip linkRenderingBehavior = "skip"
 )
 
 // config to customize the output. You can change stuff like
@@ -117,10 +117,10 @@ func fillInDefaultConfig(cfg *config) config {
 	}
 
 	if cfg.LinkEmptyHrefBehavior == "" {
-		cfg.LinkEmptyHrefBehavior = LinkBehaviorRenderAsLink
+		cfg.LinkEmptyHrefBehavior = LinkBehaviorRender
 	}
 	if cfg.LinkEmptyContentBehavior == "" {
-		cfg.LinkEmptyContentBehavior = LinkBehaviorRenderAsLink
+		cfg.LinkEmptyContentBehavior = LinkBehaviorRender
 	}
 	if cfg.LinkStyle == "" {
 		cfg.LinkStyle = LinkStyleInlined

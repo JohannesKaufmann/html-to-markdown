@@ -53,7 +53,7 @@ func (c *commonmark) renderLink(ctx converter.Context, w converter.Writer, n *ht
 	href = strings.TrimSpace(href)
 	href = ctx.AssembleAbsoluteURL(ctx, "a", href)
 
-	if href == "" && c.config.LinkEmptyHrefBehavior == LinkBehaviorSkipLink {
+	if href == "" && c.config.LinkEmptyHrefBehavior == LinkBehaviorSkip {
 		// There is *no href* for the link. Now we have two options:
 		// Continue rendering as a link OR skip to let other renderers take over.
 		return converter.RenderTryNext
@@ -76,7 +76,7 @@ func (c *commonmark) renderLink(ctx converter.Context, w converter.Writer, n *ht
 		// Fallback to the title
 		content = []byte(l.title)
 	}
-	if len(bytes.TrimSpace(content)) == 0 && c.config.LinkEmptyContentBehavior == LinkBehaviorSkipLink {
+	if len(bytes.TrimSpace(content)) == 0 && c.config.LinkEmptyContentBehavior == LinkBehaviorSkip {
 		// There is *no content* inside the link. Now we have two options:
 		// Continue rendering as a link OR skip to let other renderers take over.
 		return converter.RenderTryNext
