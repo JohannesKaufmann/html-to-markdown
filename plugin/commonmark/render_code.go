@@ -12,7 +12,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-func (c *commonmark) renderInlineCode(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
+func (c *commonmark) renderInlineCode(_ converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
 	// TODO: configure delimeter in options?
 	fenceChar := '`'
 
@@ -64,7 +64,7 @@ func (c *commonmark) renderInlineCode(ctx converter.Context, w converter.Writer,
 
 	return converter.RenderSuccess
 }
-func (c *commonmark) renderBlockCode(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
+func (c *commonmark) renderBlockCode(_ converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
 	code, infoString := getCodeWithoutTags(n)
 
 	if bytes.HasSuffix(code, []byte("\n")) {

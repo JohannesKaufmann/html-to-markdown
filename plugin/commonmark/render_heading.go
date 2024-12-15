@@ -83,7 +83,7 @@ func escapePoundSignAtEnd(s []byte) []byte {
 	// -3 maybe \
 
 	if s[len(s)-1] != '#' {
-		// We dont have a # at the end,
+		// We don't have a # at the end,
 		// so there is no work to do...
 		return s
 	}

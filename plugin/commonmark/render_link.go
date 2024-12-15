@@ -35,7 +35,7 @@ func (c *commonmark) renderLinkInlined(w converter.Writer, l *link) converter.Re
 	w.WriteRune('(')
 	w.WriteString(l.href)
 	if l.title != "" {
-		// The destination and title must be seperated by a space
+		// The destination and title must be separated by a space
 		w.WriteRune(' ')
 		w.Write(textutils.SurroundByQuotes([]byte(l.title)))
 	}

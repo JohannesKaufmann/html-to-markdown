@@ -6,7 +6,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-func (c *commonmark) renderBreak(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
+func (c *commonmark) renderBreak(_ converter.Context, w converter.Writer, _ *html.Node) converter.RenderStatus {
 	w.Write(marker.BytesMarkerLineBreak)
 	w.Write(marker.BytesMarkerLineBreak)
 	return converter.RenderSuccess

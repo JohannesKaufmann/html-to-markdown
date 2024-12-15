@@ -6,10 +6,10 @@ import (
 	"golang.org/x/net/html"
 )
 
-func (c *commonmark) renderComment(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
+func (c *commonmark) renderComment(_ converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
 
 	if n.Data == domutils.ListEndCommentData {
-		// We definetely want to render the list end comments
+		// We definitely want to render the list end comments
 		// that were just added
 		w.WriteRune('\n')
 		w.WriteRune('\n')

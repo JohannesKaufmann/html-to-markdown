@@ -223,7 +223,7 @@ func TestOptionFunc(t *testing.T) {
 	}
 }
 
-func TestOptionFunc_ValdationError(t *testing.T) {
+func TestOptionFunc_ValidationError(t *testing.T) {
 	testCases := []struct {
 		desc          string
 		options       []commonmark.OptionFunc

@@ -5,7 +5,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-func (c *commonmark) renderDivider(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
+func (c *commonmark) renderDivider(_ converter.Context, w converter.Writer, _ *html.Node) converter.RenderStatus {
 
 	w.WriteString("\n\n")
 	w.WriteString(c.HorizontalRule)
