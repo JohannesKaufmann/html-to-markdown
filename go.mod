@@ -5,11 +5,11 @@ go 1.22.1
 require (
 	github.com/JohannesKaufmann/dom v0.1.1-0.20240706125338-ff9f3b772364
 	github.com/agnivade/levenshtein v1.2.0
-	github.com/andybalholm/cascadia v1.3.2
+	github.com/andybalholm/cascadia v1.3.3
 	github.com/muesli/termenv v0.15.2
 	github.com/sebdah/goldie/v2 v2.5.5
 	github.com/yuin/goldmark v1.7.8
-	golang.org/x/net v0.32.0
+	golang.org/x/net v0.33.0
 )
 
 require (
