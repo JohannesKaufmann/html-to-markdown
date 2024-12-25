@@ -169,9 +169,8 @@ second text](/page.html)
 
 <!--link with headings-->
 
-[**Heading A**
-\
-**Heading B**](/page.html)
+[**Heading A**  
+**Heading B**](/page.html)  
 
 <!--link with an svg-->
 

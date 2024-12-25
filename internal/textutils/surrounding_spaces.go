@@ -41,18 +41,16 @@ package textutils
 import (
 	"bytes"
 	"unicode"
-
-	"github.com/JohannesKaufmann/html-to-markdown/v2/marker"
 )
 
 func SurroundingSpaces(content []byte) ([]byte, []byte, []byte) {
 	rightTrimmed := bytes.TrimRightFunc(content, func(r rune) bool {
-		return unicode.IsSpace(r) || r == marker.MarkerLineBreak
+		return unicode.IsSpace(r)
 	})
 	rightExtra := content[len(rightTrimmed):]
 
 	trimmed := bytes.TrimLeftFunc(rightTrimmed, func(r rune) bool {
-		return unicode.IsSpace(r) || r == marker.MarkerLineBreak
+		return unicode.IsSpace(r)
 	})
 	leftExtra := content[0 : len(rightTrimmed)-len(trimmed)]
 

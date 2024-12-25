@@ -6,6 +6,9 @@ import (
 	"testing"
 )
 
+var newline = []byte{'\n'}
+var escape = []byte{'\\'}
+
 func EscapeMultiLine_Old(content []byte) []byte {
 	content = bytes.TrimSpace(content)
 	content = TrimConsecutiveNewlines(content)
@@ -115,7 +118,6 @@ line4`,
 					t.Errorf("expected '%s' but got '%s'", test.Expected, string(output))
 				}
 			})
-
 		})
 
 	}

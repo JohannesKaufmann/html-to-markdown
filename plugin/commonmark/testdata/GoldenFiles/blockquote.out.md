@@ -4,6 +4,13 @@
 
 <!--empty blockquote-->
 
+<!--with one break-->
+
+> Line A  
+> Line B
+
+<!--with multiple breaks-->
+
 > Start Line
 > 
 > End Line

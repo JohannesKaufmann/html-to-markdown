@@ -9,7 +9,6 @@ import (
 	"github.com/JohannesKaufmann/dom"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/internal/textutils"
-	"github.com/JohannesKaufmann/html-to-markdown/v2/marker"
 	"golang.org/x/net/html"
 )
 
@@ -43,9 +42,7 @@ func (c commonmark) getPrefixFunc(n *html.Node, sliceLength int) func(int) strin
 }
 
 func renderMultiLineListItem(w converter.Writer, content []byte, indentCount int) {
-	lines := marker.SplitFunc(content, func(r rune) bool {
-		return r == '\n' || r == marker.MarkerLineBreak
-	})
+	lines := bytes.Split(content, []byte("\n"))
 
 	for i := range lines {
 		if i != 0 {

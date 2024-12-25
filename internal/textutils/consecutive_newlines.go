@@ -2,13 +2,51 @@ package textutils
 
 import (
 	"unicode/utf8"
-
-	"github.com/JohannesKaufmann/html-to-markdown/v2/marker"
 )
 
+func TrimConsecutiveNewlines(input []byte) []byte {
+	var result []byte
+	newlineCount := 0
+	spaceBuffer := []byte{}
+
+	for i := 0; i < len(input); {
+		r, size := utf8.DecodeRune(input[i:])
+
+		if r == '\n' {
+			newlineCount++
+			if newlineCount <= 2 {
+				// Preserve up to 2 newlines, including preceding spaces
+				result = append(result, spaceBuffer...)
+				result = append(result, '\n')
+				spaceBuffer = spaceBuffer[:0] // Clear space buffer
+			} else {
+				// Skip additional newlines
+				spaceBuffer = spaceBuffer[:0] // Clear space buffer
+			}
+		} else if r == ' ' {
+			// Collect spaces into the space buffer
+			spaceBuffer = append(spaceBuffer, input[i:i+size]...)
+		} else {
+			// Reset newline count and append non-newline characters
+			newlineCount = 0
+			result = append(result, spaceBuffer...)
+			result = append(result, input[i:i+size]...)
+			spaceBuffer = spaceBuffer[:0] // Clear space buffer
+		}
+
+		i += size
+	}
+
+	// Append any trailing spaces
+	result = append(result, spaceBuffer...)
+
+	return result
+}
+
+/*
 func TrimConsecutiveNewlines(source []byte) []byte {
 	// Some performance optimizations:
-	// - If no replacement was done, we return the original slice and dont allocate.
+	// - If no replacement was done, we return the original slice and don't allocate.
 	// - We batch appends
 
 	var ret []byte
@@ -22,7 +60,7 @@ func TrimConsecutiveNewlines(source []byte) []byte {
 		r, size := utf8.DecodeRune(source[i:])
 		_ = size
 
-		isNewline := r == '\n' || r == marker.MarkerLineBreak
+		isNewline := r == '\n' // || r == marker.MarkerLineBreak
 		if isNewline {
 			count += 1
 		}
@@ -82,9 +120,10 @@ func TrimConsecutiveNewlines(source []byte) []byte {
 	}
 
 	if ret == nil {
-		// Huray, we did not do any allocations with make()
+		// Hurray, we did not do any allocations with make()
 		// and instead just return the original slice.
 		return source
 	}
 	return ret
 }
+*/

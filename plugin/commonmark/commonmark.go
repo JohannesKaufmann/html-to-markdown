@@ -179,7 +179,6 @@ func (cm *commonmark) Init(conv *converter.Converter) error {
 	conv.Register.TextTransformer(cm.handleTextTransform, converter.PriorityLate)
 
 	conv.Register.PostRenderer(cm.handlePostRenderCodeBlockNewline, converter.PriorityLate)
-	conv.Register.PostRenderer(cm.handlePostRenderLineBreak, converter.PriorityStandard+10)
 
 	return nil
 }
@@ -189,14 +188,6 @@ func (cm commonmark) handlePostRenderCodeBlockNewline(ctx converter.Context, con
 		content,
 		[]byte(string(marker.BytesMarkerCodeBlockNewline)),
 		[]byte("\n"),
-	)
-}
-func (cm commonmark) handlePostRenderLineBreak(ctx converter.Context, content []byte) []byte {
-	return bytes.ReplaceAll(
-		content,
-		// Two line break markers should be replaced with a "hard line break".
-		marker.BytesTWICEMarkerLineBreak,
-		[]byte("  \n"),
 	)
 }
 

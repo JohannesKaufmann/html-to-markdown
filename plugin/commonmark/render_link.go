@@ -7,7 +7,6 @@ import (
 	"github.com/JohannesKaufmann/dom"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/internal/textutils"
-	"github.com/JohannesKaufmann/html-to-markdown/v2/marker"
 	"golang.org/x/net/html"
 )
 
@@ -72,7 +71,7 @@ func (c *commonmark) renderLink(ctx converter.Context, w converter.Writer, n *ht
 	ctx.RenderChildNodes(ctx, &buf, n)
 	content := buf.Bytes()
 
-	if len(bytes.TrimFunc(content, marker.IsSpace)) == 0 {
+	if len(bytes.TrimSpace(content)) == 0 {
 		// Fallback to the title
 		content = []byte(l.title)
 	}

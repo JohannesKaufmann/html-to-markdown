@@ -10,7 +10,6 @@ import (
 	"github.com/JohannesKaufmann/html-to-markdown/v2/collapse"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/internal/domutils"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/internal/textutils"
-	"github.com/JohannesKaufmann/html-to-markdown/v2/marker"
 
 	"golang.org/x/net/html"
 )
@@ -122,7 +121,7 @@ func (b *base) handleTextTransform(ctx converter.Context, content string) string
 
 func (b *base) postRenderTrimContent(ctx converter.Context, result []byte) []byte {
 	// Remove whitespace from the beginning & end
-	result = bytes.TrimFunc(result, marker.IsSpace)
+	result = bytes.TrimSpace(result)
 
 	// Remove too many newlines
 	result = textutils.TrimConsecutiveNewlines(result)

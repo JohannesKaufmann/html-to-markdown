@@ -110,7 +110,7 @@ func (c *commonmark) renderHeading(ctx converter.Context, w converter.Writer, n 
 	ctx.RenderChildNodes(ctx, &buf, n)
 	content := buf.Bytes()
 
-	if bytes.TrimFunc(content, marker.IsSpace) == nil {
+	if len(bytes.TrimSpace(content)) == 0 {
 		return converter.RenderSuccess
 	}
 
@@ -126,7 +126,6 @@ func (c *commonmark) renderHeading(ctx converter.Context, w converter.Writer, n 
 		w.Write(underline)
 		w.WriteString("\n\n")
 	} else {
-		content = bytes.ReplaceAll(content, marker.BytesMarkerLineBreak, []byte(" "))
 		content = bytes.ReplaceAll(content, []byte("\n"), []byte(" "))
 		content = bytes.ReplaceAll(content, []byte("\r"), []byte(" "))
 		// Replace multiple spaces by one space.
