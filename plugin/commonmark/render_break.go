@@ -6,10 +6,7 @@ import (
 )
 
 func (c *commonmark) renderBreak(_ converter.Context, w converter.Writer, _ *html.Node) converter.RenderStatus {
-	// w.Write(marker.BytesMarkerLineBreak)
-	// w.Write(marker.BytesMarkerLineBreak)
-	// w.WriteString("\n")
-
+	// Render a "hard line break"
 	w.WriteString("  \n")
 	return converter.RenderSuccess
 }
