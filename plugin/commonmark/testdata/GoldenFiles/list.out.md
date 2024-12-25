@@ -116,8 +116,6 @@ text between
 
 <!--THE END-->
 
-  
-
 - List 7
 
 * * *
@@ -135,13 +133,6 @@ text between
 <!--THE END-->
 
 - Start Line
-  
-    
-    
-    
-    
-    
-    
   
   End Line
 

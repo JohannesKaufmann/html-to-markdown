@@ -13,13 +13,6 @@
 
 > Start Line
 > 
->   
->   
->   
->   
->   
->   
-> 
 > End Line
 
 <!--large blockquote-->

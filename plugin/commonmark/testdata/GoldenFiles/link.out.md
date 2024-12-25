@@ -143,39 +143,15 @@ before [content](/) after
 
 [Start Line
 \
-\
-\
-\
-\
-\
-\
-\
 End Line](/)
 
 <!--newlines inside link-->
 
-  
-  
-  
-
 [newlines around the link content](/)
-
-  
-  
-  
 
 <!--multiline link inside a list item-->
 
 - [first text
-  \
-  \
-  \
-  \
-  \
-  \
-  \
-  \
-  \
   \
   second text](/)
 

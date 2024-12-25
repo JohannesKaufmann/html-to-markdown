@@ -26,8 +26,4 @@ A &amp; B
 
 Start Line  
   
-  
-  
-  
-  
 End Line
