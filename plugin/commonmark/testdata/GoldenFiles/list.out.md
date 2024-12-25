@@ -54,6 +54,14 @@ List Item without Container
 
 * * *
 
+<!-- list with blockquote that contains break -->
+
+1. > Line A
+   
+   Line B
+
+* * *
+
 <!-- parsing the number fails -->
 
 1. one
