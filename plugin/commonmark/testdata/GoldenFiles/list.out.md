@@ -11,8 +11,7 @@ A paragraph
 - - 5.1
   
   5 After
-- 6 Before
-  
+- 6 Before  
   6 also Before
   
   - 6A.1
@@ -56,9 +55,8 @@ List Item without Container
 
 <!-- list with blockquote that contains break -->
 
-1. > Line A
-   
-   Line B
+1. > Line A  
+   > Line B
 
 * * *
 
@@ -118,6 +116,8 @@ text between
 
 <!--THE END-->
 
+  
+
 - List 7
 
 * * *
@@ -135,6 +135,13 @@ text between
 <!--THE END-->
 
 - Start Line
+  
+    
+    
+    
+    
+    
+    
   
   End Line
 

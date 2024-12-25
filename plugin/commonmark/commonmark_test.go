@@ -152,7 +152,7 @@ func TestOptionFunc(t *testing.T) {
 				commonmark.WithHeadingStyle("setext"),
 			},
 			input:    `<h1>important<br/>heading</h1>`,
-			expected: "important\n\\\nheading\n=========",
+			expected: "important\nheading\n=========",
 		},
 
 		// - - - - - - - - - - Link - - - - - - - - - - //

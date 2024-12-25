@@ -143,15 +143,39 @@ before [content](/) after
 
 [Start Line
 \
+\
+\
+\
+\
+\
+\
+\
 End Line](/)
 
 <!--newlines inside link-->
 
+  
+  
+  
+
 [newlines around the link content](/)
+
+  
+  
+  
 
 <!--multiline link inside a list item-->
 
 - [first text
+  \
+  \
+  \
+  \
+  \
+  \
+  \
+  \
+  \
   \
   second text](/)
 
@@ -170,8 +194,7 @@ second text](/page.html)
 <!--link with headings-->
 
 [**Heading A**
-\
-**Heading B**](/page.html)
+**Heading B**](/page.html)  
 
 <!--link with an svg-->
 

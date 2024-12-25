@@ -105,7 +105,6 @@ not title
 * * *
 
 > [**Heading 2**
-> \
 > **Heading 5**](/page.html)
 
 * * *
@@ -113,9 +112,7 @@ not title
 > [**Heading 2**
 > \
 > Description Line 1
-> \
 > Description Line 2
-> \
 > Description Line 3
 > \
 > "Some quote"](/page.html)
