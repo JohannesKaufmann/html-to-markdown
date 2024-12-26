@@ -132,6 +132,38 @@ text between
 
 <!--THE END-->
 
+<!-- nesting -->
+
+1. 1. 1. 1. 1. lots of list containers
+
+* * *
+
+1. 1. 1. lots of list items
+
+<!--THE END-->
+
+<!-- with other elements inside the list -->
+
+1. A 1 (div)
+   
+   A 2 (#text)
+2. A 3 (li) A 4 (#text)
+   
+   1. B 1 (li)
+      
+      1. C 1 (li)
+         
+         C 2 (div)
+         
+         C 3 (div)
+      
+      B 2 (div)
+   2. B 3 (li)
+
+<!--THE END-->
+
+<!-- with breaks -->
+
 - Start Line
   
   End Line
