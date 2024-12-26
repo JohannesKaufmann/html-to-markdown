@@ -85,7 +85,10 @@ func (c *commonmark) handlePreRender(ctx converter.Context, doc *html.Node) {
 	domutils.RemoveRedundant(doc, nameIsBothLink)
 	domutils.SwapTags(ctx, doc, nameIsBoldOrItalic, nameIsLink)
 
-	// - - - Headings - - - //
+	// - - - Heading - - - //
 	domutils.SwapTags(ctx, doc, nameIsLink, nameIsHeading)
 	domutils.LeafBlockAlternatives(ctx, doc)
+
+	// - - - List - - - //
+	domutils.MoveListItems(ctx, doc)
 }

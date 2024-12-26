@@ -79,7 +79,8 @@ Wir freuen uns über eine [Mail](mailto:hi@example.com?body=Hello%0AJohannes)!
 <!--list with link-->
 
 - [a(b)\[c\]](/page.html)
-- [a\]](/page.html)
+  
+  [a\]](/page.html)
 
 <!--TODO: list with paragraph-->
 
