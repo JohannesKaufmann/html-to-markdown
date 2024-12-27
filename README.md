@@ -240,7 +240,7 @@ Binaries are automatically built via [GoReleaser](https://goreleaser.com/) and a
 To build locally (requires Go):
 
 ```bash
-go build -o html2markdown ./cli
+go build ./cli/html2markdown
 ```
 
 ### Version

@@ -20,7 +20,7 @@ builds:
 
     # Note: We only use goreleaser for the CLI,
     # so we have to go into the "cli" directory.
-    dir: cli
+    dir: cli/html2markdown
     binary: html2markdown
 
 archives:
