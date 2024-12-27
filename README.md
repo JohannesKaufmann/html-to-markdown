@@ -233,6 +233,16 @@ _Note: Support for other Linux distributions is tracked in [#119](https://github
 
 Download pre-compiled binaries for Linux, macOS or Windows from the [releases page](https://github.com/JohannesKaufmann/html-to-markdown/releases). Extract the archive and copy the executable to a location in your system PATH (e.g. `/usr/local/bin`).
 
+#### Installation via Go
+
+If you have Go installed, you can install the CLI directly using:
+
+```bash
+go install github.com/JohannesKaufmann/html-to-markdown/v2/cli/html2markdown@latest
+```
+
+This will download the source code and compile it into an executable in your Go binary directory (typically `$GOPATH/bin`).
+
 #### Build from Source
 
 Binaries are automatically built via [GoReleaser](https://goreleaser.com/) and attached to each [release](https://github.com/JohannesKaufmann/html-to-markdown/releases).
