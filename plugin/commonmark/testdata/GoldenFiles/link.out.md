@@ -140,6 +140,31 @@ before [content](/) after
 
 **bold [and *italic*](/) text**
 
+<!--link with one br-->
+
+[A  
+B](/) 
+
+<!--link with two br-->
+
+[A  
+\
+B](/) 
+
+<!--link with three br-->
+
+[A  
+\
+B](/)
+
+<!--link with multiple div-->
+
+[A
+\
+B
+\
+C](/)
+
 <!--multiline link with too many newlines-->
 
 [Start Line
