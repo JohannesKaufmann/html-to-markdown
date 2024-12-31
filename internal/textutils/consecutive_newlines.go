@@ -1,10 +1,34 @@
 package textutils
 
 import (
+	"bytes"
 	"unicode/utf8"
 )
 
-func TrimConsecutiveNewlines(input []byte) []byte {
+// TODO: replace "TrimConsecutiveNewlines" with "TrimConsecutiveNewlines+TrimUnnecessaryHardLineBreaks" in the codebase
+
+func Alternative_TrimConsecutiveNewlines(content []byte) []byte {
+	out := trimConsecutiveNewlines(content)
+
+	return out
+}
+func TrimConsecutiveNewlines(content []byte) []byte {
+	content = trimConsecutiveNewlines(content)
+	content = TrimUnnecessaryHardLineBreaks(content)
+
+	return content
+}
+
+func TrimUnnecessaryHardLineBreaks(content []byte) []byte {
+	content = bytes.ReplaceAll(content, []byte("  \n\n"), []byte("\n\n"))
+	content = bytes.ReplaceAll(content, []byte("  \n  \n"), []byte("\n\n"))
+	content = bytes.ReplaceAll(content, []byte("  \n \n"), []byte("\n\n"))
+	// out = bytes.ReplaceAll(out, []byte("\n  \n"), []byte("\n\n"))
+
+	return content
+}
+
+func trimConsecutiveNewlines(input []byte) []byte {
 	var result []byte
 	newlineCount := 0
 	spaceBuffer := []byte{}

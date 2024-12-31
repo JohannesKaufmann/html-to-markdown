@@ -147,13 +147,13 @@ B](/)
 
 <!--link with two br-->
 
-[A  
+[A
 \
 B](/) 
 
 <!--link with three br-->
 
-[A  
+[A
 \
 B](/)
 
@@ -196,7 +196,7 @@ second text](/page.html)
 <!--link with headings-->
 
 [**Heading A**  
-**Heading B**](/page.html)  
+**Heading B**](/page.html)
 
 <!--link with an svg-->
 
