@@ -147,13 +147,13 @@ B](/)
 
 <!--link with two br-->
 
-[A
+[A  
 \
 B](/) 
 
 <!--link with three br-->
 
-[A
+[A  
 \
 B](/)
 

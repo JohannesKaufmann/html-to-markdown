@@ -2,7 +2,7 @@ package textutils
 
 // EscapeMultiLine deals with multiline content inside a link or a heading.
 func EscapeMultiLine(content []byte) []byte {
-	content = TrimConsecutiveNewlines(content)
+	content = Alternative_TrimConsecutiveNewlines(content)
 
 	newContent := make([]byte, 0, len(content))
 
