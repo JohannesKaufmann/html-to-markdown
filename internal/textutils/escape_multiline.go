@@ -15,12 +15,6 @@ var (
 
 // EscapeMultiLine deals with multiline content inside a link or a heading.
 func EscapeMultiLine(content []byte) []byte {
-	content = bytes.TrimSpace(content)
-	content = Alternative_TrimConsecutiveNewlines(content)
-	if len(content) == 0 {
-		return content
-	}
-
 	parts := bytes.Split(content, newlineBreak)
 	if len(parts) == 1 {
 		return content

@@ -81,7 +81,8 @@ line4`,
 
 	for _, test := range tests {
 		t.Run(test.Name, func(t *testing.T) {
-			output := EscapeMultiLine([]byte(test.Text))
+			input := TrimConsecutiveNewlines([]byte(test.Text))
+			output := EscapeMultiLine(input)
 
 			if string(output) != test.Expected {
 				t.Errorf("expected '%s' but got '%s'", test.Expected, string(output))

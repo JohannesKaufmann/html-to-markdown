@@ -19,6 +19,7 @@ func (c *commonmark) renderBlockquote(ctx converter.Context, w converter.Writer,
 	}
 
 	content = textutils.TrimConsecutiveNewlines(content)
+	content = textutils.TrimUnnecessaryHardLineBreaks(content)
 	content = textutils.PrefixLines(content, []byte{'>', ' '})
 
 	w.WriteRune('\n')

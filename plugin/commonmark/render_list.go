@@ -86,7 +86,7 @@ func (c commonmark) renderListContainer(ctx converter.Context, w converter.Write
 		w.WriteString(getPrefix(i))
 
 		item = textutils.TrimConsecutiveNewlines(item)
-		// item = escape.UnEscaper(item)
+		item = textutils.TrimUnnecessaryHardLineBreaks(item)
 		item = ctx.UnEscapeContent(item)
 
 		// An item might have different lines that each

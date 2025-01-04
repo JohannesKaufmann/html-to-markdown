@@ -115,6 +115,9 @@ func (c *commonmark) renderHeading(ctx converter.Context, w converter.Writer, n 
 	}
 
 	if c.HeadingStyle == HeadingStyleSetext && level < 3 {
+		// Note: We don't want to use `TrimUnnecessaryHardLineBreaks` here,
+		// since `EscapeMultiLine` also takes care of newlines.
+		content = textutils.TrimConsecutiveNewlines(content)
 		content = textutils.EscapeMultiLine(content)
 
 		width := getUnderlineWidth(content, 3)

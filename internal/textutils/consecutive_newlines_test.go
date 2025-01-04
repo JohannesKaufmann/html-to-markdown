@@ -71,10 +71,12 @@ func TestTrimConsecutiveNewlines(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := string(TrimConsecutiveNewlines([]byte(tt.input)))
-			if got != tt.expected {
+			output := TrimConsecutiveNewlines([]byte(tt.input))
+			output = TrimUnnecessaryHardLineBreaks(output)
+
+			if string(output) != tt.expected {
 				t.Errorf("\ninput:    %q\nexpected: %q\ngot:      %q",
-					tt.input, tt.expected, got,
+					tt.input, tt.expected, string(output),
 				)
 			}
 		})
@@ -85,7 +87,7 @@ func TestTrimConsecutiveNewlines_Allocs(t *testing.T) {
 	const N = 1000
 
 	t.Run("no newlines", func(t *testing.T) {
-		var expectedAverage float64 = 4
+		var expectedAverage float64 = 1
 
 		actualAverage := testing.AllocsPerRun(N, func() {
 			input := []byte("abc")
@@ -97,7 +99,7 @@ func TestTrimConsecutiveNewlines_Allocs(t *testing.T) {
 		}
 	})
 	t.Run("exactly two newlines", func(t *testing.T) {
-		var expectedAverage float64 = 4
+		var expectedAverage float64 = 1
 
 		actualAverage := testing.AllocsPerRun(N, func() {
 			input := []byte("abc\n\nabc")
@@ -109,7 +111,7 @@ func TestTrimConsecutiveNewlines_Allocs(t *testing.T) {
 		}
 	})
 	t.Run("three newlines", func(t *testing.T) {
-		var expectedAverage float64 = 4
+		var expectedAverage float64 = 1
 
 		actualAverage := testing.AllocsPerRun(N, func() {
 			input := []byte("abc\n\n\nabc")
@@ -121,7 +123,7 @@ func TestTrimConsecutiveNewlines_Allocs(t *testing.T) {
 		}
 	})
 	t.Run("many newlines", func(t *testing.T) {
-		var expectedAverage float64 = 19
+		var expectedAverage float64 = 16
 
 		actualAverage := testing.AllocsPerRun(N, func() {
 			input := bytes.Repeat([]byte("abc\n\n\n\n\n\nabc"), 1000)
