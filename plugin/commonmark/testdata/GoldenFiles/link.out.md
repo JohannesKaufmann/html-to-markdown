@@ -159,15 +159,15 @@ B](/)
 
 <!--link with multiple div-->
 
-[A
+[A  
 \
-B
+B  
 \
 C](/)
 
 <!--multiline link with too many newlines-->
 
-[Start Line
+[Start Line  
 \
 End Line](/)
 
@@ -177,7 +177,7 @@ End Line](/)
 
 <!--multiline link inside a list item-->
 
-- [first text
+- [first text  
   \
   second text](/)
 
@@ -187,9 +187,9 @@ End Line](/)
 
 <!--multiline link-->
 
-[first text
+[first text  
 \
-![](/image.jpg)
+![](/image.jpg)  
 \
 second text](/page.html)
 
@@ -270,8 +270,8 @@ before***italic*[link](/)strong**after
                 Nesting
 --------------------------------------->
 
-[before
+[before  
 \
-another link
+another link  
 \
 after](/a)
