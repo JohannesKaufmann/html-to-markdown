@@ -140,9 +140,34 @@ before [content](/) after
 
 **bold [and *italic*](/) text**
 
+<!--link with one br-->
+
+[A  
+B](/) 
+
+<!--link with two br-->
+
+[A  
+\
+B](/) 
+
+<!--link with three br-->
+
+[A  
+\
+B](/)
+
+<!--link with multiple div-->
+
+[A  
+\
+B  
+\
+C](/)
+
 <!--multiline link with too many newlines-->
 
-[Start Line
+[Start Line  
 \
 End Line](/)
 
@@ -152,7 +177,7 @@ End Line](/)
 
 <!--multiline link inside a list item-->
 
-- [first text
+- [first text  
   \
   second text](/)
 
@@ -162,16 +187,16 @@ End Line](/)
 
 <!--multiline link-->
 
-[first text
+[first text  
 \
-![](/image.jpg)
+![](/image.jpg)  
 \
 second text](/page.html)
 
 <!--link with headings-->
 
 [**Heading A**  
-**Heading B**](/page.html)  
+**Heading B**](/page.html)
 
 <!--link with an svg-->
 
@@ -245,8 +270,8 @@ before***italic*[link](/)strong**after
                 Nesting
 --------------------------------------->
 
-[before
+[before  
 \
-another link
+another link  
 \
 after](/a)

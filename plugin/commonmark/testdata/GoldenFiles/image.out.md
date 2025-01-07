@@ -76,7 +76,7 @@
 
 <!--image inside a link-->
 
-[![image alt text](/image.jpg "image title text")](/page.html "link title text")  
+[![image alt text](/image.jpg "image title text")](/page.html "link title text")
 
 <!--image inside an empty link-->
 

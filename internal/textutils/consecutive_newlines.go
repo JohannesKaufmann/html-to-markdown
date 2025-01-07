@@ -1,8 +1,18 @@
 package textutils
 
 import (
+	"bytes"
 	"unicode/utf8"
 )
+
+func TrimUnnecessaryHardLineBreaks(content []byte) []byte {
+	content = bytes.ReplaceAll(content, []byte("  \n\n"), []byte("\n\n"))
+	content = bytes.ReplaceAll(content, []byte("  \n  \n"), []byte("\n\n"))
+	content = bytes.ReplaceAll(content, []byte("  \n \n"), []byte("\n\n"))
+	// out = bytes.ReplaceAll(out, []byte("\n  \n"), []byte("\n\n"))
+
+	return content
+}
 
 func TrimConsecutiveNewlines(input []byte) []byte {
 	var result []byte

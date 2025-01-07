@@ -125,6 +125,7 @@ func (b *base) postRenderTrimContent(ctx converter.Context, result []byte) []byt
 
 	// Remove too many newlines
 	result = textutils.TrimConsecutiveNewlines(result)
+	result = textutils.TrimUnnecessaryHardLineBreaks(result)
 
 	return result
 }

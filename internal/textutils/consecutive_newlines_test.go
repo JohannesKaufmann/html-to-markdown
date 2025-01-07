@@ -23,29 +23,32 @@ func TestTrimConsecutiveNewlines(t *testing.T) {
 
 		// Double newline cases
 		{"double newline", "a\n\nb", "a\n\nb"},
-		{"double newline with spaces", "a  \n\nb", "a  \n\nb"},
+		{"double newline with spaces", "a  \n\nb", "a\n\nb"},
 		{"spaces between newlines", "a\n  \nb", "a\n  \nb"},
+		// Note: It should not change the spaces *after* the newlines since this could impacts lists
 		{"spaces after double newline", "a\n\n  b", "a\n\n  b"},
 
 		// Triple+ newline cases
 		{"triple newline", "a\n\n\nb", "a\n\nb"},
 		{"quad newline", "a\n\n\n\nb", "a\n\nb"},
-		{"triple newline with spaces", "a  \n\n\nb", "a  \n\nb"},
+		{"triple newline with spaces", "a  \n\n\nb", "a\n\nb"},
 
 		// Multiple segment cases
 		{"multiple segments", "a\n\nb\n\nc", "a\n\nb\n\nc"},
-		{"multiple segments with spaces", "a  \n\nb  \n\nc", "a  \n\nb  \n\nc"},
+		{"multiple segments with spaces", "a  \n\nb  \n\nc", "a\n\nb\n\nc"},
 
 		// Spaces at end of line
 		{"hard-line-break followed by text", "a  \nb", "a  \nb"},
-		{"hard-line-break followed by newline", "a  \n\nb", "a  \n\nb"},
+		{"hard-line-break followed by newline", "a  \n\nb", "a\n\nb"},
 
 		// Edge cases
 		{"only newlines", "\n\n\n", "\n\n"},
 		{"only spaces", "   ", "   "},
 
 		{"leading and trailing newlines", "\n\n\ntext\n\n\n", "\n\ntext\n\n"},
-		{"newlines and spaces", "  \n  \n  \n  \n  ", "  \n  \n  "},
+		{"newlines and spaces 1", "  \n  \n  \n  \n  ", "\n\n  "},
+		{"newlines and spaces 2", "a  \n  \nb", "a\n\nb"},
+		{"newlines and spaces 3", "a  \n \nb", "a\n\nb"},
 
 		{"leading spaces", "   a", "   a"},
 		{"leading newline 1", "\na", "\na"},
@@ -60,14 +63,20 @@ func TestTrimConsecutiveNewlines(t *testing.T) {
 		// UTF-8 cases
 		{"german special chars", "äöü\n\n\näöü", "äöü\n\näöü"},
 		{"utf8 chars", "🌟\n\n\n🌟\n\n\n🌟", "🌟\n\n🌟\n\n🌟"},
+
+		// Markdown
+		// Note: The sublist needs to be indented by "  -"
+		{"indented sublist", "- The main list\n  \n  - The sublist", "- The main list\n  \n  - The sublist"},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := string(TrimConsecutiveNewlines([]byte(tt.input)))
-			if got != tt.expected {
+			output := TrimConsecutiveNewlines([]byte(tt.input))
+			output = TrimUnnecessaryHardLineBreaks(output)
+
+			if string(output) != tt.expected {
 				t.Errorf("\ninput:    %q\nexpected: %q\ngot:      %q",
-					tt.input, tt.expected, got,
+					tt.input, tt.expected, string(output),
 				)
 			}
 		})
@@ -77,49 +86,59 @@ func TestTrimConsecutiveNewlines(t *testing.T) {
 func TestTrimConsecutiveNewlines_Allocs(t *testing.T) {
 	const N = 1000
 
-	var avg float64
-	/*
-		avg = testing.AllocsPerRun(N, func() {
+	t.Run("no newlines", func(t *testing.T) {
+		var expectedAverage float64 = 1
+
+		actualAverage := testing.AllocsPerRun(N, func() {
 			input := []byte("abc")
 			output := TrimConsecutiveNewlines(input)
 			_ = output
 		})
-		if avg != 0 {
-			t.Errorf("with no newlines there should be no allocations but got %f", avg)
+		if actualAverage != expectedAverage {
+			t.Errorf("expected %f allocations but got %f", expectedAverage, actualAverage)
 		}
+	})
+	t.Run("exactly two newlines", func(t *testing.T) {
+		var expectedAverage float64 = 1
 
-		avg = testing.AllocsPerRun(N, func() {
+		actualAverage := testing.AllocsPerRun(N, func() {
 			input := []byte("abc\n\nabc")
 			output := TrimConsecutiveNewlines(input)
 			_ = output
 		})
-		if avg != 0 {
-			t.Errorf("with only two newlines there should be no allocations but got %f", avg)
+		if actualAverage != expectedAverage {
+			t.Errorf("expected %f allocations but got %f", expectedAverage, actualAverage)
 		}
-	*/
-
-	avg = testing.AllocsPerRun(N, func() {
-		input := []byte("abc\n\n\nabc")
-		output := TrimConsecutiveNewlines(input)
-		_ = output
 	})
-	if avg != 1 {
-		t.Errorf("with three newlines there should be 1 allocation but got %f", avg)
-	}
+	t.Run("three newlines", func(t *testing.T) {
+		var expectedAverage float64 = 1
 
-	avg = testing.AllocsPerRun(N, func() {
-		input := []byte("abc\n\n\n\n\n\nabc\n\n\n\n\n\nabc\n\n\n\n\n\nabc\n\n\n\n\n\nabc\n\n\n\n\n\nabc")
-		output := TrimConsecutiveNewlines(input)
-		_ = output
+		actualAverage := testing.AllocsPerRun(N, func() {
+			input := []byte("abc\n\n\nabc")
+			output := TrimConsecutiveNewlines(input)
+			_ = output
+		})
+		if actualAverage != expectedAverage {
+			t.Errorf("expected %f allocations but got %f", expectedAverage, actualAverage)
+		}
 	})
-	if avg != 3 {
-		t.Errorf("with many newlines there should be 3 allocation but got %f", avg)
-	}
+	t.Run("many newlines", func(t *testing.T) {
+		var expectedAverage float64 = 16
+
+		actualAverage := testing.AllocsPerRun(N, func() {
+			input := bytes.Repeat([]byte("abc\n\n\n\n\n\nabc"), 1000)
+			output := TrimConsecutiveNewlines(input)
+			_ = output
+		})
+		if actualAverage != expectedAverage {
+			t.Errorf("expected %f allocations but got %f", expectedAverage, actualAverage)
+		}
+	})
 }
 
-const Repeat = 10
-
 func BenchmarkTrimConsecutiveNewlines(b *testing.B) {
+	const Repeat = 10
+
 	runs := []struct {
 		desc  string
 		input []byte

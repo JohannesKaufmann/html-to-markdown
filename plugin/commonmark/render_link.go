@@ -89,6 +89,9 @@ func (c *commonmark) renderLink(ctx converter.Context, w converter.Writer, n *ht
 
 	leftExtra, trimmed, rightExtra := textutils.SurroundingSpaces(content)
 
+	// Note: We don't want to use `TrimUnnecessaryHardLineBreaks` here,
+	// since `EscapeMultiLine` also takes care of newlines.
+	trimmed = textutils.TrimConsecutiveNewlines(trimmed)
 	trimmed = textutils.EscapeMultiLine(trimmed)
 
 	l.before = leftExtra

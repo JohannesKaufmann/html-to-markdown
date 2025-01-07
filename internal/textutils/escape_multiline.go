@@ -1,42 +1,56 @@
 package textutils
 
+import (
+	"bytes"
+	"unicode"
+)
+
+var (
+	doubleSpace = []byte{' ', ' '}
+
+	newlineBreak              = []byte{'\n'}
+	hardLineBreak             = []byte{' ', ' ', '\n'}
+	escapedNoContentLineBreak = []byte{'\\', '\n'}
+)
+
 // EscapeMultiLine deals with multiline content inside a link or a heading.
 func EscapeMultiLine(content []byte) []byte {
-	content = TrimConsecutiveNewlines(content)
+	parts := bytes.Split(content, newlineBreak)
+	if len(parts) == 1 {
+		return content
+	}
 
-	newContent := make([]byte, 0, len(content))
+	output := make([]byte, 0, len(content))
+	for i := range parts {
+		trimmedLeft := bytes.TrimLeftFunc(parts[i], unicode.IsSpace)
 
-	startNormal := 0
-	lineHasContent := false
-	for index, char := range content {
-		isNewline := char == '\n'
-		isSpace := char == ' ' || char == '	'
-
-		isFirstNewline := isNewline && lineHasContent
-		isLastNewline := isNewline && !lineHasContent
-
-		if isFirstNewline {
-			newContent = append(newContent, content[startNormal:index]...)
-			newContent = append(newContent, '\n')
-
-			startNormal = index + 1
-			lineHasContent = false
-
+		if len(trimmedLeft) == 0 {
+			// A blank line would interrupt the link.
+			// So we need to escape the line
+			output = append(output, escapedNoContentLineBreak...)
 			continue
-		} else if isLastNewline {
-			newContent = append(newContent, '\\')
-			newContent = append(newContent, '\n')
+		}
 
-			startNormal = index + 1
-			lineHasContent = false
-		} else if !isSpace {
-			lineHasContent = true
-		} else if isSpace && !lineHasContent {
-			startNormal = index + 1
+		isLast := i == len(parts)-1
+		if isLast {
+			// For the last line we don't need to add any "\n" anymore
+			output = append(output, trimmedLeft...)
+			continue
+		}
+
+		// Now decide what ending we want:
+		if bytes.HasSuffix(trimmedLeft, doubleSpace) {
+			// We already have "  " so adding a "\n" is enough
+			output = append(output, trimmedLeft...)
+			output = append(output, newlineBreak...)
+			continue
+		} else {
+			// We *prefer* having a hard-line-break "  \n"
+			output = append(output, trimmedLeft...)
+			output = append(output, hardLineBreak...)
+			continue
 		}
 	}
 
-	newContent = append(newContent, content[startNormal:]...)
-
-	return newContent
+	return output
 }
