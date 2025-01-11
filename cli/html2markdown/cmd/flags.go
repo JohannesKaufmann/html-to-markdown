@@ -35,6 +35,19 @@ func (cli *CLI) initFlags(progname string) {
 	cli.flags.BoolVar(&cli.config.version, "version", false, "display the version")
 	cli.flags.BoolVar(&cli.config.version, "v", false, "display the version")
 
+	cli.flags.StringVar(
+		&cli.config.inputFilepath,
+		"input",
+		"",
+		"Read input from FILE instead of stdin",
+	)
+	cli.flags.StringVar(
+		&cli.config.outputFilepath,
+		"output",
+		"",
+		"Write output to FILE instead of stdout",
+	)
+
 	// TODO: --tag-type-block=script,style (and check that it is not a selector)
 	// TODO: --tag-type-inline=script,style (and check that it is not a selector)
 
