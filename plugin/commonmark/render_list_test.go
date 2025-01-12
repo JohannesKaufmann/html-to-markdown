@@ -9,9 +9,6 @@ import (
 )
 
 func TestNewCommonmarkPlugin_List(t *testing.T) {
-	const nonBreakingSpace = '\u00A0'
-	const zeroWidthSpace = '\u200b'
-
 	runs := []struct {
 		desc     string
 		input    string
