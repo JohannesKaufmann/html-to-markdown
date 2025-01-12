@@ -9,6 +9,7 @@ import (
 	"github.com/JohannesKaufmann/dom"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/internal/textutils"
+	"github.com/JohannesKaufmann/html-to-markdown/v2/marker"
 	"golang.org/x/net/html"
 )
 
@@ -43,20 +44,27 @@ func (c commonmark) getPrefixFunc(n *html.Node, sliceLength int) func(int) strin
 
 func renderMultiLineListItem(w converter.Writer, content []byte, indentCount int) {
 	lines := bytes.Split(content, []byte("\n"))
+	indent := bytes.Repeat([]byte(" "), indentCount)
+
+	indentedCodeBlockNewline := append(marker.BytesMarkerCodeBlockNewline, indent...)
 
 	for i := range lines {
+		// Add indent to code block newlines
+		line := bytes.ReplaceAll(lines[i], marker.BytesMarkerCodeBlockNewline, indentedCodeBlockNewline)
+
 		if i != 0 {
 			// The first line is already indented through the prefix,
 			// all other lines need the correct amount of spaces.
-			w.Write(bytes.Repeat([]byte(" "), indentCount))
+			w.Write(indent)
 		}
-		w.Write(lines[i])
+		w.Write(line)
 
 		if i < len(lines)-1 {
 			w.WriteRune('\n')
 		}
 	}
 }
+
 func (c commonmark) renderListContainer(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
 	children := dom.AllChildNodes(n)
 	items := make([][]byte, 0, len(children))
