@@ -171,6 +171,35 @@ text between
   
   End Line
 
+* * *
+
+<!-- with code block in item -->
+
+- item:
+  
+  ```
+  line 1
+  line 2
+  ```
+- item 2
+
+<!--THE END-->
+
+<!-- with code block in nested item -->
+
+- item 1:
+  
+  - nested item 1:
+    
+    ```
+    line 1
+    line 2
+    ```
+  - nested item 2
+- item 2
+
+* * *
+
 <!--------------------------------------
             Special Characters
 --------------------------------------->
