@@ -22,6 +22,12 @@ func fileNameWithoutExtension(fileName string) string {
 }
 
 func (cli *CLI) getInputs() ([]*file, error) {
+	if cli.isStdinPipe && cli.config.inputFilepath != "" {
+		return nil, NewCLIError(
+			fmt.Errorf("cannot use both stdin and --input at the same time. Use either stdin or specify an input file, but not both"),
+		)
+	}
+
 	if cli.isStdinPipe {
 		data, err := io.ReadAll(cli.Stdin)
 		if err != nil {
@@ -36,7 +42,7 @@ func (cli *CLI) getInputs() ([]*file, error) {
 	}
 
 	if cli.config.inputFilepath != "" {
-		matches, err := doublestar.FilepathGlob(cli.config.inputFilepath)
+		matches, err := doublestar.FilepathGlob(cli.config.inputFilepath, doublestar.WithFilesOnly(), doublestar.WithNoFollow())
 		if err != nil {
 			return nil, err
 		}
@@ -44,7 +50,7 @@ func (cli *CLI) getInputs() ([]*file, error) {
 			return nil, NewCLIError(
 				fmt.Errorf("no files found matching pattern %q", cli.config.inputFilepath),
 				Paragraph("Here is how you can use a glob to match multiple files:"),
-				CodeBlock(`html2markdown --input "src/*.html" --output "dist"`),
+				CodeBlock(`html2markdown --input "src/*.html" --output "dist/"`),
 			)
 		}
 		// if len(matches) != 1 {

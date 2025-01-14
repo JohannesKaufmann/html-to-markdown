@@ -146,7 +146,10 @@ func (cli *CLI) run() ([]error, error) {
 		return nil, err
 	}
 
-	outputType := determineOutputType(len(inputs), cli.config.outputFilepath)
+	outputType, err := determineOutputType(cli.config.inputFilepath, len(inputs), cli.config.outputFilepath)
+	if err != nil {
+		return nil, err
+	}
 
 	err = ensureOutputDirectories(outputType, cli.config.outputFilepath)
 	if err != nil {

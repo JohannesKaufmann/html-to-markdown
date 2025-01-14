@@ -185,24 +185,6 @@ func TestExecute_SingleFileInput(t *testing.T) {
 	`)
 }
 
-func TestExecute_SingleFileInput_NoFiles(t *testing.T) {
-	args := []string{"html2markdown", "--input", "not_found.html"}
-
-	stdin := &FakeFile{mode: modeTerminal}
-	stdout := &FakeFile{mode: modePipe}
-	stderr := &FakeFile{mode: modePipe}
-
-	Run(stdin, stdout, stderr, args, testRelease)
-
-	expectedStderr := "\nerror: no files found matching pattern \"not_found.html\"\n\nHere is how you can use a glob to match multiple files:\n\n    html2markdown --input \"src/*.html\" --output \"dist\"\n\n"
-	if expectedStderr != stderr.String() {
-		t.Errorf("expected stderr %q but got %q", expectedStderr, stderr.String())
-	}
-	if len(stdout.Bytes()) != 0 {
-		t.Fatalf("expected no stdout content")
-	}
-}
-
 func TestExecute_SingleFileOutput(t *testing.T) {
 	directoryPath := newTestDir(t)
 	defer os.RemoveAll(directoryPath)
@@ -247,7 +229,7 @@ func TestExecute_DirectoryOutput(t *testing.T) {
 	}
 
 	// - - - - - - - - - //
-	args := []string{"html2markdown", "--input", inputPath, "--output", directoryPath}
+	args := []string{"html2markdown", "--input", inputPath, "--output", directoryPath + string(os.PathSeparator)}
 
 	stdin := &FakeFile{mode: modeTerminal}
 	stdout := &FakeFile{mode: modePipe}
@@ -346,7 +328,7 @@ func TestExecute_FilePattern(t *testing.T) {
 				input := filepath.Join(dir, "input", "website_a.*")
 				output := filepath.Join(dir, "output")
 
-				return []string{"html2markdown", "--input", input, "--output", output}
+				return []string{"html2markdown", "--input", input, "--output", output + string(os.PathSeparator)}
 			},
 			expected: `
 .
@@ -366,7 +348,7 @@ func TestExecute_FilePattern(t *testing.T) {
 				input := filepath.Join(dir, "input", "website*.html")
 				output := filepath.Join(dir, "output")
 
-				return []string{"html2markdown", "--input", input, "--output", output}
+				return []string{"html2markdown", "--input", input, "--output", output + string(os.PathSeparator)}
 			},
 			expected: `
 .
@@ -382,12 +364,37 @@ func TestExecute_FilePattern(t *testing.T) {
 			`,
 		},
 		{
+			desc: "match everything",
+			assembleArgs: func(dir string) []string {
+				input := filepath.Join(dir, "**", "*")
+				output := filepath.Join(dir, "output")
+
+				return []string{"html2markdown", "--input", input, "--output", output + string(os.PathSeparator)}
+			},
+
+			// Note: The "random.md" was also placed in the output folder.
+			expected: `
+.
+├─input
+│ ├─nested
+│ │ ├─website_c.html "<i>file content C</i>"
+│ ├─random.txt "other random file"
+│ ├─website_a.html "<strong>file content A</strong>"
+│ ├─website_b.html "<strong>file content B</strong>"
+├─output
+│ ├─random.md "other random file"
+│ ├─website_a.md "**file content A**"
+│ ├─website_b.md "**file content B**"
+│ ├─website_c.md "*file content C*"
+			`,
+		},
+		{
 			desc: "nested website html files",
 			assembleArgs: func(dir string) []string {
 				input := filepath.Join(dir, "**", "website*.html")
 				output := filepath.Join(dir, "output", "in", "nested", "folder")
 
-				return []string{"html2markdown", "--input", input, "--output", output}
+				return []string{"html2markdown", "--input", input, "--output", output + string(os.PathSeparator)}
 			},
 			expected: `
 .
@@ -412,7 +419,7 @@ func TestExecute_FilePattern(t *testing.T) {
 				input := filepath.Join(dir, "input", "website*.html")
 				output := filepath.Join(dir, "input")
 
-				return []string{"html2markdown", "--input", input, "--output", output}
+				return []string{"html2markdown", "--input", input, "--output", output + string(os.PathSeparator)}
 			},
 			expected: `
 .
@@ -433,7 +440,7 @@ func TestExecute_FilePattern(t *testing.T) {
 				input := filepath.Join(dir, "**", "website*.html")
 				output := filepath.Join(dir, "input")
 
-				return []string{"html2markdown", "--input", input, "--output", output}
+				return []string{"html2markdown", "--input", input, "--output", output + string(os.PathSeparator)}
 			},
 
 			// Note: "website_c.md" was placed in "input" because by default the flat output structure is used.

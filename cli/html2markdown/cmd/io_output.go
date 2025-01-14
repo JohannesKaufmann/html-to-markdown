@@ -15,38 +15,64 @@ const (
 	outputTypeFile      outputType = "file"
 )
 
-func determineOutputType(countInputs int, outputPath string) outputType {
+// The user can indicate that they mean a directory by having a slash as the suffix.
+func hasFolderSuffix(outputPath string) bool {
+	// With the trailing slash a directory can be indicated.
+	return strings.HasSuffix(outputPath, string(os.PathSeparator))
+}
+
+func determineOutputType(inputPath string, countInputs int, outputPath string) (outputType, error) {
 	if outputPath == "" {
-		return outputTypeStdout
+		if countInputs > 1 {
+			return "", NewCLIError(
+				fmt.Errorf("when processing multiple input files --output needs to be a directory"),
+				Paragraph("Here is how you can use a glob to match multiple files:"),
+				CodeBlock(`html2markdown --input "src/*.html" --output "dist/"`),
+			)
+		}
+
+		return outputTypeStdout, nil
 	}
 
-	// TODO: the glob can also be a folder with just one file...
+	if hasFolderSuffix(outputPath) {
+		return outputTypeDirectory, nil
+	}
+
+	// - - - - - - - - - //
+	// We can now assume that the output path specifies a file.
+	// But let's make sure...
+
 	if countInputs > 1 {
 		// There are multiple inputs, so the input MUST have been a glob or directory.
 		// It also means that the output MUST be a directory.
-		return outputTypeDirectory
+		dir := filepath.Base(outputPath)
+		return "", NewCLIError(
+			fmt.Errorf("when processing multiple input files, --output %q must end with %q to indicate a directory", dir, dir+string(os.PathSeparator)),
+		)
 	}
 
-	if strings.HasSuffix(outputPath, "/") || strings.HasSuffix(outputPath, "\\") {
-		// With the trailing slash a directory can be indicated.
-		return outputTypeDirectory
-	}
-
-	if filepath.Ext(filepath.Base(outputPath)) != "" {
-		// With a file extension it is LIKELY to be a file.
-		return outputTypeFile
-	}
+	// TODO: The glob can also be a folder with just one file...
+	//       So we should check if the path contains any glob characters.
 
 	// Check if output path exists
 	if outInfo, err := os.Stat(outputPath); err == nil {
 		if outInfo.IsDir() {
-			return outputTypeDirectory
+			dir := filepath.Base(outputPath)
+			return "", NewCLIError(
+				fmt.Errorf("path %q exists and is a directory - did you mean %q?", dir, dir+string(os.PathSeparator)),
+				Paragraph(fmt.Sprintf("The --output must end with %q to indicate a directory", string(os.PathSeparator))),
+			)
 		}
-		return outputTypeFile
+		return outputTypeFile, nil
+	}
+
+	if filepath.Ext(filepath.Base(outputPath)) != "" {
+		// With a file extension it is LIKELY to be a file.
+		return outputTypeFile, nil
 	}
 
 	// Default to file for single input
-	return outputTypeFile
+	return outputTypeFile, nil
 }
 
 func ensureOutputDirectories(outputType outputType, outputFilepath string) error {
