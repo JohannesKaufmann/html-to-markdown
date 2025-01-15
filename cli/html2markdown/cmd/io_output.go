@@ -21,7 +21,7 @@ func hasFolderSuffix(outputPath string) bool {
 	return strings.HasSuffix(outputPath, string(os.PathSeparator))
 }
 
-func determineOutputType(inputPath string, countInputs int, outputPath string) (outputType, error) {
+func determineOutputType(_inputPath string, countInputs int, outputPath string) (outputType, error) {
 	if outputPath == "" {
 		if countInputs > 1 {
 			return "", NewCLIError(

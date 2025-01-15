@@ -486,6 +486,30 @@ func TestExecute(t *testing.T) {
 				inputArgs:  []string{"html2markdown", "--input", "not_found.html"},
 			},
 		},
+		{
+			desc: "[files] multiple values",
+
+			input: CLIGoldenInput{
+				modeStdin:  modeTerminal,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: nil,
+				inputArgs:  []string{"html2markdown", "--input", "a.html", "--input", "b.html"},
+			},
+		},
+		{
+			desc: "[files] empty string",
+
+			input: CLIGoldenInput{
+				modeStdin:  modeTerminal,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: nil,
+				inputArgs:  []string{"html2markdown", "--input="},
+			},
+		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {

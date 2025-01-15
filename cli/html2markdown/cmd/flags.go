@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -27,6 +28,20 @@ func (cli *CLI) selectorFlag(target *cascadia.SelectorGroup, name string, usage 
 	})
 }
 
+func (cli *CLI) singleStringFlag(target *string, name string, usage string) {
+	cli.flags.Func(name, usage, func(flagValue string) error {
+		if strings.TrimSpace(flagValue) == "" {
+			return errors.New("empty string")
+		}
+		if *target != "" {
+			return fmt.Errorf("another value has already been set")
+		}
+
+		*target = strings.TrimSpace(flagValue)
+		return nil
+	})
+}
+
 func (cli *CLI) initFlags(progname string) {
 	cli.flags = flag.NewFlagSet(progname, flag.ContinueOnError)
 	cli.flags.SetOutput(io.Discard)
@@ -35,16 +50,14 @@ func (cli *CLI) initFlags(progname string) {
 	cli.flags.BoolVar(&cli.config.version, "version", false, "display the version")
 	cli.flags.BoolVar(&cli.config.version, "v", false, "display the version")
 
-	cli.flags.StringVar(
+	cli.singleStringFlag(
 		&cli.config.inputFilepath,
 		"input",
-		"",
 		"Read input from FILE instead of stdin",
 	)
-	cli.flags.StringVar(
+	cli.singleStringFlag(
 		&cli.config.outputFilepath,
 		"output",
-		"",
 		"Write output to FILE instead of stdout",
 	)
 
