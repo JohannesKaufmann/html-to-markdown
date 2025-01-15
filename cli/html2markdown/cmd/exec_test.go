@@ -77,9 +77,13 @@ func cliGoldenTester(t *testing.T, input CLIGoldenInput) {
 		t.Fatal("neither stdout nor stderr have any content")
 	}
 
+	data := map[string]any{
+		"PathSeparator": string(os.PathSeparator),
+	}
+
 	g := goldie.New(t)
-	g.Assert(t, filepath.Join(t.Name(), "stdout"), stdout.Bytes())
-	g.Assert(t, filepath.Join(t.Name(), "stderr"), stderr.Bytes())
+	g.AssertWithTemplate(t, filepath.Join(t.Name(), "stdout"), data, stdout.Bytes())
+	g.AssertWithTemplate(t, filepath.Join(t.Name(), "stderr"), data, stderr.Bytes())
 }
 
 type CLITestCase struct {
