@@ -47,7 +47,7 @@ func determineOutputType(_inputPath string, countInputs int, outputPath string) 
 		// It also means that the output MUST be a directory.
 		dir := filepath.Base(outputPath)
 		return "", NewCLIError(
-			fmt.Errorf("when processing multiple input files, --output %q must end with %q to indicate a directory", dir, dir+string(os.PathSeparator)),
+			fmt.Errorf(`when processing multiple input files, --output "%s" must end with "%s" to indicate a directory`, dir, dir+string(os.PathSeparator)),
 		)
 	}
 
@@ -59,8 +59,8 @@ func determineOutputType(_inputPath string, countInputs int, outputPath string) 
 		if outInfo.IsDir() {
 			dir := filepath.Base(outputPath)
 			return "", NewCLIError(
-				fmt.Errorf("path %q exists and is a directory - did you mean %q?", dir, dir+string(os.PathSeparator)),
-				Paragraph(fmt.Sprintf("The --output must end with %q to indicate a directory", string(os.PathSeparator))),
+				fmt.Errorf(`path "%s" exists and is a directory - did you mean "%s"?`, dir, dir+string(os.PathSeparator)),
+				Paragraph(fmt.Sprintf(`The --output must end with "%s" to indicate a directory`, string(os.PathSeparator))),
 			)
 		}
 		return outputTypeFile, nil
