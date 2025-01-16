@@ -17,8 +17,9 @@ const (
 
 // The user can indicate that they mean a directory by having a slash as the suffix.
 func hasFolderSuffix(outputPath string) bool {
-	// With the trailing slash a directory can be indicated.
-	return strings.HasSuffix(outputPath, string(os.PathSeparator))
+	// Note: We generally support the os.PathSeparator (e.g. "\" on windows).
+	//       But also "/" is always supported.
+	return strings.HasSuffix(outputPath, string(os.PathSeparator)) || strings.HasSuffix(outputPath, "/")
 }
 
 func determineOutputType(_inputPath string, countInputs int, outputPath string) (outputType, error) {

@@ -229,7 +229,8 @@ func TestExecute_DirectoryOutput(t *testing.T) {
 	}
 
 	// - - - - - - - - - //
-	args := []string{"html2markdown", "--input", inputPath, "--output", directoryPath + string(os.PathSeparator)}
+	pathSeparator := "/" // <-- we don't use os.PathSeparator here just to test that windows also supports slash
+	args := []string{"html2markdown", "--input", inputPath, "--output", directoryPath + pathSeparator}
 
 	stdin := &FakeFile{mode: modeTerminal}
 	stdout := &FakeFile{mode: modePipe}
