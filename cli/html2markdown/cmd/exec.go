@@ -142,7 +142,7 @@ func (cli *CLI) run() ([]error, error) {
 
 	// - - - - - - - - - - - - - - - //
 
-	inputs, err := cli.getInputs()
+	inputs, err := cli.listInputs()
 	if err != nil {
 		return nil, err
 	}
@@ -158,12 +158,17 @@ func (cli *CLI) run() ([]error, error) {
 	}
 
 	for _, input := range inputs {
-		markdown, err := cli.convert(input.input)
+		data, err := cli.readInput(input)
 		if err != nil {
 			return nil, err
 		}
 
-		err = cli.writeOutput(outputType, input.name+".md", markdown)
+		markdown, err := cli.convert(data)
+		if err != nil {
+			return nil, err
+		}
+
+		err = cli.writeOutput(outputType, getOutputFileName(input.fullFilepath), markdown)
 		if err != nil {
 			return nil, err
 		}

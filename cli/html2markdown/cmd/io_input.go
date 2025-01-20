@@ -10,18 +10,24 @@ import (
 	"github.com/bmatcuk/doublestar/v4"
 )
 
-type file struct {
-	name      string
-	extension string
-
-	input []byte
+type input struct {
+	fullFilepath string
+	data         []byte
 }
 
+// E.g. "website.html" -> "website"
 func fileNameWithoutExtension(fileName string) string {
 	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
 }
 
-func (cli *CLI) getInputs() ([]*file, error) {
+func getOutputFileName(fullFilepath string) string {
+	basenameWithExt := filepath.Base(fullFilepath)
+	basename := fileNameWithoutExtension(basenameWithExt)
+
+	return basename + ".md"
+}
+
+func (cli *CLI) listInputs() ([]*input, error) {
 	if cli.isStdinPipe && cli.config.inputFilepath != "" {
 		return nil, NewCLIError(
 			fmt.Errorf("cannot use both stdin and --input at the same time. Use either stdin or specify an input file, but not both"),
@@ -33,10 +39,11 @@ func (cli *CLI) getInputs() ([]*file, error) {
 		if err != nil {
 			return nil, err
 		}
-		return []*file{
+		return []*input{
 			{
-				name:  "output",
-				input: data,
+				// If the output is a file, it would be "output.md"
+				fullFilepath: "output",
+				data:         data,
 			},
 		}, nil
 	}
@@ -53,30 +60,16 @@ func (cli *CLI) getInputs() ([]*file, error) {
 				CodeBlock(`html2markdown --input "src/*.html" --output "dist/"`),
 			)
 		}
-		// if len(matches) != 1 {
-		// 	return nil, errors.New("converting multiple files at once is not (yet) supported")
-		// }
 
-		var files []*file
+		var inputs []*input
 		for _, match := range matches {
-			data, err := os.ReadFile(match)
-			if err != nil {
-				return nil, err
-			}
-
-			filename := filepath.Base(match)
-
-			fmt.Printf("BASE:%q EXT:%q NAME:%q \n", filepath.Base(match), filepath.Ext(match), fileNameWithoutExtension(filename))
-
-			files = append(files, &file{
-				name:      fileNameWithoutExtension(filename),
-				extension: filepath.Ext(filename),
-
-				input: data,
+			inputs = append(inputs, &input{
+				fullFilepath: match,
+				data:         nil,
 			})
 		}
 
-		return files, nil
+		return inputs, nil
 	}
 
 	return nil, NewCLIError(
@@ -84,4 +77,17 @@ func (cli *CLI) getInputs() ([]*file, error) {
 		Paragraph("Here is how you can use the CLI:"),
 		CodeBlock(`echo "<strong>important</strong>" | html2markdown`),
 	)
+}
+
+func (cli *CLI) readInput(in *input) ([]byte, error) {
+	if in.data != nil {
+		return in.data, nil
+	}
+
+	data, err := os.ReadFile(in.fullFilepath)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
 }
