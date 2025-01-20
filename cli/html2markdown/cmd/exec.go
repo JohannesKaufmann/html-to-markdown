@@ -23,8 +23,9 @@ type Config struct {
 	// args are the positional (non-flag) command-line arguments.
 	args []string
 
-	inputFilepath  string
-	outputFilepath string
+	inputFilepath   string
+	outputFilepath  string
+	outputOverwrite bool
 
 	// - - - - - General - - - - - //
 	version bool

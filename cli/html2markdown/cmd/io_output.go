@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -92,8 +93,12 @@ func (cli *CLI) writeOutput(outputType outputType, filename string, markdown []b
 	switch outputType {
 	case outputTypeDirectory:
 		{
-			err := os.WriteFile(filepath.Join(cli.config.outputFilepath, filename), markdown, 0644)
+			err := WriteFile(filepath.Join(cli.config.outputFilepath, filename), markdown, cli.config.outputOverwrite)
 			if err != nil {
+				if errors.Is(err, os.ErrExist) {
+					return fmt.Errorf("output path %q already exists. Use --output-overwrite to replace existing files", cli.config.outputFilepath)
+				}
+
 				return fmt.Errorf("error while writing the file into the directory: %w", err)
 			}
 
@@ -101,8 +106,12 @@ func (cli *CLI) writeOutput(outputType outputType, filename string, markdown []b
 		}
 	case outputTypeFile:
 		{
-			err := os.WriteFile(cli.config.outputFilepath, markdown, 0644)
+			err := WriteFile(cli.config.outputFilepath, markdown, cli.config.outputOverwrite)
 			if err != nil {
+				if errors.Is(err, os.ErrExist) {
+					return fmt.Errorf("output path %q already exists. Use --output-overwrite to replace existing files", cli.config.outputFilepath)
+				}
+
 				return fmt.Errorf("error while writing the file: %w", err)
 			}
 
@@ -115,4 +124,34 @@ func (cli *CLI) writeOutput(outputType outputType, filename string, markdown []b
 			return nil
 		}
 	}
+}
+
+// WriteFile writes data to a file with override control
+// If override is false and file exists, returns an error
+// If override is true, truncates existing file or creates new one
+func WriteFile(filename string, data []byte, override bool) error {
+	// As the base flags we have:
+	//   O_WRONLY = write to the file, not read
+	//   O_CREATE = create the file if it doesn't exist
+	flag := os.O_WRONLY | os.O_CREATE
+
+	if override {
+		// We add this flag:
+		//   O_TRUNC = the existing contents are truncated to zero length
+		flag |= os.O_TRUNC
+	} else {
+		// We add this flag:
+		//   O_EXCL = if used with O_CREATE, causes error if file already exists
+		flag |= os.O_EXCL
+	}
+
+	f, err := os.OpenFile(filename, flag, 0644)
+	if err != nil {
+		return err
+	}
+	_, err = f.Write(data)
+	if err1 := f.Close(); err1 != nil && err == nil {
+		err = err1
+	}
+	return err
 }

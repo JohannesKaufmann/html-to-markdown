@@ -60,6 +60,7 @@ func (cli *CLI) initFlags(progname string) {
 		"output",
 		"Write output to FILE instead of stdout",
 	)
+	cli.flags.BoolVar(&cli.config.outputOverwrite, "output-overwrite", false, "replace existing files")
 
 	// TODO: --tag-type-block=script,style (and check that it is not a selector)
 	// TODO: --tag-type-inline=script,style (and check that it is not a selector)

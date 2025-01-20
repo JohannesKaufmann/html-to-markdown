@@ -49,6 +49,9 @@ Use a HTML sanitizer before displaying the HTML in the browser!
     --output PATH
         Output file or directory (instead of stdout)
 
+    --output-overwrite
+        Replace existing files
+
     If --input is a directory or glob pattern, --output must be a directory.
 
 

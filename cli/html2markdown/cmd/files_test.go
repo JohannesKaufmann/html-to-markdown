@@ -253,6 +253,63 @@ func TestExecute_DirectoryOutput(t *testing.T) {
 	`)
 }
 
+func TestExecute_NotOverwrite(t *testing.T) {
+	directoryPath := newTestDir(t)
+	defer os.RemoveAll(directoryPath)
+
+	outputPath := filepath.Join(directoryPath, "output.md")
+
+	t.Run("the first run", func(t *testing.T) {
+		args := []string{"html2markdown", "--output", outputPath}
+
+		stdin := &FakeFile{mode: modePipe}
+		stdout := &FakeFile{mode: modePipe}
+		stderr := &FakeFile{mode: modePipe}
+		stdin.WriteString("<strong>file content A</strong>")
+
+		Run(stdin, stdout, stderr, args, testRelease)
+
+		stderrBytes := stderr.Bytes()
+		if len(stderrBytes) != 0 {
+			t.Fatalf("got error: %q", string(stderrBytes))
+		}
+		if len(stdout.Bytes()) != 0 {
+			t.Fatalf("expected no stdout content")
+		}
+
+		expectRepresentation(t, directoryPath, `
+.
+├─output.md "**file content A**"
+		`)
+	})
+
+	t.Run("the second run", func(t *testing.T) {
+		args := []string{"html2markdown", "--output", outputPath}
+
+		stdin := &FakeFile{mode: modePipe}
+		stdout := &FakeFile{mode: modePipe}
+		stderr := &FakeFile{mode: modePipe}
+		stdin.WriteString("<strong>file content B</strong>")
+
+		Run(stdin, stdout, stderr, args, testRelease)
+
+		actualStderr := stderr.String()
+		expectedStderr := fmt.Sprintf("\nerror: output path %q already exists. Use --output-overwrite to replace existing files\n\n", outputPath)
+		if actualStderr != expectedStderr {
+			t.Errorf("expected stderr %q but got %q", expectedStderr, actualStderr)
+		}
+		if len(stdout.Bytes()) != 0 {
+			t.Fatalf("expected no stdout content")
+		}
+
+		// The content should still be the same:
+		expectRepresentation(t, directoryPath, `
+.
+├─output.md "**file content A**"
+	`)
+	})
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
 func TestExecute_FilePattern(t *testing.T) {
@@ -307,7 +364,7 @@ func TestExecute_FilePattern(t *testing.T) {
 				input := filepath.Join(dir, "input", "website_a.html")
 				output := filepath.Join(dir, "input", "website_a.html")
 
-				return []string{"html2markdown", "--input", input, "--output", output}
+				return []string{"html2markdown", "--input", input, "--output", output, "--output-overwrite"}
 			},
 			// Note: The file content of "website_a.html" changed
 			expected: `
@@ -486,4 +543,51 @@ func TestExecute_FilePattern(t *testing.T) {
 			expectRepresentation(t, directoryPath, tC.expected)
 		})
 	}
+}
+
+func TestWriteFile_OverrideFalse(t *testing.T) {
+	directoryPath := newTestDir(t)
+	defer os.RemoveAll(directoryPath)
+
+	filePath := filepath.Join(directoryPath, "test.txt")
+	override := false
+
+	expectRepresentation(t, directoryPath, ".")
+
+	// - - - file does not exist yet - - - //
+	err := WriteFile(filePath, []byte("A"), override)
+	if err != nil {
+		t.Error(err)
+	}
+	expectRepresentation(t, directoryPath, ".\n"+`├─test.txt "A"`)
+
+	// - - - file exists already - - - //
+	err = WriteFile(filePath, []byte("B"), override)
+	if err == nil {
+		t.Error("expected there to be an error but got nil")
+	}
+	expectRepresentation(t, directoryPath, ".\n"+`├─test.txt "A"`) // <-- still the old content
+}
+func TestWriteFile_OverrideTrue(t *testing.T) {
+	directoryPath := newTestDir(t)
+	defer os.RemoveAll(directoryPath)
+
+	filePath := filepath.Join(directoryPath, "test.txt")
+	override := true
+
+	expectRepresentation(t, directoryPath, ".")
+
+	// - - - file does not exist yet - - - //
+	err := WriteFile(filePath, []byte("A"), override)
+	if err != nil {
+		t.Error(err)
+	}
+	expectRepresentation(t, directoryPath, ".\n"+`├─test.txt "A"`)
+
+	// - - - file exists already - - - //
+	err = WriteFile(filePath, []byte("B"), override)
+	if err != nil {
+		t.Error(err)
+	}
+	expectRepresentation(t, directoryPath, ".\n"+`├─test.txt "B"`) // <-- the new content
 }
