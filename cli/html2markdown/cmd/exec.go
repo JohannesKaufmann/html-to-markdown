@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"io"
 	"os"
 	"strings"
 
@@ -23,6 +22,10 @@ var OsExiter = os.Exit
 type Config struct {
 	// args are the positional (non-flag) command-line arguments.
 	args []string
+
+	inputFilepath   string
+	outputFilepath  string
+	outputOverwrite bool
 
 	// - - - - - General - - - - - //
 	version bool
@@ -137,18 +140,39 @@ func (cli *CLI) run() ([]error, error) {
 		return nil, nil
 	}
 
-	if !cli.isStdinPipe {
-		return nil, NewCLIError(
-			fmt.Errorf("the html input should be piped into the cli"),
-			Paragraph("Here is how you can use the CLI:"),
-			CodeBlock(`echo "<strong>important</strong>" | html2markdown`),
-		)
-	}
+	// - - - - - - - - - - - - - - - //
 
-	html, err := io.ReadAll(cli.Stdin)
+	inputs, err := cli.listInputs()
 	if err != nil {
 		return nil, err
 	}
 
-	return cli.convert(html)
+	outputType, err := determineOutputType(cli.config.inputFilepath, len(inputs), cli.config.outputFilepath)
+	if err != nil {
+		return nil, err
+	}
+
+	err = ensureOutputDirectories(outputType, cli.config.outputFilepath)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, input := range inputs {
+		data, err := cli.readInput(input)
+		if err != nil {
+			return nil, err
+		}
+
+		markdown, err := cli.convert(data)
+		if err != nil {
+			return nil, err
+		}
+
+		err = cli.writeOutput(outputType, getOutputFileName(input.fullFilepath), markdown)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return nil, nil
 }

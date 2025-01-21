@@ -1,0 +1,7 @@
+
+error: when processing multiple input files --output needs to be a directory
+
+Here is how you can use a glob to match multiple files:
+
+    html2markdown --input "src/*.html" --output "dist/"
+

@@ -6,6 +6,7 @@ require (
 	github.com/JohannesKaufmann/dom v0.2.0
 	github.com/agnivade/levenshtein v1.2.0
 	github.com/andybalholm/cascadia v1.3.3
+	github.com/bmatcuk/doublestar/v4 v4.7.1
 	github.com/muesli/termenv v0.15.2
 	github.com/sebdah/goldie/v2 v2.5.5
 	github.com/yuin/goldmark v1.7.8

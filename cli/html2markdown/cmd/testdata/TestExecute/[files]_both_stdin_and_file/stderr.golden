@@ -1,0 +1,3 @@
+
+error: cannot use both stdin and --input at the same time. Use either stdin or specify an input file, but not both
+

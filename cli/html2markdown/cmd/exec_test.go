@@ -77,9 +77,13 @@ func cliGoldenTester(t *testing.T, input CLIGoldenInput) {
 		t.Fatal("neither stdout nor stderr have any content")
 	}
 
+	data := map[string]any{
+		"PathSeparator": string(os.PathSeparator),
+	}
+
 	g := goldie.New(t)
-	g.Assert(t, filepath.Join(t.Name(), "stdout"), stdout.Bytes())
-	g.Assert(t, filepath.Join(t.Name(), "stderr"), stderr.Bytes())
+	g.AssertWithTemplate(t, filepath.Join(t.Name(), "stdout"), data, stdout.Bytes())
+	g.AssertWithTemplate(t, filepath.Join(t.Name(), "stderr"), data, stderr.Bytes())
 }
 
 type CLITestCase struct {
@@ -116,6 +120,9 @@ func cliSuccessTester(t *testing.T, tC CLITestCase) {
 }
 
 func TestExecute(t *testing.T) {
+	directoryPath := newTestDirWithFiles(t)
+	defer os.RemoveAll(directoryPath)
+
 	testCases := []struct {
 		desc  string
 		input CLIGoldenInput
@@ -416,6 +423,95 @@ func TestExecute(t *testing.T) {
 
 				inputStdin: []byte("<strong>text</strong>"),
 				inputArgs:  []string{"html2markdown", `--opt-strong-delimiter=*`},
+			},
+		},
+
+		// - - - - - files (--input and --output) - - - - - //
+		{
+			desc: "[files] without suffix existing dir",
+
+			input: CLIGoldenInput{
+				modeStdin:  modePipe,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: []byte("<strong>text</strong>"),
+				inputArgs:  []string{"html2markdown", "--output", filepath.Join(directoryPath, "output")}, // <-- without the trailing slash
+			},
+		},
+		{
+			desc: "[files] without suffix multiple files",
+
+			input: CLIGoldenInput{
+				modeStdin:  modeTerminal,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: nil,
+				inputArgs: []string{"html2markdown",
+					"--input", filepath.Join(directoryPath, "**", "*"),
+					"--output", filepath.Join(directoryPath, "random", "folder"), // <-- without the trailing slash
+				},
+			},
+		},
+		{
+			desc: "[files] both stdin and file",
+
+			input: CLIGoldenInput{
+				modeStdin:  modePipe,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: []byte("<strong>stdin content</strong>"),
+				inputArgs:  []string{"html2markdown", "--input", filepath.Join(directoryPath, "website_a.html")},
+			},
+		},
+		{
+			desc: "[files] multiple files but no output",
+
+			input: CLIGoldenInput{
+				modeStdin:  modeTerminal,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: nil,
+				inputArgs:  []string{"html2markdown", "--input", filepath.Join(directoryPath, "**", "*")},
+			},
+		},
+		{
+			desc: "[files] not found",
+
+			input: CLIGoldenInput{
+				modeStdin:  modeTerminal,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: nil,
+				inputArgs:  []string{"html2markdown", "--input", "not_found.html"},
+			},
+		},
+		{
+			desc: "[files] multiple values",
+
+			input: CLIGoldenInput{
+				modeStdin:  modeTerminal,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: nil,
+				inputArgs:  []string{"html2markdown", "--input", "a.html", "--input", "b.html"},
+			},
+		},
+		{
+			desc: "[files] empty string",
+
+			input: CLIGoldenInput{
+				modeStdin:  modeTerminal,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: nil,
+				inputArgs:  []string{"html2markdown", "--input="},
 			},
 		},
 	}
