@@ -22,12 +22,15 @@ for example changing the appearance of bold with --opt-strong-delimiter="__"
 Other Plugins can also be enabled. For example "GitHub Flavored Markdown" (GFM)
 extends Commonmark with more features.
 
+## Relative / Absolute Links
+
+Use --domain="https://example.com" to convert *relative* links to *absolute* links.
+The same also works for images.
 
 ## Escaping
 
 Some characters have a special meaning in markdown. The library escapes these — if necessary.
 See the documentation for more info.
-
 
 ## Security
 

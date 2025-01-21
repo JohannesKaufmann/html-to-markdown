@@ -69,7 +69,7 @@ func (cli *CLI) initFlags(progname string) {
 		&cli.config.domain,
 		"domain",
 		"",
-		"domain of the web page, needed for links",
+		"The url of the web page, used to convert relative links to absolute links.",
 	)
 
 	cli.selectorFlag(&cli.config.includeSelector, "include-selector", "css query selector to only include parts of the input")
