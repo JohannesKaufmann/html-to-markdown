@@ -19,8 +19,8 @@
 </table>
 
 <hr />
+<!-- yes: we can keep rendering a table (even though it contains a block node) -->
 
-<!-- basic table with newlines -->
 <table>
   <tr>
     <td><p>Some normal content</p></td>
@@ -29,16 +29,39 @@
 
 <table>
   <tr>
-    <td>The <br />content</td>
+    <td><div>Some normal content</div></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <article>
+        <p>Some normal content</p>
+      </article>
+    </td>
   </tr>
 </table>
 
 <hr />
+<!-- no: we cannot keep rendering a table -->
 
-<!-- basic table with block content -->
+<table>
+  <tr>
+    <td>The content<br />with break</td>
+  </tr>
+</table>
+
 <table>
   <tr>
     <td><h1>Heading</h1></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td><h1></h1></td>
+    <td>not the empty heading</td>
   </tr>
 </table>
 
@@ -53,5 +76,50 @@
     <td>
       <pre>Code block</pre>
     </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <blockquote>Blockquote</blockquote>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <ul>
+        <li>Unordered List</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <ol>
+        <li>Ordered List</li>
+      </ol>
+    </td>
+  </tr>
+</table>
+
+<hr />
+
+<!-- nested table -->
+<table>
+  <tr>
+    <td>Other cell</td>
+    <td>
+      <table>
+        <tr>
+          <td>Nested Table</td>
+        </tr>
+      </table>
+    </td>
+    <td>Another cell</td>
   </tr>
 </table>

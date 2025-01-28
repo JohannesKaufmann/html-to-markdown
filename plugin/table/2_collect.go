@@ -18,7 +18,35 @@ func containsNewline(b []byte) bool {
 	return bytes.Contains(b, []byte("\n"))
 }
 
+func containsProblematicNode(node *html.Node) bool {
+	problematicNode := dom.FindFirstNode(node, func(n *html.Node) bool {
+		name := dom.NodeName(n)
+
+		if dom.NameIsHeading(name) {
+			return true
+		}
+		switch name {
+		case "br", "hr", "ul", "ol", "blockquote":
+			return true
+		}
+
+		return false
+	})
+
+	return problematicNode != nil
+}
+
 func collectTableContent(ctx converter.Context, node *html.Node) *tableContent {
+	if containsProblematicNode(node) {
+		// There are certain nodes (e.g. <hr />) that cannot be in a table.
+		// If we found one, we unfortunately cannot convert the table.
+		//
+		// Note: It is okay for a block node (e.g. <div>) to be in a table.
+		//       However once it causes multiple lines, it does not work anymore.
+		//       For that we have the `containsNewline` check below.
+		return nil
+	}
+
 	headerRowNode := selectHeaderRowNode(node)
 	normalRowNodes := selectNormalRowNodes(node, headerRowNode)
 
