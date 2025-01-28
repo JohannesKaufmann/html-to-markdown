@@ -33,6 +33,8 @@ The caption text of the empty table
 | Peter Mustermann | München |
 | Average age      |         | 25  |
 
+A description about the `table`
+
 * * *
 
 | A (B) C | A \*\*B\** C |

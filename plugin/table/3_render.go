@@ -50,6 +50,11 @@ func (s *tablePlugin) renderTableBody(ctx converter.Context, w converter.Writer,
 	// - - - - - - //
 	w.WriteString("\n\n")
 
+	if table.Caption != nil {
+		w.Write(table.Caption)
+		w.WriteString("\n\n")
+	}
+
 	return converter.RenderSuccess
 }
 

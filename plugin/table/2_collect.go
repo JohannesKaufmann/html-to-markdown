@@ -7,11 +7,13 @@ import (
 	"github.com/JohannesKaufmann/dom"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
 	"golang.org/x/net/html"
+	"golang.org/x/net/html/atom"
 )
 
 type tableContent struct {
 	HeaderRow [][]byte
 	BodyRows  [][][]byte
+	Caption   []byte
 }
 
 func containsNewline(b []byte) bool {
@@ -75,6 +77,7 @@ func collectTableContent(ctx converter.Context, node *html.Node) *tableContent {
 	return &tableContent{
 		HeaderRow: headerRow,
 		BodyRows:  bodyRows,
+		Caption:   collectCaption(ctx, node),
 	}
 }
 
@@ -139,4 +142,21 @@ func collectRows(ctx converter.Context, rowNodes []*html.Node) [][][]byte {
 	applyModifications(rowContents, modifications)
 
 	return rowContents
+}
+
+func collectCaption(ctx converter.Context, node *html.Node) []byte {
+	captionNode := dom.FindFirstNode(node, func(node *html.Node) bool {
+		return node.DataAtom == atom.Caption
+	})
+	if captionNode == nil {
+		return nil
+	}
+
+	var buf bytes.Buffer
+	ctx.RenderNodes(ctx, &buf, captionNode)
+
+	content := buf.Bytes()
+	content = bytes.TrimSpace(content)
+
+	return content
 }
