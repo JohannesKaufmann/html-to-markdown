@@ -17,36 +17,25 @@ func (s *tablePlugin) renderTableBody(ctx converter.Context, w converter.Writer,
 		return converter.RenderTryNext
 	}
 
-	// TODO: find better name / function
-	x := make([][][]byte, 0, 1+len(table.BodyRows))
-	x = append(x, table.HeaderRow)
-	x = append(x, table.BodyRows...)
-	counts := calculateMaxCounts(x)
+	// Sometimes we pad the cells with extra spaces (e.g. "| text    |").
+	// For that we first need to know the maximum width of every column.
+	counts := calculateMaxCounts(table.Rows)
 
-	// TODO: also use fillUpRows for header
-	table.BodyRows = fillUpRows(table.BodyRows, len(counts))
-
-	if len(table.HeaderRow) == 0 {
-		// There needs to be *header* row so that the table is recognized.
-		// So it is better to have an empty header row...
-		var emptyCells [][]byte
-		for range counts {
-			emptyCells = append(emptyCells, []byte(""))
-		}
-		table.HeaderRow = emptyCells
-	}
+	// Sometimes a row contains less cells that another row.
+	// We then fill it up with empty cells (e.g. "| text |     |").
+	table.Rows = fillUpRows(table.Rows, len(counts))
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
 	w.WriteString("\n\n")
 	// - - - Header - - - //
-	s.writeRow(w, counts, table.HeaderRow)
+	s.writeRow(w, counts, table.Rows[0])
 	w.WriteString("\n")
 	s.writeHeaderUnderline(w, counts)
 	w.WriteString("\n")
 
 	// - - - Body - - - //
-	for _, cells := range table.BodyRows {
+	for _, cells := range table.Rows[1:] {
 		s.writeRow(w, counts, cells)
 		w.WriteString("\n")
 	}

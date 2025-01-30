@@ -11,9 +11,8 @@ import (
 )
 
 type tableContent struct {
-	HeaderRow [][]byte
-	BodyRows  [][][]byte
-	Caption   []byte
+	Rows    [][][]byte
+	Caption []byte
 }
 
 func containsNewline(b []byte) bool {
@@ -52,32 +51,24 @@ func collectTableContent(ctx converter.Context, node *html.Node) *tableContent {
 	headerRowNode := selectHeaderRowNode(node)
 	normalRowNodes := selectNormalRowNodes(node, headerRowNode)
 
-	headerRow, modifications := collectCellsInRow(ctx, 0, headerRowNode)
-	// TODO: the modifications should also affect the body content
-	applyModifications([][][]byte{headerRow}, modifications)
-
-	bodyRows := collectRows(ctx, normalRowNodes)
-
-	if len(headerRow) == 0 && len(bodyRows) == 0 {
+	rows := collectRows(ctx, headerRowNode, normalRowNodes)
+	if len(rows) == 0 {
 		return nil
 	}
-	for _, cell := range headerRow {
-		if containsNewline(cell) {
-			return nil
-		}
-	}
-	for _, cells := range bodyRows {
+
+	for _, cells := range rows {
 		for _, cell := range cells {
 			if containsNewline(cell) {
+				// Having newlines inside the content would break the table.
+				// So unfortunately we cannot convert the table.
 				return nil
 			}
 		}
 	}
 
 	return &tableContent{
-		HeaderRow: headerRow,
-		BodyRows:  bodyRows,
-		Caption:   collectCaption(ctx, node),
+		Rows:    rows,
+		Caption: collectCaption(ctx, node),
 	}
 }
 
@@ -128,17 +119,33 @@ func collectCellsInRow(ctx converter.Context, rowIndex int, rowNode *html.Node) 
 	}
 	return cellsContents, modifications
 }
-func collectRows(ctx converter.Context, rowNodes []*html.Node) [][][]byte {
-	rowContents := make([][][]byte, 0, len(rowNodes))
+func collectRows(ctx converter.Context, headerRowNode *html.Node, rowNodes []*html.Node) [][][]byte {
+	rowContents := make([][][]byte, 0, len(rowNodes)+1)
 	modifications := make([]modification, 0)
 
-	for index, rowNode := range rowNodes {
-		cells, mods := collectCellsInRow(ctx, index, rowNode)
-		modifications = append(modifications, mods...)
+	// - - 1. the header row - - //
+	if headerRowNode != nil {
+		cells, mods := collectCellsInRow(ctx, 0, headerRowNode)
 
 		rowContents = append(rowContents, cells)
+		modifications = append(modifications, mods...)
+	} else {
+		// There needs to be *header* row so that the table is recognized.
+		// So it is better to have an empty header row...
+		rowContents = append(rowContents, [][]byte{})
 	}
 
+	// - - 2. the normal rows - - //
+	for index, rowNode := range rowNodes {
+		cells, mods := collectCellsInRow(ctx, index+1, rowNode)
+
+		rowContents = append(rowContents, cells)
+		modifications = append(modifications, mods...)
+	}
+
+	// Sometimes a cell wants to *span* over multiple columns or/and rows.
+	// We collected these modifications and are now applying it,
+	// by shifting the cells around.
 	applyModifications(rowContents, modifications)
 
 	return rowContents

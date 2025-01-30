@@ -26,7 +26,7 @@ The caption text of the empty table
 
 * * *
 
-| Name             | City    | Age |
+| Name             | City    | Age |                    |
 | ---------------- | ------- | --- | ------------------ |
 | Max Mustermann   | Berlin  | 20  | space for the note |
 | Max Müller       | München | 30  |                    |

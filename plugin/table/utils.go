@@ -93,6 +93,7 @@ func calculateModifications(currentRowIndex, currentColIndex, rowSpan, colSpan i
 	return mods
 }
 
+// TODO: better name?
 func applyModifications(contents [][][]byte, mods []modification) {
 	for _, mod := range mods {
 		// TODO:
