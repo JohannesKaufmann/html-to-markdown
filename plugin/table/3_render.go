@@ -23,6 +23,9 @@ func (s *tablePlugin) renderTableBody(ctx converter.Context, w converter.Writer,
 	x = append(x, table.BodyRows...)
 	counts := calculateMaxCounts(x)
 
+	// TODO: also use fillUpRows for header
+	table.BodyRows = fillUpRows(table.BodyRows, len(counts))
+
 	if len(table.HeaderRow) == 0 {
 		// There needs to be *header* row so that the table is recognized.
 		// So it is better to have an empty header row...
@@ -47,13 +50,15 @@ func (s *tablePlugin) renderTableBody(ctx converter.Context, w converter.Writer,
 		s.writeRow(w, counts, cells)
 		w.WriteString("\n")
 	}
+
+	// - - - Caption - - - //
+	if table.Caption != nil {
+		w.WriteString("\n\n")
+		w.Write(table.Caption)
+
+	}
 	// - - - - - - //
 	w.WriteString("\n\n")
-
-	if table.Caption != nil {
-		w.Write(table.Caption)
-		w.WriteString("\n\n")
-	}
 
 	return converter.RenderSuccess
 }

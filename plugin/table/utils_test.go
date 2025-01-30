@@ -17,10 +17,61 @@ func TestCalculateMaxCounts(t *testing.T) {
 			[]byte("John Doe"),        //  8
 			[]byte("Bonn"),            //  4
 		},
+		{
+			[]byte("A"),
+		},
 	}
 
 	output := calculateMaxCounts(a)
 	expected := []int{15, 10, 6}
+
+	if !reflect.DeepEqual(output, expected) {
+		t.Errorf("expected %+v but got %v", expected, output)
+	}
+}
+func TestFillUpRows(t *testing.T) {
+	input := [][][]byte{
+		{
+			[]byte("Company A"),
+			[]byte("Max Müller"),
+			[]byte("Berlin"),
+		},
+		{
+			[]byte("Company Example"),
+			[]byte("John Doe"),
+			[]byte("Bonn"),
+		},
+		{
+			[]byte("A"),
+			// <--
+			// <--
+		},
+	}
+
+	counts := calculateMaxCounts(input)
+	t.Log("counts:", counts)
+
+	// - - - - - - - - - - - - - - - - - - - - //
+	maxColumnCount := len(counts)
+
+	output := fillUpRows(input, maxColumnCount)
+	expected := [][][]byte{
+		{
+			[]byte("Company A"),
+			[]byte("Max Müller"),
+			[]byte("Berlin"),
+		},
+		{
+			[]byte("Company Example"),
+			[]byte("John Doe"),
+			[]byte("Bonn"),
+		},
+		{
+			[]byte("A"),
+			[]byte(""),
+			[]byte(""),
+		},
+	}
 
 	if !reflect.DeepEqual(output, expected) {
 		t.Errorf("expected %+v but got %v", expected, output)

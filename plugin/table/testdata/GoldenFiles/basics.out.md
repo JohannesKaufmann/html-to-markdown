@@ -27,11 +27,11 @@ The caption text of the empty table
 * * *
 
 | Name             | City    | Age |
-| ---------------- | ------- | --- |
-| Max Mustermann   | Berlin  | 20  |
-| Max Müller       | München | 30  |
-| Peter Mustermann | München |
-| Average age      |         | 25  |
+| ---------------- | ------- | --- | ------------------ |
+| Max Mustermann   | Berlin  | 20  | space for the note |
+| Max Müller       | München | 30  |                    |
+| Peter Mustermann | München |     |                    |
+| Average age      |         | 25  |                    |
 
 A description about the `table`
 

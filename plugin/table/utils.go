@@ -28,6 +28,18 @@ func calculateMaxCounts(rows [][][]byte) []int {
 	return maxCounts
 }
 
+func fillUpRows(rows [][][]byte, maxColumnCount int) [][][]byte {
+
+	for i, cells := range rows {
+		missingCells := maxColumnCount - len(cells)
+		for range missingCells {
+			rows[i] = append(rows[i], []byte(""))
+		}
+	}
+
+	return rows
+}
+
 func getNumberAttributeOr(node *html.Node, key string, fallback int) int {
 	val, ok := dom.GetAttribute(node, key)
 	if !ok {
