@@ -219,13 +219,49 @@ func TestApplyModifications(t *testing.T) {
 				},
 			},
 		},
+
+		{
+			desc: "grow two rows below",
+
+			contents: [][][]byte{
+				{
+					[]byte("A"),
+					[]byte("B"),
+				},
+			},
+			modifications: []modification{
+				{
+					y:    1,
+					x:    0,
+					data: []byte("A #2"),
+				},
+				{
+					y:    2,
+					x:    0,
+					data: []byte("A #3"),
+				},
+			},
+
+			expected: [][][]byte{
+				{
+					[]byte("A"),
+					[]byte("B"),
+				},
+				{
+					[]byte("A #2"),
+				},
+				{
+					[]byte("A #3"),
+				},
+			},
+		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			applyModifications(tC.contents, tC.modifications)
+			output := applyModifications(tC.contents, tC.modifications)
 
-			if !reflect.DeepEqual(tC.contents, tC.expected) {
-				t.Errorf("expected %+v but got %+v", tC.expected, tC.contents)
+			if !reflect.DeepEqual(output, tC.expected) {
+				t.Errorf("expected %+v but got %+v", tC.expected, output)
 			}
 		})
 	}

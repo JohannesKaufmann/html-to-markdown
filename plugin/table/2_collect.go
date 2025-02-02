@@ -158,7 +158,7 @@ func (p *tablePlugin) collectRows(ctx converter.Context, headerRowNode *html.Nod
 	// Sometimes a cell wants to *span* over multiple columns or/and rows.
 	// We collected these modifications and are now applying it,
 	// by shifting the cells around.
-	applyModifications(rowContents, modifications)
+	rowContents = applyModifications(rowContents, modifications)
 
 	return rowContents
 }

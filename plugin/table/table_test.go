@@ -34,9 +34,9 @@ func TestOptionFunc(t *testing.T) {
 		options  []option
 		expected string
 	}{
-		// - - - - - - - - - - Colspan - - - - - - - - - - //
+		// - - - - - - - - - - default - - - - - - - - - - //
 		{
-			desc: "colspan=3 && WithMergeContentReplication(false)",
+			desc: "default",
 			options: []option{
 				WithMergeContentReplication(false),
 			},
@@ -45,18 +45,19 @@ func TestOptionFunc(t *testing.T) {
   <tr>
     <td>A</td>
     <td colspan="3">B</td>
-    <td>C</td>
   </tr>
 </table>
 			`,
 			expected: `
-|   |   |  |  |   |
-|---|---|--|--|---|
-| A | B |  |  | C |
+|   |   |  |  |
+|---|---|--|--|
+| A | B |  |  |
 			`,
 		},
+
+		// - - - - - - - - - - colspan - - - - - - - - - - //
 		{
-			desc: "colspan=3 && WithMergeContentReplication(true)",
+			desc: "colspan=3",
 			options: []option{
 				WithMergeContentReplication(true),
 			},
@@ -65,34 +66,117 @@ func TestOptionFunc(t *testing.T) {
   <tr>
     <td>A</td>
     <td colspan="3">B</td>
-    <td>C</td>
   </tr>
+</table>
+			`,
+			expected: `
+|   |   |   |   |
+|---|---|---|---|
+| A | B | B | B |
+			`,
+		},
+		// - - - - - - - - - - rowspan - - - - - - - - - - //
+		{
+			desc: "rowspan=3",
+			options: []option{
+				WithMergeContentReplication(true),
+			},
+			input: `
+<table>
+	<tr>
+		<td>A</td>
+		<td rowspan="3">B</td>
+	</tr>
+</table>
+			`,
+			expected: `
+|   |   |
+|---|---|
+| A | B |
+|   | B |
+|   | B |
+			`,
+		},
+
+		// - - - - - - - - - - colspan & rowspan - - - - - - - - - - //
+		{
+			desc: "cell with colspan and rowspan",
+			options: []option{
+				WithMergeContentReplication(true),
+			},
+			input: `
+<table>
+	<tr>
+		<td>A</td>
+		<td colspan="3" rowspan="3">B</td>
+		<td>C</td>
+	</tr>
 </table>
 			`,
 			expected: `
 |   |   |   |   |   |
 |---|---|---|---|---|
 | A | B | B | B | C |
+|   | B | B | B |   |
+|   | B | B | B |   |
 			`,
 		},
-		// - - - - - - - - - - Rospan - - - - - - - - - - //
-		// TODO: grow the slice
-		// 		{
-		// 			desc: "rowspan=3 && WithMergeContentReplication(false)",
-		// 			options: []option{
-		// 				WithMergeContentReplication(false),
-		// 			},
-		// 			input: `
-		// <table>
-		//   <tr>
-		//     <td>A</td>
-		//     <td rowspan="3">B</td>
-		//     <td>C</td>
-		//   </tr>
-		// </table>
-		// 			`,
-		// 			expected: ``,
-		// 		},
+		{
+			desc: "shifting content",
+			options: []option{
+				WithMergeContentReplication(true),
+			},
+			input: `
+<table>
+	<tr>
+		<td>A</td>
+		<td colspan="3" rowspan="3">B</td>
+		<td>C</td>
+	</tr>
+	<tr>
+		<td>1</td>
+		<td>2</td>
+		<td>3</td>
+	</tr>
+</table>
+			`,
+			expected: `
+|   |   |   |   |   |   |
+|---|---|---|---|---|---|
+| A | B | B | B | C |   |
+| 1 | B | B | B | 2 | 3 |
+|   | B | B | B |   |   |
+			`,
+		},
+		{
+			desc: "rowspans overlap with colspans",
+			options: []option{
+				WithMergeContentReplication(true),
+			},
+			input: `
+<table>
+	<tr>
+		<td rowspan="3">A</td>
+		<td colspan="2">B</td>
+		<td>C</td>
+	</tr>
+	<tr>
+		<td rowspan="2" colspan="2">D</td>
+		<td>E</td>
+	</tr>
+	<tr>
+		<td>F</td>
+	</tr>
+</table>
+			`,
+			expected: `
+|   |   |   |   |
+|---|---|---|---|
+| A | B | B | C |
+| A | D | D | E |
+| D | D | A | F |
+			`,
+		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
