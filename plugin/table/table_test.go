@@ -51,7 +51,7 @@ func TestOptionFunc(t *testing.T) {
 			`,
 			expected: `
 |   |   |  |  |   |
-| - | - |  |  | - |
+|---|---|--|--|---|
 | A | B |  |  | C |
 			`,
 		},
@@ -71,7 +71,7 @@ func TestOptionFunc(t *testing.T) {
 			`,
 			expected: `
 |   |   |   |   |   |
-| - | - | - | - | - |
+|---|---|---|---|---|
 | A | B | B | B | C |
 			`,
 		},

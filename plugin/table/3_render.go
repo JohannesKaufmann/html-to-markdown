@@ -58,11 +58,10 @@ func (s *tablePlugin) writeHeaderUnderline(w converter.Writer, counts []int) {
 		if isFirstCell {
 			w.WriteString("|")
 		}
-		w.WriteString(" ")
+		w.WriteString("-")
 		w.WriteString(strings.Repeat("-", maxLength))
 
-		// TODO: maybe no spaces? So for example "|----|" instead of "| --- |"
-		w.WriteString(" |")
+		w.WriteString("-|")
 	}
 }
 
