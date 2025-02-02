@@ -133,14 +133,14 @@ func (p *tablePlugin) collectCellsInRow(ctx converter.Context, rowIndex int, row
 }
 func (p *tablePlugin) collectRows(ctx converter.Context, headerRowNode *html.Node, rowNodes []*html.Node) [][][]byte {
 	rowContents := make([][][]byte, 0, len(rowNodes)+1)
-	modifications := make([]modification, 0)
+	groupedModifications := make([][]modification, 0)
 
 	// - - 1. the header row - - //
 	if headerRowNode != nil {
 		cells, mods := p.collectCellsInRow(ctx, 0, headerRowNode)
 
 		rowContents = append(rowContents, cells)
-		modifications = append(modifications, mods...)
+		groupedModifications = append(groupedModifications, mods)
 	} else {
 		// There needs to be *header* row so that the table is recognized.
 		// So it is better to have an empty header row...
@@ -152,13 +152,13 @@ func (p *tablePlugin) collectRows(ctx converter.Context, headerRowNode *html.Nod
 		cells, mods := p.collectCellsInRow(ctx, index+1, rowNode)
 
 		rowContents = append(rowContents, cells)
-		modifications = append(modifications, mods...)
+		groupedModifications = append(groupedModifications, mods)
 	}
 
 	// Sometimes a cell wants to *span* over multiple columns or/and rows.
 	// We collected these modifications and are now applying it,
 	// by shifting the cells around.
-	rowContents = applyModifications(rowContents, modifications)
+	rowContents = applyGroupedModifications(rowContents, groupedModifications)
 
 	return rowContents
 }

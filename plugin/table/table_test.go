@@ -174,7 +174,7 @@ func TestOptionFunc(t *testing.T) {
 |---|---|---|---|
 | A | B | B | C |
 | A | D | D | E |
-| D | D | A | F |
+| A | D | D | F |
 			`,
 		},
 	}

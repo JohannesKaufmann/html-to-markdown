@@ -97,7 +97,18 @@ func calculateModifications(currentRowIndex, currentColIndex, rowSpan, colSpan i
 	return mods
 }
 
-// TODO: better name?
+func applyGroupedModifications(contents [][][]byte, groupedMods [][]modification) [][][]byte {
+	// By applying the modifications in reverse we correctly
+	// handle overlapping modifications.
+	slices.Reverse(groupedMods)
+
+	for _, mods := range groupedMods {
+		contents = applyModifications(contents, mods)
+	}
+
+	return contents
+}
+
 func applyModifications(contents [][][]byte, mods []modification) [][][]byte {
 	for _, mod := range mods {
 		// Grow on the y axis
