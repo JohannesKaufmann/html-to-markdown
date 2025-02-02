@@ -37,7 +37,7 @@ func containsProblematicNode(node *html.Node) bool {
 	return problematicNode != nil
 }
 
-func collectTableContent(ctx converter.Context, node *html.Node) *tableContent {
+func (p *tablePlugin) collectTableContent(ctx converter.Context, node *html.Node) *tableContent {
 	if containsProblematicNode(node) {
 		// There are certain nodes (e.g. <hr />) that cannot be in a table.
 		// If we found one, we unfortunately cannot convert the table.
@@ -51,7 +51,7 @@ func collectTableContent(ctx converter.Context, node *html.Node) *tableContent {
 	headerRowNode := selectHeaderRowNode(node)
 	normalRowNodes := selectNormalRowNodes(node, headerRowNode)
 
-	rows := collectRows(ctx, headerRowNode, normalRowNodes)
+	rows := p.collectRows(ctx, headerRowNode, normalRowNodes)
 	if len(rows) == 0 {
 		return nil
 	}
@@ -72,7 +72,18 @@ func collectTableContent(ctx converter.Context, node *html.Node) *tableContent {
 	}
 }
 
-func collectCellsInRow(ctx converter.Context, rowIndex int, rowNode *html.Node) ([][]byte, []modification) {
+// Sometimes a cell wants to *span* over multiple columns or/and rows.
+// What should be displayed in those other cells?
+// Render exactly the same content OR an empty string?
+func (p *tablePlugin) getContentForMergedCell(originalContent []byte) []byte {
+	if p.mergeContentReplication {
+		return originalContent
+	}
+
+	return []byte("")
+}
+
+func (p *tablePlugin) collectCellsInRow(ctx converter.Context, rowIndex int, rowNode *html.Node) ([][]byte, []modification) {
 	if rowNode == nil {
 		return nil, nil
 	}
@@ -111,21 +122,22 @@ func collectCellsInRow(ctx converter.Context, rowIndex int, rowNode *html.Node) 
 		rowSpan := getNumberAttributeOr(cellNode, "rowspan", 1)
 		colSpan := getNumberAttributeOr(cellNode, "colspan", 1)
 
-		mods := calculateModifications(rowIndex, index, rowSpan, colSpan)
+		mods := calculateModifications(rowIndex, index, rowSpan, colSpan, p.getContentForMergedCell(content))
 
 		modifications = append(modifications, mods...)
 
 		index++
 	}
+
 	return cellsContents, modifications
 }
-func collectRows(ctx converter.Context, headerRowNode *html.Node, rowNodes []*html.Node) [][][]byte {
+func (p *tablePlugin) collectRows(ctx converter.Context, headerRowNode *html.Node, rowNodes []*html.Node) [][][]byte {
 	rowContents := make([][][]byte, 0, len(rowNodes)+1)
 	modifications := make([]modification, 0)
 
 	// - - 1. the header row - - //
 	if headerRowNode != nil {
-		cells, mods := collectCellsInRow(ctx, 0, headerRowNode)
+		cells, mods := p.collectCellsInRow(ctx, 0, headerRowNode)
 
 		rowContents = append(rowContents, cells)
 		modifications = append(modifications, mods...)
@@ -137,7 +149,7 @@ func collectRows(ctx converter.Context, headerRowNode *html.Node, rowNodes []*ht
 
 	// - - 2. the normal rows - - //
 	for index, rowNode := range rowNodes {
-		cells, mods := collectCellsInRow(ctx, index+1, rowNode)
+		cells, mods := p.collectCellsInRow(ctx, index+1, rowNode)
 
 		rowContents = append(rowContents, cells)
 		modifications = append(modifications, mods...)

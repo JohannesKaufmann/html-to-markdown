@@ -57,11 +57,13 @@ func getNumberAttributeOr(node *html.Node, key string, fallback int) int {
 }
 
 type modification struct {
-	y int
-	x int
+	y    int
+	x    int
+	data []byte
 }
 
-func calculateModifications(currentRowIndex, currentColIndex, rowSpan, colSpan int) []modification {
+func calculateModifications(currentRowIndex, currentColIndex, rowSpan, colSpan int, data []byte) []modification {
+
 	mods := make([]modification, 0)
 
 	if colSpan <= 1 && rowSpan <= 1 {
@@ -73,8 +75,9 @@ func calculateModifications(currentRowIndex, currentColIndex, rowSpan, colSpan i
 	for dx := 1; dx < colSpan; dx++ {
 		// Add modifications for the same row
 		mods = append(mods, modification{
-			y: currentRowIndex,
-			x: currentColIndex + dx,
+			y:    currentRowIndex,
+			x:    currentColIndex + dx,
+			data: data,
 		})
 	}
 
@@ -83,8 +86,9 @@ func calculateModifications(currentRowIndex, currentColIndex, rowSpan, colSpan i
 		for dy := 1; dy < rowSpan; dy++ {
 			for dx := 0; dx < colSpan; dx++ {
 				mods = append(mods, modification{
-					y: currentRowIndex + dy,
-					x: currentColIndex + dx,
+					y:    currentRowIndex + dy,
+					x:    currentColIndex + dx,
+					data: data,
 				})
 			}
 		}
@@ -96,11 +100,9 @@ func calculateModifications(currentRowIndex, currentColIndex, rowSpan, colSpan i
 // TODO: better name?
 func applyModifications(contents [][][]byte, mods []modification) {
 	for _, mod := range mods {
-		// TODO:
-		// if mod.y > len(contents)-1 {
-		// 	contents = append(contents, [][]byte{})
-		// }
 
-		contents[mod.y] = slices.Insert(contents[mod.y], mod.x, []byte(""))
+		// TODO: Grow on the x- and y-axis
+
+		contents[mod.y] = slices.Insert(contents[mod.y], mod.x, mod.data)
 	}
 }

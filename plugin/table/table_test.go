@@ -2,6 +2,7 @@ package table
 
 import (
 	"bytes"
+	"strings"
 	"testing"
 
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
@@ -23,8 +24,97 @@ func TestGoldenFiles(t *testing.T) {
 		return conv.ConvertReader(bytes.NewReader(htmlInput))
 	}
 
-	// TODO: Options (e.g. PromoteFirstRowToHeader)
-	// TODO: Option: what to do with <br />
-
 	tester.GoldenFiles(t, goldenFileConvert, goldenFileConvert)
+}
+
+func TestOptionFunc(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		input    string
+		options  []option
+		expected string
+	}{
+		// - - - - - - - - - - Colspan - - - - - - - - - - //
+		{
+			desc: "colspan=3 && WithMergeContentReplication(false)",
+			options: []option{
+				WithMergeContentReplication(false),
+			},
+			input: `
+<table>
+  <tr>
+    <td>A</td>
+    <td colspan="3">B</td>
+    <td>C</td>
+  </tr>
+</table>
+			`,
+			expected: `
+|   |   |  |  |   |
+| - | - |  |  | - |
+| A | B |  |  | C |
+			`,
+		},
+		{
+			desc: "colspan=3 && WithMergeContentReplication(true)",
+			options: []option{
+				WithMergeContentReplication(true),
+			},
+			input: `
+<table>
+  <tr>
+    <td>A</td>
+    <td colspan="3">B</td>
+    <td>C</td>
+  </tr>
+</table>
+			`,
+			expected: `
+|   |   |   |   |   |
+| - | - | - | - | - |
+| A | B | B | B | C |
+			`,
+		},
+		// - - - - - - - - - - Rospan - - - - - - - - - - //
+		// TODO: grow the slice
+		// 		{
+		// 			desc: "rowspan=3 && WithMergeContentReplication(false)",
+		// 			options: []option{
+		// 				WithMergeContentReplication(false),
+		// 			},
+		// 			input: `
+		// <table>
+		//   <tr>
+		//     <td>A</td>
+		//     <td rowspan="3">B</td>
+		//     <td>C</td>
+		//   </tr>
+		// </table>
+		// 			`,
+		// 			expected: ``,
+		// 		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			conv := converter.NewConverter(
+				converter.WithPlugins(
+					base.NewBasePlugin(),
+					commonmark.NewCommonmarkPlugin(),
+					NewTablePlugin(tC.options...),
+				),
+			)
+
+			output, err := conv.ConvertString(tC.input)
+			if err != nil {
+				t.Error(err)
+			}
+
+			actual := strings.TrimSpace(output)
+			expected := strings.TrimSpace(tC.expected)
+
+			if actual != expected {
+				t.Errorf("expected\n%s\nbut got\n%s\n", expected, actual)
+			}
+		})
+	}
 }

@@ -8,8 +8,8 @@ import (
 	"golang.org/x/net/html"
 )
 
-func (s *tablePlugin) renderTableBody(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
-	table := collectTableContent(ctx, n)
+func (p *tablePlugin) renderTableBody(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
+	table := p.collectTableContent(ctx, n)
 	if table == nil {
 		// Sometime we just cannot render the table.
 		// Either because it is an empty table OR
@@ -29,14 +29,14 @@ func (s *tablePlugin) renderTableBody(ctx converter.Context, w converter.Writer,
 
 	w.WriteString("\n\n")
 	// - - - Header - - - //
-	s.writeRow(w, counts, table.Rows[0])
+	p.writeRow(w, counts, table.Rows[0])
 	w.WriteString("\n")
-	s.writeHeaderUnderline(w, counts)
+	p.writeHeaderUnderline(w, counts)
 	w.WriteString("\n")
 
 	// - - - Body - - - //
 	for _, cells := range table.Rows[1:] {
-		s.writeRow(w, counts, cells)
+		p.writeRow(w, counts, cells)
 		w.WriteString("\n")
 	}
 

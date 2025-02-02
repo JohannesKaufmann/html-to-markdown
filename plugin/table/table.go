@@ -6,12 +6,25 @@ import (
 	"golang.org/x/net/html"
 )
 
-type tablePlugin struct {
+type option func(p *tablePlugin)
+
+// TODO: comment & better name?
+func WithMergeContentReplication(replicate bool) option {
+	return func(p *tablePlugin) {
+		p.mergeContentReplication = replicate
+	}
 }
 
-func NewTablePlugin() converter.Plugin {
+type tablePlugin struct {
+	mergeContentReplication bool
+}
 
-	return &tablePlugin{}
+func NewTablePlugin(opts ...option) converter.Plugin {
+	plugin := &tablePlugin{}
+	for _, opt := range opts {
+		opt(plugin)
+	}
+	return plugin
 }
 
 func (s *tablePlugin) Name() string {

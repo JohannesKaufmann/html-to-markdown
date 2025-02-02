@@ -146,7 +146,7 @@ func TestCalculateModifications(t *testing.T) {
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			actual := calculateModifications(tC.currentRowIndex, tC.currentColIndex, tC.rowSpan, tC.colSpan)
+			actual := calculateModifications(tC.currentRowIndex, tC.currentColIndex, tC.rowSpan, tC.colSpan, nil)
 			if len(actual) != len(tC.expected) {
 				t.Errorf("expected length %d but got %d", len(tC.expected), len(actual))
 			}
@@ -177,14 +177,15 @@ func TestApplyModifications(t *testing.T) {
 			},
 			modifications: []modification{
 				{
-					y: 0,
-					x: 0,
+					y:    0,
+					x:    0,
+					data: []byte("the modification"),
 				},
 			},
 
 			expected: [][][]byte{
 				{
-					[]byte(""),
+					[]byte("the modification"),
 					[]byte("A"),
 				},
 			},
@@ -202,8 +203,9 @@ func TestApplyModifications(t *testing.T) {
 			},
 			modifications: []modification{
 				{
-					y: 1,
-					x: 0,
+					y:    1,
+					x:    0,
+					data: []byte("the modification"),
 				},
 			},
 
@@ -212,7 +214,7 @@ func TestApplyModifications(t *testing.T) {
 					[]byte("A"),
 				},
 				{
-					[]byte(""),
+					[]byte("the modification"),
 					[]byte("B"),
 				},
 			},
