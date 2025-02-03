@@ -6,10 +6,10 @@ The caption text of the empty table
 
 * * *
 
-|  |  |
-|--|--|
-|  |  |
-|  |  |
+|   |   |
+|---|---|
+|   |   |
+|   |   |
 
 |    |    |
 |----|----|
@@ -58,6 +58,11 @@ A description about the `table`
 |:-----|:------:|------:|
 | Left | Center | Right |
 | A    | B      | C     |
+
+|   |   |   |
+|:--|:-:|--:|
+|   |   |   |
+|   |   |   |
 
 * * *
 

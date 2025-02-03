@@ -49,9 +49,9 @@ func TestOptionFunc(t *testing.T) {
 </table>
 			`,
 			expected: `
-|   |   |  |  |
-|---|---|--|--|
-| A | B |  |  |
+|   |   |   |   |
+|---|---|---|---|
+| A | B |   |   |
 			`,
 		},
 

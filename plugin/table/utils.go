@@ -9,6 +9,10 @@ import (
 	"golang.org/x/net/html"
 )
 
+// The content should be at least 1 character wide.
+// This also ensures that the table is correctly *recognized* as a markdown table.
+const defaultCellWidth = 1
+
 func calculateMaxCounts(rows [][][]byte) []int {
 	maxCounts := make([]int, 0)
 
@@ -17,7 +21,7 @@ func calculateMaxCounts(rows [][][]byte) []int {
 			count := utf8.RuneCount(cell)
 
 			if index >= len(maxCounts) {
-				maxCounts = append(maxCounts, 0)
+				maxCounts = append(maxCounts, defaultCellWidth)
 			}
 			currentMax := maxCounts[index]
 			if count > currentMax {
