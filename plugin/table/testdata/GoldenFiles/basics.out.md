@@ -11,6 +11,12 @@ The caption text of the empty table
 |  |  |
 |  |  |
 
+|    |    |
+|----|----|
+|    | B1 |
+|    |    |
+| A3 |    |
+
 * * *
 
 |    |    |
