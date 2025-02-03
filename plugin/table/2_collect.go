@@ -2,7 +2,6 @@ package table
 
 import (
 	"bytes"
-	"strings"
 
 	"github.com/JohannesKaufmann/dom"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
@@ -125,21 +124,15 @@ func (p *tablePlugin) collectCellsInRow(ctx converter.Context, rowIndex int, row
 		panic("the table child is not a tr but " + name)
 	}
 
-	// TODO: we should not use child nodes but instead get directly the td and th
-	cellNodes := dom.AllChildNodes(rowNode)
-	cellsContents := make([][]byte, 0, len(cellNodes))
+	cellNodes := dom.FindAllNodes(rowNode, func(node *html.Node) bool {
+		name := dom.NodeName(node)
+		return name == "th" || name == "td"
+	})
+
+	cellContents := make([][]byte, 0, len(cellNodes))
 	modifications := make([]modification, 0)
 
-	var index int
-	for _, cellNode := range cellNodes {
-		name := dom.NodeName(cellNode)
-		if name == "#text" && strings.TrimSpace(dom.CollectText(cellNode)) == "" {
-			continue
-		}
-		if name != "td" && name != "th" {
-			panic("the table subchild is not a td but " + name)
-		}
-
+	for index, cellNode := range cellNodes {
 		var buf bytes.Buffer
 		ctx.RenderNodes(ctx, &buf, cellNode)
 
@@ -148,7 +141,7 @@ func (p *tablePlugin) collectCellsInRow(ctx converter.Context, rowIndex int, row
 
 		content = ctx.UnEscapeContent(content)
 
-		cellsContents = append(cellsContents, content)
+		cellContents = append(cellContents, content)
 
 		// - - col / row span - - //
 		rowSpan := getNumberAttributeOr(cellNode, "rowspan", 1)
@@ -157,11 +150,9 @@ func (p *tablePlugin) collectCellsInRow(ctx converter.Context, rowIndex int, row
 		mods := calculateModifications(rowIndex, index, rowSpan, colSpan, p.getContentForMergedCell(content))
 
 		modifications = append(modifications, mods...)
-
-		index++
 	}
 
-	return cellsContents, modifications
+	return cellContents, modifications
 }
 func (p *tablePlugin) collectRows(ctx converter.Context, headerRowNode *html.Node, rowNodes []*html.Node) [][][]byte {
 	rowContents := make([][][]byte, 0, len(rowNodes)+1)
