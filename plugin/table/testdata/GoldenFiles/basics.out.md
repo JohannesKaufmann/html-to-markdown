@@ -6,6 +6,13 @@ The caption text of the empty table
 
 * * *
 
+|  |  |
+|--|--|
+|  |  |
+|  |  |
+
+* * *
+
 |    |    |
 |----|----|
 | A1 | A2 |

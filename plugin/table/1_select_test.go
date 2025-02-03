@@ -184,8 +184,6 @@ func TestSelectRowNodes(t *testing.T) {
 │ │ │ │ │ ├─#text "25"
 			`,
 		},
-
-		// TODO: nested table
 	}
 	for _, run := range runs {
 		t.Run(run.desc, func(t *testing.T) {

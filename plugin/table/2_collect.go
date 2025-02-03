@@ -27,6 +27,10 @@ func containsProblematicNode(node *html.Node) bool {
 			return true
 		}
 		switch name {
+		case "table":
+			// This will be caught with the newline check anyway.
+			// But we can safe some effort by aborting early...
+			return true
 		case "br", "hr", "ul", "ol", "blockquote":
 			return true
 		}
@@ -115,15 +119,6 @@ func collectAlignments(headerRowNode *html.Node, rowNodes []*html.Node) []string
 	return alignments
 }
 func (p *tablePlugin) collectCellsInRow(ctx converter.Context, rowIndex int, rowNode *html.Node) ([][]byte, []modification) {
-	if rowNode == nil {
-		return nil, nil
-	}
-
-	name := dom.NodeName(rowNode)
-	if name != "tr" {
-		panic("the table child is not a tr but " + name)
-	}
-
 	cellNodes := dom.FindAllNodes(rowNode, func(node *html.Node) bool {
 		name := dom.NodeName(node)
 		return name == "th" || name == "td"
