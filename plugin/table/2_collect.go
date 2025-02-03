@@ -11,8 +11,9 @@ import (
 )
 
 type tableContent struct {
-	Rows    [][][]byte
-	Caption []byte
+	Alignments []string
+	Rows       [][][]byte
+	Caption    []byte
 }
 
 func containsNewline(b []byte) bool {
@@ -67,8 +68,9 @@ func (p *tablePlugin) collectTableContent(ctx converter.Context, node *html.Node
 	}
 
 	return &tableContent{
-		Rows:    rows,
-		Caption: collectCaption(ctx, node),
+		Alignments: collectAlignments(headerRowNode, normalRowNodes),
+		Rows:       rows,
+		Caption:    collectCaption(ctx, node),
 	}
 }
 
@@ -83,6 +85,36 @@ func (p *tablePlugin) getContentForMergedCell(originalContent []byte) []byte {
 	return []byte("")
 }
 
+func getFirstNode(node *html.Node, nodes ...*html.Node) *html.Node {
+	if node != nil {
+		return node
+	}
+	if len(nodes) >= 1 {
+		return nodes[0]
+	}
+	return nil
+}
+
+func collectAlignments(headerRowNode *html.Node, rowNodes []*html.Node) []string {
+	firstRow := getFirstNode(headerRowNode, rowNodes...)
+	if firstRow == nil {
+		return nil
+	}
+
+	cellNodes := dom.FindAllNodes(firstRow, func(node *html.Node) bool {
+		name := dom.NodeName(node)
+		return name == "th" || name == "td"
+	})
+
+	var alignments []string
+	for _, cellNode := range cellNodes {
+		align := dom.GetAttributeOr(cellNode, "align", "")
+
+		alignments = append(alignments, align)
+	}
+
+	return alignments
+}
 func (p *tablePlugin) collectCellsInRow(ctx converter.Context, rowIndex int, rowNode *html.Node) ([][]byte, []modification) {
 	if rowNode == nil {
 		return nil, nil

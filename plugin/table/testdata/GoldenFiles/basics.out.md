@@ -37,6 +37,17 @@ A description about the `table`
 
 * * *
 
+| Left | Center | Right |
+|:-----|:------:|------:|
+| A    | B      | C     |
+
+|      |        |       |
+|:-----|:------:|------:|
+| Left | Center | Right |
+| A    | B      | C     |
+
+* * *
+
 | A (B) C | A \*\*B\** C |
 |---------|--------------|
 | A (B)   | A \*B*       |

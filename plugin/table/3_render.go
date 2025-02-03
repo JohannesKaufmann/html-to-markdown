@@ -31,7 +31,7 @@ func (p *tablePlugin) renderTableBody(ctx converter.Context, w converter.Writer,
 	// - - - Header - - - //
 	p.writeRow(w, counts, table.Rows[0])
 	w.WriteString("\n")
-	p.writeHeaderUnderline(w, counts)
+	p.writeHeaderUnderline(w, table.Alignments, counts)
 	w.WriteString("\n")
 
 	// - - - Body - - - //
@@ -52,16 +52,35 @@ func (p *tablePlugin) renderTableBody(ctx converter.Context, w converter.Writer,
 	return converter.RenderSuccess
 }
 
-func (s *tablePlugin) writeHeaderUnderline(w converter.Writer, counts []int) {
+func getAlignmentFor(alignments []string, index int) string {
+	if index > len(alignments)-1 {
+		return ""
+	}
+
+	return alignments[index]
+}
+func (s *tablePlugin) writeHeaderUnderline(w converter.Writer, alignments []string, counts []int) {
 	for i, maxLength := range counts {
+		align := getAlignmentFor(alignments, i)
+
 		isFirstCell := i == 0
 		if isFirstCell {
 			w.WriteString("|")
 		}
-		w.WriteString("-")
+		if align == "left" || align == "center" {
+			w.WriteString(":")
+		} else {
+			w.WriteString("-")
+		}
+
 		w.WriteString(strings.Repeat("-", maxLength))
 
-		w.WriteString("-|")
+		if align == "right" || align == "center" {
+			w.WriteString(":")
+		} else {
+			w.WriteString("-")
+		}
+		w.WriteString("|")
 	}
 }
 
