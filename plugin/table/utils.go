@@ -176,3 +176,12 @@ func removeEmptyRows(rows [][][]byte) [][][]byte {
 
 	return filteredRows
 }
+
+func removeFirstRowIfEmpty(rows [][][]byte) [][][]byte {
+	if len(rows) > 0 && isEmptyRow(rows[0]) {
+		// The first row (the header row) is empty. So lets remove it...
+		return slices.Delete(rows, 0, 1)
+	}
+
+	return rows
+}

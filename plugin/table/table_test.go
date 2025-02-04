@@ -353,3 +353,167 @@ After
 		})
 	}
 }
+
+func TestOptionFunc_PromoteHeader(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		input    string
+		options  []option
+		expected string
+	}{
+		// - - - - - - - - - - default - - - - - - - - - - //
+		{
+			desc:    "default",
+			options: []option{},
+			input: `
+<table>
+  <tr>
+    <td>A1</td>
+    <td>B1</td>
+  </tr>
+  <tr>
+    <td>A2</td>
+    <td>B2</td>
+  </tr>
+</table>
+			`,
+			expected: `
+|    |    |
+|----|----|
+| A1 | B1 |
+| A2 | B2 |
+			`,
+		},
+		{
+			desc: "not needed",
+			options: []option{
+				WithHeaderPromotion(true),
+			},
+			input: `
+<table>
+  <tr>
+    <th>Heading</th>
+    <th>Heading</th>
+  </tr>
+  <tr>
+    <td>A1</td>
+    <td>B1</td>
+  </tr>
+  <tr>
+    <td>A2</td>
+    <td>B2</td>
+  </tr>
+</table>
+			`,
+			expected: `
+| Heading | Heading |
+|---------|---------|
+| A1      | B1      |
+| A2      | B2      |
+			`,
+		},
+
+		{
+			desc: "promote first row",
+			options: []option{
+				WithHeaderPromotion(true),
+			},
+			input: `
+<table>
+  <tr>
+    <td>A1</td>
+    <td>B1</td>
+  </tr>
+  <tr>
+    <td>A2</td>
+    <td>B2</td>
+  </tr>
+</table>
+			`,
+			expected: `
+| A1 | B1 |
+|----|----|
+| A2 | B2 |
+			`,
+		},
+		{
+			desc: "promote first row (but it is empty)",
+			options: []option{
+				WithHeaderPromotion(true),
+			},
+			input: `
+<table>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>A1</td>
+    <td>B1</td>
+  </tr>
+  <tr>
+    <td>A2</td>
+    <td>B2</td>
+  </tr>
+</table>
+			`,
+			expected: `
+|    |    |
+|----|----|
+| A1 | B1 |
+| A2 | B2 |
+			`,
+		},
+		{
+			desc: "deleted empty rows & promoted first row",
+			options: []option{
+				WithHeaderPromotion(true),
+				WithSkipEmptyRows(true),
+			},
+			input: `
+<table>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>A1</td>
+    <td>B1</td>
+  </tr>
+  <tr>
+    <td>A2</td>
+    <td>B2</td>
+  </tr>
+</table>
+			`,
+			expected: `
+| A1 | B1 |
+|----|----|
+| A2 | B2 |
+			`,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			conv := converter.NewConverter(
+				converter.WithPlugins(
+					base.NewBasePlugin(),
+					commonmark.NewCommonmarkPlugin(),
+					NewTablePlugin(tC.options...),
+				),
+			)
+
+			output, err := conv.ConvertString(tC.input)
+			if err != nil {
+				t.Error(err)
+			}
+
+			actual := strings.TrimSpace(output)
+			expected := strings.TrimSpace(tC.expected)
+
+			if actual != expected {
+				t.Errorf("expected\n%s\nbut got\n%s\n", expected, actual)
+			}
+		})
+	}
+}

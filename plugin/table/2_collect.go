@@ -181,6 +181,9 @@ func (p *tablePlugin) collectRows(ctx converter.Context, headerRowNode *html.Nod
 	if p.skipEmptyRows {
 		rowContents = removeEmptyRows(rowContents)
 	}
+	if p.promoteFirstRowToHeader {
+		rowContents = removeFirstRowIfEmpty(rowContents)
+	}
 
 	return rowContents
 }

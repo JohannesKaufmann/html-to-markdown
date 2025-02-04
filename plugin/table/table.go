@@ -27,9 +27,18 @@ func WithSkipEmptyRows(skip bool) option {
 	}
 }
 
+// WithHeaderPromotion configures the table plugin to promote the first row to a header
+// if no explicit header row is present. If set to true, the first row becomes the header.
+func WithHeaderPromotion(promote bool) option {
+	return func(p *tablePlugin) {
+		p.promoteFirstRowToHeader = promote
+	}
+}
+
 type tablePlugin struct {
 	mergeContentReplication bool
 	skipEmptyRows           bool
+	promoteFirstRowToHeader bool
 }
 
 func NewTablePlugin(opts ...option) converter.Plugin {
