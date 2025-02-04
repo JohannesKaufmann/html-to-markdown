@@ -55,10 +55,7 @@ func (s *tablePlugin) Name() string {
 
 func (s *tablePlugin) Init(conv *converter.Converter) error {
 
-	// TODO: register other stuff for table
-	// conv.Register.PreRenderer(s.handlePreRender, converter.PriorityMedium)
-	// conv.Register.EscapedChar('|')
-	// conv.Register.UnEscapers(converter.PriorityMedium, s.handleUnEscapers)
+	conv.Register.EscapedChar('|')
 
 	conv.Register.Renderer(s.handleRender, converter.PriorityStandard)
 

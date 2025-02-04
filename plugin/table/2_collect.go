@@ -5,6 +5,7 @@ import (
 
 	"github.com/JohannesKaufmann/dom"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
+	"github.com/JohannesKaufmann/html-to-markdown/v2/marker"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 )
@@ -134,6 +135,8 @@ func (p *tablePlugin) collectCellsInRow(ctx converter.Context, rowIndex int, row
 		content := buf.Bytes()
 		content = bytes.TrimSpace(content)
 
+		// The character "|" inside the content would mistakenly be recognized as part of the table. So we have to escape it.
+		content = bytes.Replace(content, []byte{byte(marker.MarkerEscaping), '|'}, []byte(`\|`), -1)
 		content = ctx.UnEscapeContent(content)
 
 		cellContents = append(cellContents, content)
