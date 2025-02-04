@@ -82,7 +82,7 @@ func (p *tablePlugin) collectTableContent(ctx converter.Context, node *html.Node
 // What should be displayed in those other cells?
 // Render exactly the same content OR an empty string?
 func (p *tablePlugin) getContentForMergedCell(originalContent []byte) []byte {
-	if p.mergeContentReplication {
+	if p.spanCellBehavior == SpanBehaviorMirror {
 		return originalContent
 	}
 

@@ -38,7 +38,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 		{
 			desc: "default",
 			options: []option{
-				WithMergeContentReplication(false),
+				WithSpanCellBehavior(SpanBehaviorEmpty),
 			},
 			input: `
 <table>
@@ -59,7 +59,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 		{
 			desc: "colspan=3",
 			options: []option{
-				WithMergeContentReplication(true),
+				WithSpanCellBehavior(SpanBehaviorMirror),
 			},
 			input: `
 <table>
@@ -79,7 +79,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 		{
 			desc: "rowspan=3",
 			options: []option{
-				WithMergeContentReplication(true),
+				WithSpanCellBehavior(SpanBehaviorMirror),
 			},
 			input: `
 <table>
@@ -102,7 +102,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 		{
 			desc: "cell with colspan and rowspan",
 			options: []option{
-				WithMergeContentReplication(true),
+				WithSpanCellBehavior(SpanBehaviorMirror),
 			},
 			input: `
 <table>
@@ -124,7 +124,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 		{
 			desc: "shifting content",
 			options: []option{
-				WithMergeContentReplication(true),
+				WithSpanCellBehavior(SpanBehaviorMirror),
 			},
 			input: `
 <table>
@@ -151,7 +151,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 		{
 			desc: "rowspans overlap with colspans",
 			options: []option{
-				WithMergeContentReplication(true),
+				WithSpanCellBehavior(SpanBehaviorMirror),
 			},
 			input: `
 <table>
