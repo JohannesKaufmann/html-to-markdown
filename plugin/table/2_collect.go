@@ -178,6 +178,10 @@ func (p *tablePlugin) collectRows(ctx converter.Context, headerRowNode *html.Nod
 	// by shifting the cells around.
 	rowContents = applyGroupedModifications(rowContents, groupedModifications)
 
+	if p.skipEmptyRows {
+		rowContents = removeEmptyRows(rowContents)
+	}
+
 	return rowContents
 }
 

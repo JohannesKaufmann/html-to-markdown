@@ -146,3 +146,33 @@ func growSlice[T any](contents []T, index int, placeholderVal T) []T {
 
 	return contents
 }
+
+func isEmptyRow(cells [][]byte) bool {
+	for _, cell := range cells {
+		if len(cell) > 0 {
+			return false
+		}
+	}
+	return true
+}
+func removeEmptyRows(rows [][][]byte) [][][]byte {
+	index := 0
+	filteredRows := slices.DeleteFunc(rows, func(cells [][]byte) bool {
+		if index == 0 {
+			index++
+			return false // Always keep the first row (the header row)
+		} else {
+			index++
+		}
+
+		return isEmptyRow(cells)
+	})
+
+	if len(filteredRows) == 1 && isEmptyRow(filteredRows[0]) {
+		// If all the rows are empty (including the header row)
+		// then the table is completely empty...
+		return nil
+	}
+
+	return filteredRows
+}

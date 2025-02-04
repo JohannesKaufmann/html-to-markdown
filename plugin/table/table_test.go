@@ -27,7 +27,7 @@ func TestGoldenFiles(t *testing.T) {
 	tester.GoldenFiles(t, goldenFileConvert, goldenFileConvert)
 }
 
-func TestOptionFunc(t *testing.T) {
+func TestOptionFunc_ColRowSpan(t *testing.T) {
 	testCases := []struct {
 		desc     string
 		input    string
@@ -175,6 +175,157 @@ func TestOptionFunc(t *testing.T) {
 | A | B | B | C |
 | A | D | D | E |
 | A | D | D | F |
+			`,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			conv := converter.NewConverter(
+				converter.WithPlugins(
+					base.NewBasePlugin(),
+					commonmark.NewCommonmarkPlugin(),
+					NewTablePlugin(tC.options...),
+				),
+			)
+
+			output, err := conv.ConvertString(tC.input)
+			if err != nil {
+				t.Error(err)
+			}
+
+			actual := strings.TrimSpace(output)
+			expected := strings.TrimSpace(tC.expected)
+
+			if actual != expected {
+				t.Errorf("expected\n%s\nbut got\n%s\n", expected, actual)
+			}
+		})
+	}
+}
+
+func TestOptionFunc_EmptyRows(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		input    string
+		options  []option
+		expected string
+	}{
+		// - - - - - - - - - - default - - - - - - - - - - //
+		{
+			desc:    "by default keep empty rows",
+			options: []option{},
+			input: `
+<table>
+  <tr>
+    <td></td>
+    <td>B1</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>A3</td>
+    <td></td>
+  </tr>
+</table>
+			`,
+			expected: `
+|    |    |
+|----|----|
+|    | B1 |
+|    |    |
+| A3 |    |
+			`,
+		},
+		{
+			desc: "some rows are empty",
+			options: []option{
+				WithSkipEmptyRows(true),
+			},
+			input: `
+<table>
+  <tr>
+    <td></td>
+    <td>B1</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>A3</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>    </td>
+    <td>    </td>
+  </tr>
+</table>
+			`,
+			expected: `
+|    |    |
+|----|----|
+|    | B1 |
+| A3 |    |
+			`,
+		},
+		{
+			desc: "all rows are empty",
+			options: []option{
+				WithSkipEmptyRows(true),
+			},
+			input: `
+<p>Before</p>
+
+<table>
+  <caption>A description</caption>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
+<p>After</p>
+			`,
+			expected: `
+Before
+
+A description
+
+After
+			`,
+		},
+		{
+			desc: "element that is not rendered",
+			options: []option{
+				WithSkipEmptyRows(true),
+			},
+			input: `
+<p>Before</p>
+
+<table>
+  <tr>
+    <td>
+      <script type="text/javascript" src="/script"></script>
+    </td>
+  </tr>
+</table>
+
+<p>After</p>
+			`,
+			expected: `
+Before
+
+After
 			`,
 		},
 	}

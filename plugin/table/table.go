@@ -15,8 +15,21 @@ func WithMergeContentReplication(replicate bool) option {
 	}
 }
 
+// WithSkipEmptyRows configures the table plugin to omit empty rows from the output.
+// An empty row is defined as a row where all cells contain no content or only whitespace.
+//
+// true = empty rows will be skipped
+//
+// false = empty rows will be retained
+func WithSkipEmptyRows(skip bool) option {
+	return func(p *tablePlugin) {
+		p.skipEmptyRows = skip
+	}
+}
+
 type tablePlugin struct {
 	mergeContentReplication bool
+	skipEmptyRows           bool
 }
 
 func NewTablePlugin(opts ...option) converter.Plugin {
