@@ -1,7 +1,6 @@
 package converter
 
 import (
-	"fmt"
 	"net/url"
 	"strings"
 )
@@ -50,8 +49,6 @@ func defaultAssembleAbsoluteURL(tagName string, rawURL string, domain string) st
 
 	u, err := url.Parse(rawURL)
 	if err != nil {
-		fmt.Printf("[invalid_url] err=%v url=%q \n", err, rawURL)
-
 		// We can't do anything with this url because it is invalid
 		return percentEncodingReplacer.Replace(rawURL)
 	}
