@@ -8,7 +8,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-func (p *tablePlugin) renderTableBody(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
+func (p *tablePlugin) renderTable(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
 	table := p.collectTableContent(ctx, n)
 	if table == nil {
 		// Sometime we just cannot render the table.

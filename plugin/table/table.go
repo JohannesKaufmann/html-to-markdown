@@ -46,10 +46,21 @@ func WithHeaderPromotion(promote bool) option {
 	}
 }
 
+// WithPresentationTables configures whether tables marked with role="presentation"
+// should be converted to markdown. When set to true, presentation tables will be
+// converted like regular tables. When false (default), these tables are skipped
+// since they typically represent layout rather than semantic content.
+func WithPresentationTables(convert bool) option {
+	return func(p *tablePlugin) {
+		p.convertPresentationTables = convert
+	}
+}
+
 type tablePlugin struct {
-	spanCellBehavior        spanCellBehavior
-	skipEmptyRows           bool
-	promoteFirstRowToHeader bool
+	spanCellBehavior          spanCellBehavior
+	skipEmptyRows             bool
+	promoteFirstRowToHeader   bool
+	convertPresentationTables bool
 }
 
 func NewTablePlugin(opts ...option) converter.Plugin {
@@ -77,7 +88,7 @@ func (s *tablePlugin) handleRender(ctx converter.Context, w converter.Writer, n 
 	name := dom.NodeName(n)
 	switch name {
 	case "table":
-		return s.renderTableBody(ctx, w, n)
+		return s.renderTable(ctx, w, n)
 	}
 
 	return converter.RenderTryNext

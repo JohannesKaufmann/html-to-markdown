@@ -517,3 +517,79 @@ func TestOptionFunc_PromoteHeader(t *testing.T) {
 		})
 	}
 }
+
+func TestOptionFunc_PresentationTable(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		input    string
+		options  []option
+		expected string
+	}{
+		{
+			desc:    "default",
+			options: []option{},
+			input: `
+<table role="presentation">
+  <tr>
+    <td>A1</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td>B1</td>
+    <td>B2</td>
+  </tr>
+</table>
+			`,
+			expected: `
+A1 A2 B1 B2
+			`,
+		},
+		{
+			desc: "keep the presentation table",
+			options: []option{
+				WithPresentationTables(true),
+			},
+			input: `
+<table role="presentation">
+  <tr>
+    <td>A1</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td>B1</td>
+    <td>B2</td>
+  </tr>
+</table>
+			`,
+			expected: `
+|    |    |
+|----|----|
+| A1 | A2 |
+| B1 | B2 |
+			`,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			conv := converter.NewConverter(
+				converter.WithPlugins(
+					base.NewBasePlugin(),
+					commonmark.NewCommonmarkPlugin(),
+					NewTablePlugin(tC.options...),
+				),
+			)
+
+			output, err := conv.ConvertString(tC.input)
+			if err != nil {
+				t.Error(err)
+			}
+
+			actual := strings.TrimSpace(output)
+			expected := strings.TrimSpace(tC.expected)
+
+			if actual != expected {
+				t.Errorf("expected\n%s\nbut got\n%s\n", expected, actual)
+			}
+		})
+	}
+}

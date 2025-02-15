@@ -43,6 +43,15 @@ func containsProblematicNode(node *html.Node) bool {
 }
 
 func (p *tablePlugin) collectTableContent(ctx converter.Context, node *html.Node) *tableContent {
+	if role := dom.GetAttributeOr(node, "role", ""); role == "presentation" {
+		// In HTML-Emails many tables are used. Oftentimes these tables are nested
+		// which is not possible with markdown. But these tables are mostly used
+		// for *layout purposes* rather than displaying actual tabular data.
+		if !p.convertPresentationTables {
+			// So lets skip those with role="presentation" and focus on real tables...
+			return nil
+		}
+	}
 	if containsProblematicNode(node) {
 		// There are certain nodes (e.g. <hr />) that cannot be in a table.
 		// If we found one, we unfortunately cannot convert the table.
