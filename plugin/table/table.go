@@ -89,7 +89,20 @@ func (s *tablePlugin) handleRender(ctx converter.Context, w converter.Writer, n 
 	switch name {
 	case "table":
 		return s.renderTable(ctx, w, n)
+
+	case "tr":
+		// Normally, when the "table" gets rendered we do NOT go into this case.
+		// But as a fallback we separate the rows through newlines.
+		return s.renderFallbackRow(ctx, w, n)
+
 	}
 
 	return converter.RenderTryNext
+}
+
+func (s *tablePlugin) renderFallbackRow(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
+	w.WriteString("\n\n")
+	ctx.RenderChildNodes(ctx, w, n)
+	w.WriteString("\n\n")
+	return converter.RenderSuccess
 }
