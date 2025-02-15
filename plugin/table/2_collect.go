@@ -20,7 +20,7 @@ func containsNewline(b []byte) bool {
 	return bytes.Contains(b, []byte("\n"))
 }
 
-func containsProblematicNode(node *html.Node) bool {
+func hasProblematicChildNode(node *html.Node) bool {
 	problematicNode := dom.FindFirstNode(node, func(n *html.Node) bool {
 		name := dom.NodeName(n)
 
@@ -42,6 +42,29 @@ func containsProblematicNode(node *html.Node) bool {
 	return problematicNode != nil
 }
 
+func hasProblematicParentNode(node *html.Node) bool {
+	p := node.Parent
+
+	for p != nil {
+		name := dom.NodeName(p)
+		if name == "a" {
+			return true
+		}
+		if name == "strong" || name == "b" {
+			return true
+		}
+		if name == "em" || name == "i" {
+			return true
+		}
+		if name == "del" || name == "s" || name == "strike" {
+			return true
+		}
+
+		p = p.Parent
+	}
+
+	return false
+}
 func (p *tablePlugin) collectTableContent(ctx converter.Context, node *html.Node) *tableContent {
 	if role := dom.GetAttributeOr(node, "role", ""); role == "presentation" {
 		// In HTML-Emails many tables are used. Oftentimes these tables are nested
@@ -52,13 +75,19 @@ func (p *tablePlugin) collectTableContent(ctx converter.Context, node *html.Node
 			return nil
 		}
 	}
-	if containsProblematicNode(node) {
+	if hasProblematicChildNode(node) {
 		// There are certain nodes (e.g. <hr />) that cannot be in a table.
 		// If we found one, we unfortunately cannot convert the table.
 		//
 		// Note: It is okay for a block node (e.g. <div>) to be in a table.
 		//       However once it causes multiple lines, it does not work anymore.
 		//       For that we have the `containsNewline` check below.
+		return nil
+	}
+
+	if hasProblematicParentNode(node) {
+		// There are certain parent nodes (e.g. <a>) that cannot contain a table.
+		// We would break the rendering of the link, so we unfortunately cannot convert the table.
 		return nil
 	}
 

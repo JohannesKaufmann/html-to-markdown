@@ -1,0 +1,110 @@
+<!-- these parents do work -->
+
+<blockquote>
+  The blockquote content:
+
+  <table>
+    <tr>
+      <td>A1</td>
+      <td>A2</td>
+    </tr>
+  </table>
+</blockquote>
+
+<hr />
+
+<ol start="10">
+  <li>The list item content</li>
+  <li>
+    <table>
+      <tr>
+        <td>A1</td>
+        <td>A2</td>
+      </tr>
+    </table>
+  </li>
+</ol>
+
+<div>
+  <span>
+    <table>
+      <tr>
+        <td>A1</td>
+        <td>A2</td>
+      </tr>
+    </table>
+  </span>
+</div>
+
+<hr />
+
+<!-- these parents unfortunately do NOT work (unless you reorder the nodes) -->
+
+<a href="/link">
+  link content before
+  <table>
+    <tr>
+      <td>A1</td>
+      <td>A2</td>
+    </tr>
+  </table>
+  link content after
+</a>
+
+<hr />
+
+<a href="/link">
+  <div>
+    <blockquote>
+      <table>
+        <tr>
+          <td>A1</td>
+          <td>A2</td>
+        </tr>
+      </table>
+    </blockquote>
+  </div>
+</a>
+
+<hr />
+
+<strong>
+  bold content before
+  <table>
+    <tr>
+      <td>A1</td>
+      <td>A2</td>
+    </tr>
+  </table>
+  bold content after
+</strong>
+
+<hr />
+
+<i>
+  <span>italic content before</span>
+  <blockquote>
+    blockquote content before
+    <table>
+      <tr>
+        <td>A1</td>
+        <td>A2</td>
+      </tr>
+    </table>
+    blockquote content after
+  </blockquote>
+  <span>italic content after</span>
+</i>
+
+<hr />
+
+<button>
+  button content before
+  <table>
+    <tr>
+      <td>A1</td>
+      <td>A2</td>
+    </tr>
+  </table>
+  button content after
+</button>
