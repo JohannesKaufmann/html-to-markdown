@@ -9,7 +9,7 @@ require (
 	github.com/muesli/termenv v0.15.2
 	github.com/sebdah/goldie/v2 v2.5.5
 	github.com/yuin/goldmark v1.7.8
-	golang.org/x/net v0.33.0
+	golang.org/x/net v0.35.0
 )
 
 require (
@@ -20,5 +20,5 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/sergi/go-diff v1.3.1 // indirect
-	golang.org/x/sys v0.28.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
 )
