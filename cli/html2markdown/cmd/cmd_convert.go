@@ -89,7 +89,7 @@ func (cli *CLI) parseInputWithSelectors(input []byte) (*html.Node, error) {
 	return doc, nil
 }
 
-func (cli *CLI) convert(input []byte) ([]error, error) {
+func (cli *CLI) convert(input []byte) ([]byte, error) {
 	conv := converter.NewConverter(
 		converter.WithPlugins(
 			base.NewBasePlugin(),
@@ -118,6 +118,5 @@ func (cli *CLI) convert(input []byte) ([]error, error) {
 		return nil, err
 	}
 
-	fmt.Fprintln(cli.Stdout, string(markdown))
-	return nil, nil
+	return markdown, nil
 }
