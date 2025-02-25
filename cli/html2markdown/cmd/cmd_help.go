@@ -22,12 +22,15 @@ for example changing the appearance of bold with --opt-strong-delimiter="__"
 Other Plugins can also be enabled. For example "GitHub Flavored Markdown" (GFM)
 extends Commonmark with more features.
 
+## Relative / Absolute Links
+
+Use --domain="https://example.com" to convert *relative* links to *absolute* links.
+The same also works for images.
 
 ## Escaping
 
 Some characters have a special meaning in markdown. The library escapes these — if necessary.
 See the documentation for more info.
-
 
 ## Security
 
@@ -42,12 +45,29 @@ Use a HTML sanitizer before displaying the HTML in the browser!
     curl --no-progress-meter http://example.com | html2markdown
 
 
+    html2markdown --input file.html --output file.md
+
+    html2markdown --input "src/*.html" --output "dist/"
+
+
 ## Flags
 
     -v, --version
         show the version of html2markdown and exit
 
     --help
+
+    --input PATH
+        Input file, directory, or glob pattern (instead of stdin)
+
+    --output PATH
+        Output file or directory (instead of stdout)
+
+    --output-overwrite
+        Replace existing files
+
+    If --input is a directory or glob pattern, --output must be a directory.
+
 
 {{ range .Flags }}
     --{{ .Name }}{{ with .Usage }}
@@ -81,7 +101,7 @@ func tmpl(w io.Writer, text string, data interface{}) error {
 func (cli *CLI) initUsageText() error {
 	var flags []*flag.Flag
 	cli.flags.VisitAll(func(f *flag.Flag) {
-		if f.Name == "v" || f.Name == "version" {
+		if f.Name == "v" || f.Name == "version" || f.Name == "input" || f.Name == "output" || f.Name == "output-overwrite" {
 			// We manually mention these in the usage
 			return
 		}
