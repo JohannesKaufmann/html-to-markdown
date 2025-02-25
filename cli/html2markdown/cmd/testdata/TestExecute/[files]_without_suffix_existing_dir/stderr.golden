@@ -1,5 +1,5 @@
 
-error: path "output" exists and is a directory - did you mean "output/"?
+error: path "output" exists and is a directory, did you mean "output/"?
 
 The --output must end with "/" to indicate a directory
 
