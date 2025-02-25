@@ -1,0 +1,234 @@
+<caption>
+  A caption outside a table
+</caption>
+
+<hr />
+
+<!-- empty tables -->
+<table></table>
+
+<table>
+  <tbody></tbody>
+</table>
+
+<table>
+  <caption>
+    The caption text of the empty table
+  </caption>
+  <thead></thead>
+  <tbody></tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr></tr>
+    <tr></tr>
+  </tbody>
+</table>
+
+<hr />
+
+<!-- empty cells -->
+<table>
+  <tbody>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tr>
+    <td></td>
+    <td>B1</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>A3</td>
+    <td></td>
+  </tr>
+</table>
+
+<hr />
+
+<!-- basic table -->
+<table>
+  <tr>
+    <td>A1</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td>B1</td>
+    <td>B2</td>
+  </tr>
+  <tr>
+    <td>C1</td>
+    <td>C2</td>
+  </tr>
+</table>
+
+<hr />
+
+<!-- just a heading row -->
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">City</th>
+      <th scope="col">Age</th>
+    </tr>
+  </thead>
+</table>
+
+<hr />
+
+<!-- table with th (Table Header) element -->
+<table>
+  <tr>
+    <th>Company</th>
+    <th>Contact</th>
+    <th>Country</th>
+  </tr>
+  <tr>
+    <td>Company A</td>
+    <td>Max Mustermann</td>
+    <td>DE</td>
+  </tr>
+  <tr>
+    <td>Company B</td>
+    <td>John Doe</td>
+    <td>US</td>
+  </tr>
+</table>
+
+<hr />
+
+<!-- with thead and caption -->
+<table>
+  <caption>
+    A description about the
+    <code>table</code>
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">City</th>
+      <th scope="col">Age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Max Mustermann</th>
+      <td>Berlin</td>
+      <td>20</td>
+      <td>space for the note</td>
+    </tr>
+    <tr>
+      <th scope="row">Max Müller</th>
+      <td>München</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <th scope="row">Peter Mustermann</th>
+      <td>München</td>
+      <!-- no td -->
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th scope="row" colspan="2">Average age</th>
+      <td>25</td>
+    </tr>
+  </tfoot>
+</table>
+
+<hr />
+
+<!-- with align -->
+<table>
+  <thead>
+    <tr>
+      <th align="left">Left</th>
+      <th align="center">Center</th>
+      <th align="right">Right</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tr>
+    <td align="left">Left</td>
+    <td align="center">Center</td>
+    <td align="right">Right</td>
+  </tr>
+  <tr>
+    <td>A</td>
+    <td>B</td>
+    <td>C</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td align="left"></td>
+    <td align="center"></td>
+    <td align="right"></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
+<hr />
+
+<p>A | B</p>
+
+<!-- with special markdown characters -->
+<table>
+  <thead>
+    <tr>
+      <th>A (B) C</th>
+      <th>A **B** C</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>A (B)</th>
+      <th>A *B*</th>
+    </tr>
+    <tr>
+      <th>A | B</th>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<!-- skip table for role "presentation" -->
+<table role="presentation">
+  <tr>
+    <td>A1</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td>B1</td>
+    <td>B2</td>
+  </tr>
+</table>
