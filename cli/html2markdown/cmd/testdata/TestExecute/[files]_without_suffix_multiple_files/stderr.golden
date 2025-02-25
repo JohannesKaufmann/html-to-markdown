@@ -1,3 +1,3 @@
 
-error: when processing multiple input files, --output "folder" must end with "folder{{.PathSeparator}}" to indicate a directory
+error: when processing multiple input files, --output "folder" must end with "folder/" to indicate a directory
 
