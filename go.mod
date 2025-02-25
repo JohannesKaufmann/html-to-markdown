@@ -4,7 +4,7 @@ go 1.22.1
 
 require (
 	github.com/JohannesKaufmann/dom v0.2.0
-	github.com/agnivade/levenshtein v1.2.0
+	github.com/agnivade/levenshtein v1.2.1
 	github.com/andybalholm/cascadia v1.3.3
 	github.com/bmatcuk/doublestar/v4 v4.7.1
 	github.com/muesli/termenv v0.16.0
