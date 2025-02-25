@@ -39,6 +39,10 @@ type Config struct {
 
 	// - - - - - Plugins - - - - - //
 	enablePluginStrikethrough bool
+
+	enablePluginTable    bool
+	tableSkipEmptyRows   bool
+	tableHeaderPromotion bool
 }
 
 // Release holds the information (from the 3 ldflags) that goreleaser sets.
