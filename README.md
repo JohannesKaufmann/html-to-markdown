@@ -39,7 +39,9 @@ Here are some _cool features_:
 
   ![](./.github/images/point_strikethrough.png)
 
----
+- **Table Plugin:** Converts tables with support for alignment, rowspan and colspan.
+
+  ![](./.github/images/point_table.png)
 
 ---
 
@@ -145,6 +147,8 @@ func main() {
 				commonmark.WithStrongDelimiter("__"),
 				// ...additional configurations for the plugin
 			),
+
+			// ...additional plugins (e.g. table)
 		),
 	)
 
@@ -168,21 +172,21 @@ func main() {
 
 These are the plugins located in the [plugin folder](/plugin):
 
-| Name                  | Description                                                                          |
-| --------------------- | ------------------------------------------------------------------------------------ |
-| Base                  | Implements basic shared functionality (e.g. removing nodes)                          |
-| Commonmark            | Implements Markdown according to the [Commonmark Spec](https://spec.commonmark.org/) |
-|                       |                                                                                      |
-| GitHubFlavored        | _planned_                                                                            |
-| TaskListItems         | _planned_                                                                            |
-| Strikethrough         | Converts `<strike>`, `<s>`, and `<del>` to the `~~` syntax.                          |
-| Table                 | _planned_                                                                            |
-|                       |                                                                                      |
-| VimeoEmbed            | _planned_                                                                            |
-| YoutubeEmbed          | _planned_                                                                            |
-|                       |                                                                                      |
-| ConfluenceCodeBlock   | _planned_                                                                            |
-| ConfluenceAttachments | _planned_                                                                            |
+| Name                  | Description                                                                                        |
+| --------------------- | -------------------------------------------------------------------------------------------------- |
+| Base                  | Implements basic shared functionality (e.g. removing nodes)                                        |
+| Commonmark            | Implements Markdown according to the [Commonmark Spec](https://spec.commonmark.org/)               |
+|                       |                                                                                                    |
+| GitHubFlavored        | _planned_                                                                                          |
+| TaskListItems         | _planned_                                                                                          |
+| Strikethrough         | Converts `<strike>`, `<s>`, and `<del>` to the `~~` syntax.                                        |
+| Table                 | Implements Tables according to the [GitHub Flavored Markdown Spec](https://github.github.com/gfm/) |
+|                       |                                                                                                    |
+| VimeoEmbed            | _planned_                                                                                          |
+| YoutubeEmbed          | _planned_                                                                                          |
+|                       |                                                                                                    |
+| ConfluenceCodeBlock   | _planned_                                                                                          |
+| ConfluenceAttachments | _planned_                                                                                          |
 
 > [!NOTE]  
 > Not all the plugins from v1 are already ported to v2. These will soon be implemented...
@@ -280,11 +284,18 @@ This domain is for use in illustrative examples in documents. You may use this d
 [More information...](https://www.iana.org/domains/example)
 ```
 
+```bash
+$ html2markdown --input file.html --output file.md
+
+$ html2markdown --input "src/*.html" --output "dist/"
+```
+
 Use `--help` to learn about the configurations, for example:
 
 - `--domain="https://example.com"` to convert _relative_ links to _absolute_ links.
 - `--exclude-selector=".ad"` to exclude the html elements with `class="ad"` from the conversion.
 - `--include-selector="article"` to only include the `<article>` html elements in the conversion.
+- `--plugin-strikethrough` or `--plugin-table` to enable plugins.
 
 _(The cli does not support every option yet. Over time more customization will be added)_
 
