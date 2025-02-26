@@ -38,8 +38,7 @@ func TestOptionFunc_Validation(t *testing.T) {
 		),
 	)
 
-	// expectedMessage := `error while initializing "table" plugin: unknown value "random" for span cell behavior`
-	expectedMessage := `unknown value "random" for span cell behavior`
+	expectedMessage := `error while initializing "table" plugin: unknown value "random" for span cell behavior`
 	out, err := conv.ConvertString("<strong>test</strong>")
 	if err == nil {
 		t.Fatal("expected error")

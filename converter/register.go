@@ -2,6 +2,7 @@ package converter
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/JohannesKaufmann/dom"
 	"golang.org/x/net/html"
@@ -24,8 +25,7 @@ func (r *register) Plugin(plugin Plugin) {
 
 	err := plugin.Init(r.conv)
 	if err != nil {
-		r.conv.setError(err)
-		// TODO: r.conv.setError(fmt.Errorf("error while initializing %q plugin: %w", pluginName, err))
+		r.conv.setError(fmt.Errorf("error while initializing %q plugin: %w", pluginName, err))
 		return
 	}
 }
