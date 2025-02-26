@@ -27,6 +27,31 @@ func TestGoldenFiles(t *testing.T) {
 	tester.GoldenFiles(t, goldenFileConvert, goldenFileConvert)
 }
 
+func TestOptionFunc_Validation(t *testing.T) {
+	conv := converter.NewConverter(
+		converter.WithPlugins(
+			base.NewBasePlugin(),
+			commonmark.NewCommonmarkPlugin(),
+			NewTablePlugin(
+				WithSpanCellBehavior("random"),
+			),
+		),
+	)
+
+	// expectedMessage := `error while initializing "table" plugin: unknown value "random" for span cell behavior`
+	expectedMessage := `unknown value "random" for span cell behavior`
+	out, err := conv.ConvertString("<strong>test</strong>")
+	if err == nil {
+		t.Fatal("expected error")
+	}
+	if err.Error() != expectedMessage {
+		t.Errorf("expected %q but got %q", expectedMessage, err.Error())
+	}
+	if out != "" {
+		t.Error("expected empty output")
+	}
+}
+
 func TestOptionFunc_ColRowSpan(t *testing.T) {
 	testCases := []struct {
 		desc     string

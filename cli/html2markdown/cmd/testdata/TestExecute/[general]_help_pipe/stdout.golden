@@ -75,8 +75,14 @@ Use a HTML sanitizer before displaying the HTML in the browser!
     --opt-table-header-promotion
         [for --plugin-table] first row should be treated as a header
 
+    --opt-table-presentation-tables
+        [for --plugin-table] whether tables with role="presentation" should be converted
+
     --opt-table-skip-empty-rows
         [for --plugin-table] omit empty rows from the output
+
+    --opt-table-span-cell-behavior
+        [for --plugin-table] how colspan/rowspan should be rendered: "empty" or "mirror"
 
     --plugin-strikethrough
         enable the plugin ~~strikethrough~~

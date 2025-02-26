@@ -435,6 +435,18 @@ func TestExecute(t *testing.T) {
 				inputArgs:  []string{"html2markdown", `--opt-table-skip-empty-rows`},
 			},
 		},
+		{
+			desc: "[validation] plugin option invalid value",
+
+			input: CLIGoldenInput{
+				modeStdin:  modePipe,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: []byte("<strong>text</strong>"),
+				inputArgs:  []string{"html2markdown", `--plugin-table`, `--opt-table-span-cell-behavior=random`},
+			},
+		},
 
 		// - - - - - files (--input and --output) - - - - - //
 		{

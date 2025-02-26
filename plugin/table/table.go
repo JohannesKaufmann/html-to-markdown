@@ -1,28 +1,42 @@
 package table
 
 import (
+	"fmt"
+	"sync"
+
 	"github.com/JohannesKaufmann/dom"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
 	"golang.org/x/net/html"
 )
 
-type option func(p *tablePlugin)
+type option func(p *tablePlugin) error
 
-type spanCellBehavior string
+type SpanCellBehavior string
 
 const (
 	// SpanBehaviorEmpty renders an empty cell.
-	SpanBehaviorEmpty spanCellBehavior = "empty"
+	SpanBehaviorEmpty SpanCellBehavior = "empty"
 	// SpanBehaviorMirror renders the same content as the original cell.
-	SpanBehaviorMirror spanCellBehavior = "mirror"
+	SpanBehaviorMirror SpanCellBehavior = "mirror"
 )
 
 // WithSpanCellBehavior configures how cells affected by colspan/rowspan attributes
 // should be rendered. When a cell spans multiple columns or rows, the affected cells
 // can either be empty or contain the same content as the original cell.
-func WithSpanCellBehavior(behavior spanCellBehavior) option {
-	return func(p *tablePlugin) {
-		p.spanCellBehavior = behavior
+func WithSpanCellBehavior(behavior SpanCellBehavior) option {
+	return func(p *tablePlugin) error {
+		switch behavior {
+		case "":
+			// TODO: should we allow empty string?
+			return nil
+
+		case SpanBehaviorEmpty, SpanBehaviorMirror:
+			p.spanCellBehavior = behavior
+			return nil
+
+		default:
+			return fmt.Errorf("unknown value %q for span cell behavior", behavior)
+		}
 	}
 }
 
@@ -31,8 +45,9 @@ func WithSpanCellBehavior(behavior spanCellBehavior) option {
 // When set to true, empty rows will be omitted from the output. When false (default),
 // all rows are preserved.
 func WithSkipEmptyRows(skip bool) option {
-	return func(p *tablePlugin) {
+	return func(p *tablePlugin) error {
 		p.skipEmptyRows = skip
+		return nil
 	}
 }
 
@@ -41,8 +56,9 @@ func WithSkipEmptyRows(skip bool) option {
 // first row will be converted to a header row with separator dashes. When false (default),
 // all rows are treated as regular content.
 func WithHeaderPromotion(promote bool) option {
-	return func(p *tablePlugin) {
+	return func(p *tablePlugin) error {
 		p.promoteFirstRowToHeader = promote
+		return nil
 	}
 }
 
@@ -51,22 +67,43 @@ func WithHeaderPromotion(promote bool) option {
 // converted like regular tables. When false (default), these tables are skipped
 // since they typically represent layout rather than semantic content.
 func WithPresentationTables(convert bool) option {
-	return func(p *tablePlugin) {
+	return func(p *tablePlugin) error {
 		p.convertPresentationTables = convert
+		return nil
 	}
 }
 
 type tablePlugin struct {
-	spanCellBehavior          spanCellBehavior
+	m   sync.RWMutex
+	err error
+
+	spanCellBehavior          SpanCellBehavior
 	skipEmptyRows             bool
 	promoteFirstRowToHeader   bool
 	convertPresentationTables bool
 }
 
+func (p *tablePlugin) setError(err error) {
+	p.m.Lock()
+	defer p.m.Unlock()
+
+	p.err = err
+}
+func (p *tablePlugin) getError() error {
+	p.m.RLock()
+	defer p.m.RUnlock()
+
+	return p.err
+}
+
 func NewTablePlugin(opts ...option) converter.Plugin {
 	plugin := &tablePlugin{}
 	for _, opt := range opts {
-		opt(plugin)
+		err := opt(plugin)
+		if err != nil {
+			plugin.setError(err)
+			break
+		}
 	}
 	return plugin
 }
@@ -76,6 +113,10 @@ func (s *tablePlugin) Name() string {
 }
 
 func (s *tablePlugin) Init(conv *converter.Converter) error {
+	if err := s.getError(); err != nil {
+		// Any error raised from the option func
+		return err
+	}
 
 	conv.Register.EscapedChar('|')
 

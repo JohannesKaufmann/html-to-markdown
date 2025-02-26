@@ -1,7 +1,5 @@
 package converter
 
-import "errors"
-
 // Plugin can be used to extends functionality beyond what
 // is offered by commonmark.
 type Plugin interface {
@@ -17,16 +15,7 @@ type Plugin interface {
 func WithPlugins(plugins ...Plugin) converterOption {
 	return func(c *Converter) error {
 		for _, plugin := range plugins {
-			pluginName := plugin.Name()
-			if pluginName == "" {
-				return errors.New("the plugin has no name")
-			}
-			c.registeredPlugins = append(c.registeredPlugins, pluginName)
-
-			err := plugin.Init(c)
-			if err != nil {
-				return err
-			}
+			c.Register.Plugin(plugin)
 		}
 		return nil
 	}
