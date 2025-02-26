@@ -166,6 +166,34 @@ func main() {
 > [!NOTE]  
 > If you use `NewConverter` directly make sure to also **register the commonmark and base plugin**.
 
+---
+
+### Collapse & Tag Type
+
+![](./.github/images/tag_type_renderer.png)
+
+You can specify how different HTML tags should be handled during conversion.
+
+- **Tag Types:** When _collapsing_ whitespace it is useful to know if a node is _block_ or _inline_.
+  - So if you have Web Components/Custom Elements remember to register the type using `TagType` or `RendererFor`.
+  - Additionally, you can _remove_ tags completely from the output.
+- **Pre-built Renderers:** There are several pre-built renderers available. For example:
+  - `RenderAsHTML` will render the node (including children) as HTML.
+  - `RenderAsHTMLWrapper` will render the node as HTML and render the children as markdown.
+
+> [!NOTE]  
+> By default, some tags are automatically removed (e.g. `<style>`). You can override existing configuration by using a different _priority_. For example, you could keep `<style>` tags by registering them with `PriorityEarly`.
+
+Here are the examples for the screenshot above:
+
+```go
+conv.Register.TagType("nav", converter.TagTypeRemove, converter.PriorityStandard)
+
+conv.Register.RendererFor("b", converter.TagTypeInline, base.RenderAsHTML, converter.PriorityEarly)
+
+conv.Register.RendererFor("article", converter.TagTypeBlock, base.RenderAsHTMLWrapper, converter.PriorityStandard)
+```
+
 ### Plugins
 
 #### Published Plugins
