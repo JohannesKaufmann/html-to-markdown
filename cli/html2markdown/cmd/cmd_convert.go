@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 
 	"github.com/JohannesKaufmann/dom"
@@ -9,6 +10,7 @@ import (
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/base"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/commonmark"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/strikethrough"
+	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/table"
 	"github.com/andybalholm/cascadia"
 	"golang.org/x/net/html"
 )
@@ -99,8 +101,18 @@ func (cli *CLI) convert(input []byte) ([]byte, error) {
 		),
 	)
 	if cli.config.enablePluginStrikethrough {
-		// TODO: while this works, this does not add the `Name` to the internal list
-		strikethrough.NewStrikethroughPlugin().Init(conv)
+		conv.Register.Plugin(strikethrough.NewStrikethroughPlugin())
+	}
+
+	if cli.config.enablePluginTable {
+		conv.Register.Plugin(
+			table.NewTablePlugin(
+				table.WithSkipEmptyRows(cli.config.tableSkipEmptyRows),
+				table.WithHeaderPromotion(cli.config.tableHeaderPromotion),
+				table.WithSpanCellBehavior(table.SpanCellBehavior(cli.config.tableSpanCellBehavior)),
+				table.WithPresentationTables(cli.config.tablePresentationTables),
+			),
+		)
 	}
 
 	doc, err := cli.parseInputWithSelectors(input)
@@ -110,9 +122,10 @@ func (cli *CLI) convert(input []byte) ([]byte, error) {
 
 	markdown, err := conv.ConvertNode(doc, converter.WithDomain(cli.config.domain))
 	if err != nil {
-		e, ok := err.(*commonmark.ValidateConfigError)
-		if ok {
-			return nil, overrideValidationError(e)
+
+		var validationErr *commonmark.ValidateConfigError
+		if errors.As(err, &validationErr) {
+			return nil, overrideValidationError(validationErr)
 		}
 
 		return nil, err

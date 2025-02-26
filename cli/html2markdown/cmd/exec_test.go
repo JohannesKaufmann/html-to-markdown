@@ -422,6 +422,32 @@ func TestExecute(t *testing.T) {
 			},
 		},
 
+		// - - - - - validation of options (plugin) - - - - - //
+		{
+			desc: "[validation] option requires plugin",
+
+			input: CLIGoldenInput{
+				modeStdin:  modePipe,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: []byte("<strong>text</strong>"),
+				inputArgs:  []string{"html2markdown", `--opt-table-skip-empty-rows`},
+			},
+		},
+		{
+			desc: "[validation] plugin option invalid value",
+
+			input: CLIGoldenInput{
+				modeStdin:  modePipe,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: []byte("<strong>text</strong>"),
+				inputArgs:  []string{"html2markdown", `--plugin-table`, `--opt-table-span-cell-behavior=random`},
+			},
+		},
+
 		// - - - - - files (--input and --output) - - - - - //
 		{
 			desc: "[files] without suffix existing dir",
@@ -591,7 +617,7 @@ func TestExecute_General(t *testing.T) {
 
 func TestExecute_Plugins(t *testing.T) {
 	testCases := []CLITestCase{
-
+		// - - - - - plugin: strikethrough - - - - - //
 		{
 			desc: "[plugin-strikethrough] disabled by default",
 
@@ -607,6 +633,96 @@ func TestExecute_Plugins(t *testing.T) {
 			inputArgs:  []string{"html2markdown", "--plugin-strikethrough"},
 
 			expectedStdout: []byte("Some ~~outdated~~ text\n"),
+		},
+
+		// - - - - - plugin: table - - - - - //
+		{
+			desc: "[plugin-table] disabled by default",
+
+			inputStdin: []byte(`
+<table>
+  <tr>
+    <td>A1</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td>B1</td>
+    <td>B2</td>
+  </tr>
+</table>
+			`),
+			inputArgs: []string{"html2markdown"},
+
+			expectedStdout: []byte("A1 A2 B1 B2\n"),
+		},
+		{
+			desc: "[plugin-table] enabled",
+
+			inputStdin: []byte(`
+<table>
+  <tr>
+    <td>A1</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>C1</td>
+    <td>C2</td>
+  </tr>
+</table>
+			`),
+			inputArgs: []string{"html2markdown", "--plugin-table"},
+
+			expectedStdout: []byte("|    |    |\n|----|----|\n| A1 | A2 |\n|    |    |\n| C1 | C2 |\n"),
+		},
+		{
+			desc: "[plugin-table] skip empty rows",
+
+			inputStdin: []byte(`
+<table>
+  <tr>
+    <td>A1</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>C1</td>
+    <td>C2</td>
+  </tr>
+</table>
+			`),
+			inputArgs: []string{"html2markdown", "--plugin-table", "--opt-table-skip-empty-rows"},
+
+			expectedStdout: []byte("|    |    |\n|----|----|\n| A1 | A2 |\n| C1 | C2 |\n"),
+		},
+		{
+			desc: "[plugin-table] skip empty rows & header promotion",
+
+			inputStdin: []byte(`
+<table>
+  <tr>
+    <td>A1</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>C1</td>
+    <td>C2</td>
+  </tr>
+</table>
+			`),
+			inputArgs: []string{"html2markdown", "--plugin-table", "--opt-table-skip-empty-rows", "--opt-table-header-promotion"},
+
+			expectedStdout: []byte("| A1 | A2 |\n|----|----|\n| C1 | C2 |\n"),
 		},
 	}
 	for _, tC := range testCases {

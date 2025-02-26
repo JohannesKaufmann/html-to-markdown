@@ -1,12 +1,33 @@
 package converter
 
 import (
+	"errors"
+	"fmt"
+
 	"github.com/JohannesKaufmann/dom"
 	"golang.org/x/net/html"
 )
 
 type register struct {
 	conv *Converter
+}
+
+func (r *register) Plugin(plugin Plugin) {
+	pluginName := plugin.Name()
+	if pluginName == "" {
+		r.conv.setError(errors.New("the plugin has no name"))
+		return
+	}
+
+	r.conv.m.Lock()
+	r.conv.registeredPlugins = append(r.conv.registeredPlugins, pluginName)
+	r.conv.m.Unlock()
+
+	err := plugin.Init(r.conv)
+	if err != nil {
+		r.conv.setError(fmt.Errorf("error while initializing %q plugin: %w", pluginName, err))
+		return
+	}
 }
 
 // - - - - - - - - - - - - - Pre-Render - - - - - - - - - - - - - //

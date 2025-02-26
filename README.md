@@ -39,7 +39,9 @@ Here are some _cool features_:
 
   ![](./.github/images/point_strikethrough.png)
 
----
+- **Table Plugin:** Converts tables with support for alignment, rowspan and colspan.
+
+  ![](./.github/images/point_table.png)
 
 ---
 
@@ -145,6 +147,8 @@ func main() {
 				commonmark.WithStrongDelimiter("__"),
 				// ...additional configurations for the plugin
 			),
+
+			// ...additional plugins (e.g. table)
 		),
 	)
 
@@ -162,27 +166,55 @@ func main() {
 > [!NOTE]  
 > If you use `NewConverter` directly make sure to also **register the commonmark and base plugin**.
 
+---
+
+### Collapse & Tag Type
+
+![](./.github/images/tag_type_renderer.png)
+
+You can specify how different HTML tags should be handled during conversion.
+
+- **Tag Types:** When _collapsing_ whitespace it is useful to know if a node is _block_ or _inline_.
+  - So if you have Web Components/Custom Elements remember to register the type using `TagType` or `RendererFor`.
+  - Additionally, you can _remove_ tags completely from the output.
+- **Pre-built Renderers:** There are several pre-built renderers available. For example:
+  - `RenderAsHTML` will render the node (including children) as HTML.
+  - `RenderAsHTMLWrapper` will render the node as HTML and render the children as markdown.
+
+> [!NOTE]  
+> By default, some tags are automatically removed (e.g. `<style>`). You can override existing configuration by using a different _priority_. For example, you could keep `<style>` tags by registering them with `PriorityEarly`.
+
+Here are the examples for the screenshot above:
+
+```go
+conv.Register.TagType("nav", converter.TagTypeRemove, converter.PriorityStandard)
+
+conv.Register.RendererFor("b", converter.TagTypeInline, base.RenderAsHTML, converter.PriorityEarly)
+
+conv.Register.RendererFor("article", converter.TagTypeBlock, base.RenderAsHTMLWrapper, converter.PriorityStandard)
+```
+
 ### Plugins
 
 #### Published Plugins
 
 These are the plugins located in the [plugin folder](/plugin):
 
-| Name                  | Description                                                                          |
-| --------------------- | ------------------------------------------------------------------------------------ |
-| Base                  | Implements basic shared functionality (e.g. removing nodes)                          |
-| Commonmark            | Implements Markdown according to the [Commonmark Spec](https://spec.commonmark.org/) |
-|                       |                                                                                      |
-| GitHubFlavored        | _planned_                                                                            |
-| TaskListItems         | _planned_                                                                            |
-| Strikethrough         | Converts `<strike>`, `<s>`, and `<del>` to the `~~` syntax.                          |
-| Table                 | _planned_                                                                            |
-|                       |                                                                                      |
-| VimeoEmbed            | _planned_                                                                            |
-| YoutubeEmbed          | _planned_                                                                            |
-|                       |                                                                                      |
-| ConfluenceCodeBlock   | _planned_                                                                            |
-| ConfluenceAttachments | _planned_                                                                            |
+| Name                  | Description                                                                                        |
+| --------------------- | -------------------------------------------------------------------------------------------------- |
+| Base                  | Implements basic shared functionality (e.g. removing nodes)                                        |
+| Commonmark            | Implements Markdown according to the [Commonmark Spec](https://spec.commonmark.org/)               |
+|                       |                                                                                                    |
+| GitHubFlavored        | _planned_                                                                                          |
+| TaskListItems         | _planned_                                                                                          |
+| Strikethrough         | Converts `<strike>`, `<s>`, and `<del>` to the `~~` syntax.                                        |
+| Table                 | Implements Tables according to the [GitHub Flavored Markdown Spec](https://github.github.com/gfm/) |
+|                       |                                                                                                    |
+| VimeoEmbed            | _planned_                                                                                          |
+| YoutubeEmbed          | _planned_                                                                                          |
+|                       |                                                                                                    |
+| ConfluenceCodeBlock   | _planned_                                                                                          |
+| ConfluenceAttachments | _planned_                                                                                          |
 
 > [!NOTE]  
 > Not all the plugins from v1 are already ported to v2. These will soon be implemented...
@@ -280,11 +312,18 @@ This domain is for use in illustrative examples in documents. You may use this d
 [More information...](https://www.iana.org/domains/example)
 ```
 
+```bash
+$ html2markdown --input file.html --output file.md
+
+$ html2markdown --input "src/*.html" --output "dist/"
+```
+
 Use `--help` to learn about the configurations, for example:
 
 - `--domain="https://example.com"` to convert _relative_ links to _absolute_ links.
 - `--exclude-selector=".ad"` to exclude the html elements with `class="ad"` from the conversion.
 - `--include-selector="article"` to only include the `<article>` html elements in the conversion.
+- `--plugin-strikethrough` or `--plugin-table` to enable plugins.
 
 _(The cli does not support every option yet. Over time more customization will be added)_
 

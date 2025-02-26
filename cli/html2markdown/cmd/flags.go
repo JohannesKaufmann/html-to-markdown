@@ -88,6 +88,11 @@ func (cli *CLI) initFlags(progname string) {
 	// TODO: --opt-strikethrough-delimiter for the strikethrough plugin
 	cli.flags.BoolVar(&cli.config.enablePluginStrikethrough, "plugin-strikethrough", false, "enable the plugin ~~strikethrough~~")
 
+	cli.flags.BoolVar(&cli.config.enablePluginTable, "plugin-table", false, "enable the plugin table")
+	cli.flags.BoolVar(&cli.config.tableSkipEmptyRows, "opt-table-skip-empty-rows", false, "[for --plugin-table] omit empty rows from the output")
+	cli.flags.BoolVar(&cli.config.tableHeaderPromotion, "opt-table-header-promotion", false, "[for --plugin-table] first row should be treated as a header")
+	cli.flags.StringVar(&cli.config.tableSpanCellBehavior, "opt-table-span-cell-behavior", "", `[for --plugin-table] how colspan/rowspan should be rendered: "empty" or "mirror"`)
+	cli.flags.BoolVar(&cli.config.tablePresentationTables, "opt-table-presentation-tables", false, `[for --plugin-table] whether tables with role="presentation" should be converted`)
 }
 
 func (cli *CLI) parseFlags(args []string) error {
@@ -97,6 +102,23 @@ func (cli *CLI) parseFlags(args []string) error {
 	}
 
 	cli.config.args = cli.flags.Args()
+
+	// Validate flag dependencies
+	if cli.config.tableSkipEmptyRows && !cli.config.enablePluginTable {
+		return fmt.Errorf("--opt-table-skip-empty-rows requires --plugin-table to be enabled")
+	}
+	if cli.config.tableHeaderPromotion && !cli.config.enablePluginTable {
+		return fmt.Errorf("--opt-table-header-promotion requires --plugin-table to be enabled")
+	}
+	if cli.config.tableSpanCellBehavior != "" && !cli.config.enablePluginTable {
+		return fmt.Errorf("--opt-table-span-cell-behavior requires --plugin-table to be enabled")
+	}
+	if cli.config.tablePresentationTables && !cli.config.enablePluginTable {
+		return fmt.Errorf("--opt-table-presentation-tables requires --plugin-table to be enabled")
+	}
+
+	// TODO: use constant for flag name & use formatFlag
+	//       var keyStrongDelimiter = "opt-strong-delimiter"
 
 	return nil
 }

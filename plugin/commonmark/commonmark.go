@@ -81,7 +81,7 @@ func WithHeadingStyle(style headingStyle) OptionFunc {
 //
 //	<a href="">the link content</a>
 //
-// LinkBehaviorRenderAsLink would result in "[the link content]()""
+// LinkBehaviorRenderAsLink would result in "[the link content]()"
 //
 // LinkBehaviorSkipLink would result in "the link content"
 func WithLinkEmptyHrefBehavior(behavior linkRenderingBehavior) OptionFunc {
@@ -95,7 +95,7 @@ func WithLinkEmptyHrefBehavior(behavior linkRenderingBehavior) OptionFunc {
 //
 //	<a href="/page"></a>
 //
-// LinkBehaviorRenderAsLink would result in "[](/page)""
+// LinkBehaviorRenderAsLink would result in "[](/page)"
 //
 // LinkBehaviorSkipLink would result in an empty string.
 func WithLinkEmptyContentBehavior(behavior linkRenderingBehavior) OptionFunc {

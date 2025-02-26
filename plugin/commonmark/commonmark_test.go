@@ -234,14 +234,14 @@ func TestOptionFunc_ValidationError(t *testing.T) {
 			options: []commonmark.OptionFunc{
 				commonmark.WithEmDelimiter("__"),
 			},
-			expectedError: `invalid value for EmDelimiter:"__" must be exactly 1 character of "*" or "_"`,
+			expectedError: `error while initializing "commonmark" plugin: invalid value for EmDelimiter:"__" must be exactly 1 character of "*" or "_"`,
 		},
 		{
 			desc: "WithEmDelimiter(**)",
 			options: []commonmark.OptionFunc{
 				commonmark.WithEmDelimiter("**"),
 			},
-			expectedError: `invalid value for EmDelimiter:"**" must be exactly 1 character of "*" or "_"`,
+			expectedError: `error while initializing "commonmark" plugin: invalid value for EmDelimiter:"**" must be exactly 1 character of "*" or "_"`,
 		},
 
 		{
@@ -249,14 +249,14 @@ func TestOptionFunc_ValidationError(t *testing.T) {
 			options: []commonmark.OptionFunc{
 				commonmark.WithStrongDelimiter("_"),
 			},
-			expectedError: `invalid value for StrongDelimiter:"_" must be exactly 2 characters of "**" or "__"`,
+			expectedError: `error while initializing "commonmark" plugin: invalid value for StrongDelimiter:"_" must be exactly 2 characters of "**" or "__"`,
 		},
 		{
 			desc: "WithStrongDelimiter(*)",
 			options: []commonmark.OptionFunc{
 				commonmark.WithStrongDelimiter("*"),
 			},
-			expectedError: `invalid value for StrongDelimiter:"*" must be exactly 2 characters of "**" or "__"`,
+			expectedError: `error while initializing "commonmark" plugin: invalid value for StrongDelimiter:"*" must be exactly 2 characters of "**" or "__"`,
 		},
 
 		{
@@ -264,14 +264,14 @@ func TestOptionFunc_ValidationError(t *testing.T) {
 			options: []commonmark.OptionFunc{
 				commonmark.WithHorizontalRule("* *"),
 			},
-			expectedError: `invalid value for HorizontalRule:"* *" must be at least 3 characters of "*", "_" or "-"`,
+			expectedError: `error while initializing "commonmark" plugin: invalid value for HorizontalRule:"* *" must be at least 3 characters of "*", "_" or "-"`,
 		},
 		{
 			desc: "WithHorizontalRule(+++)",
 			options: []commonmark.OptionFunc{
 				commonmark.WithHorizontalRule("+++"),
 			},
-			expectedError: `invalid value for HorizontalRule:"+++" must be at least 3 characters of "*", "_" or "-"`,
+			expectedError: `error while initializing "commonmark" plugin: invalid value for HorizontalRule:"+++" must be at least 3 characters of "*", "_" or "-"`,
 		},
 
 		{
@@ -279,7 +279,7 @@ func TestOptionFunc_ValidationError(t *testing.T) {
 			options: []commonmark.OptionFunc{
 				commonmark.WithBulletListMarker("_"),
 			},
-			expectedError: `invalid value for BulletListMarker:"_" must be one of "-", "+" or "*"`,
+			expectedError: `error while initializing "commonmark" plugin: invalid value for BulletListMarker:"_" must be one of "-", "+" or "*"`,
 		},
 
 		{
@@ -287,7 +287,7 @@ func TestOptionFunc_ValidationError(t *testing.T) {
 			options: []commonmark.OptionFunc{
 				commonmark.WithCodeBlockFence("~~"),
 			},
-			expectedError: "invalid value for CodeBlockFence:\"~~\" must be one of \"```\" or \"~~~\"",
+			expectedError: "error while initializing \"commonmark\" plugin: invalid value for CodeBlockFence:\"~~\" must be one of \"```\" or \"~~~\"",
 		},
 
 		{
@@ -295,14 +295,14 @@ func TestOptionFunc_ValidationError(t *testing.T) {
 			options: []commonmark.OptionFunc{
 				commonmark.WithHeadingStyle("ATX"),
 			},
-			expectedError: `invalid value for HeadingStyle:"ATX" must be one of "atx" or "setext"`,
+			expectedError: `error while initializing "commonmark" plugin: invalid value for HeadingStyle:"ATX" must be one of "atx" or "setext"`,
 		},
 		{
 			desc: "WithHeadingStyle(misspelling settext)",
 			options: []commonmark.OptionFunc{
 				commonmark.WithHeadingStyle("settext"),
 			},
-			expectedError: `invalid value for HeadingStyle:"settext" must be one of "atx" or "setext"`,
+			expectedError: `error while initializing "commonmark" plugin: invalid value for HeadingStyle:"settext" must be one of "atx" or "setext"`,
 		},
 	}
 	for _, tC := range testCases {
