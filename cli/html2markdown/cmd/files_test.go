@@ -355,7 +355,27 @@ func TestExecute_FilePattern(t *testing.T) {
 ├─output
 │ ├─websites
 │ │ ├─the_cool_website.md "**file content A**"
+			`,
+		},
+		{
+			desc: "output to a specific extension",
+			assembleArgs: func(dir string) []string {
+				input := filepath.Join(dir, "input", "website_a.html")
+				output := filepath.Join(dir, "output", "websites", "the_cool_website.txt")
 
+				return []string{"html2markdown", "--input", input, "--output", output}
+			},
+			expected: `
+.
+├─input
+│ ├─nested
+│ │ ├─website_c.html "<i>file content C</i>"
+│ ├─random.txt "other random file"
+│ ├─website_a.html "<strong>file content A</strong>"
+│ ├─website_b.html "<strong>file content B</strong>"
+├─output
+│ ├─websites
+│ │ ├─the_cool_website.txt "**file content A**"
 			`,
 		},
 		{
