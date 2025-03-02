@@ -67,6 +67,27 @@ func newTestDirWithFiles(t *testing.T) string {
 	return directoryPath
 }
 
+// chdirWithCleanup changes the current working directory to the named directory,
+// and then restore the original working directory at the end of the test.
+//
+// TODO: Once we are on 1.24 we can replace this with t.Chdir()
+func chdirWithCleanup(t *testing.T, dir string) {
+	olddir, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("chdir: %v", err)
+	}
+	if err := os.Chdir(dir); err != nil {
+		t.Fatalf("chdir %s: %v", dir, err)
+	}
+
+	t.Cleanup(func() {
+		if err := os.Chdir(olddir); err != nil {
+			t.Errorf("chdir to original working directory %s: %v", olddir, err)
+			os.Exit(1)
+		}
+	})
+}
+
 func writePipeChar(buf *bytes.Buffer, index int) {
 	if index == 0 {
 		return
@@ -306,7 +327,7 @@ func TestExecute_NotOverwrite(t *testing.T) {
 		expectRepresentation(t, directoryPath, `
 .
 ├─output.md "**file content A**"
-	`)
+		`)
 	})
 }
 
@@ -399,6 +420,72 @@ func TestExecute_FilePattern(t *testing.T) {
 
 			`,
 		},
+
+		// - - - - - - - - - - - - relative path - - - - - - - - - - - - //
+		{
+			desc: "relative path: output to a specific file",
+			assembleArgs: func(_ string) []string {
+				input := filepath.Join(".", "input", "website_a.html")
+				output := filepath.Join(".", "output", "websites", "the_cool_website.md")
+
+				return []string{"html2markdown", "--input", input, "--output", output}
+			},
+			expected: `
+.
+├─input
+│ ├─nested
+│ │ ├─website_c.html "<i>file content C</i>"
+│ ├─random.txt "other random file"
+│ ├─website_a.html "<strong>file content A</strong>"
+│ ├─website_b.html "<strong>file content B</strong>"
+├─output
+│ ├─websites
+│ │ ├─the_cool_website.md "**file content A**"
+			`,
+		},
+		{
+			desc: "relative path: direct website html files",
+			assembleArgs: func(_ string) []string {
+				input := filepath.Join(".", "input", "website*.html")
+				output := filepath.Join(".", "output") + string(os.PathSeparator)
+
+				return []string{"html2markdown", "--input", input, "--output", output}
+			},
+			expected: `
+.
+├─input
+│ ├─nested
+│ │ ├─website_c.html "<i>file content C</i>"
+│ ├─random.txt "other random file"
+│ ├─website_a.html "<strong>file content A</strong>"
+│ ├─website_b.html "<strong>file content B</strong>"
+├─output
+│ ├─website_a.md "**file content A**"
+│ ├─website_b.md "**file content B**"
+			`,
+		},
+		{
+			desc: "relative path: output to current directory",
+			assembleArgs: func(_ string) []string {
+				input := filepath.Join(".", "input", "website*.html")
+				output := "." + string(os.PathSeparator)
+
+				return []string{"html2markdown", "--input", input, "--output", output}
+			},
+			expected: `
+.
+├─input
+│ ├─nested
+│ │ ├─website_c.html "<i>file content C</i>"
+│ ├─random.txt "other random file"
+│ ├─website_a.html "<strong>file content A</strong>"
+│ ├─website_b.html "<strong>file content B</strong>"
+├─output
+├─website_a.md "**file content A**"
+├─website_b.md "**file content B**"
+			`,
+		},
+
 		// - - - - - - - - - - - - pattern - - - - - - - - - - - - //
 		{
 			desc: "pattern matches single file",
@@ -541,6 +628,8 @@ func TestExecute_FilePattern(t *testing.T) {
 		t.Run(tC.desc, func(t *testing.T) {
 			directoryPath := newTestDirWithFiles(t)
 			defer os.RemoveAll(directoryPath)
+
+			chdirWithCleanup(t, directoryPath)
 
 			args := tC.assembleArgs(directoryPath)
 			t.Logf("args: %+v\n", args)
