@@ -32,7 +32,7 @@ func hasProblematicChildNode(node *html.Node) bool {
 			// This will be caught with the newline check anyway.
 			// But we can safe some effort by aborting early...
 			return true
-		case "br", "hr", "ul", "ol", "blockquote":
+		case "hr", "ul", "ol", "blockquote":
 			return true
 		}
 
@@ -104,6 +104,8 @@ func (p *tablePlugin) collectTableContent(ctx converter.Context, node *html.Node
 			if containsNewline(cell) {
 				// Having newlines inside the content would break the table.
 				// So unfortunately we cannot convert the table.
+				//
+				// Note: We already trimmed the content earlier.
 				return nil
 			}
 		}

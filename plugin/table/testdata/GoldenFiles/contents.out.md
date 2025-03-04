@@ -5,6 +5,14 @@
 
 * * *
 
+|                   |
+|-------------------|
+| with break after  |
+| with break before |
+| with break around |
+
+* * *
+
 |                     |
 |---------------------|
 | Some normal content |
