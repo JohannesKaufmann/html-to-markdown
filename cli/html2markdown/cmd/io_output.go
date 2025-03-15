@@ -120,6 +120,9 @@ func hashFilepath(path string) string {
 	))
 
 	bs := h.Sum(nil)
+
+	fmt.Printf("hashFilepath %q -> %q -> %q\n", path, filepath.ToSlash(path), fmt.Sprintf("%x", bs))
+
 	return fmt.Sprintf("%x", bs)
 }
 
