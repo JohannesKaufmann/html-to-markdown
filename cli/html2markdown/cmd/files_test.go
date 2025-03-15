@@ -331,6 +331,76 @@ func TestExecute_NotOverwrite(t *testing.T) {
 	})
 }
 
+func TestExecute_DuplicateFiles(t *testing.T) {
+	directoryPath := newTestDir(t)
+	defer os.RemoveAll(directoryPath)
+
+	chdirWithCleanup(t, directoryPath)
+
+	inputFolderA := filepath.Join(directoryPath, "input", "a")
+	inputFolderB := filepath.Join(directoryPath, "input", "b")
+	inputFolderC := filepath.Join(directoryPath, "input", "nested", "c")
+
+	err := os.MkdirAll(inputFolderA, os.ModePerm)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = os.MkdirAll(inputFolderB, os.ModePerm)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = os.MkdirAll(inputFolderC, os.ModePerm)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = os.WriteFile(filepath.Join(inputFolderA, "random.html"), []byte("file a"), 0644)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = os.WriteFile(filepath.Join(inputFolderB, "random.html"), []byte("file b"), 0644)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = os.WriteFile(filepath.Join(inputFolderC, "random.html"), []byte("file c"), 0644)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// - - - - - - - - - //
+	args := []string{"html2markdown", "--input", filepath.Join(".", "input", "**", "*"), "--output", filepath.Join(".", "output") + "/"}
+
+	stdin := &FakeFile{mode: modeTerminal}
+	stdout := &FakeFile{mode: modePipe}
+	stderr := &FakeFile{mode: modePipe}
+
+	Run(stdin, stdout, stderr, args, testRelease)
+
+	if len(stderr.Bytes()) != 0 {
+		t.Fatalf("expected no stderr content but got %q", stderr.String())
+	}
+	if len(stdout.Bytes()) != 0 {
+		t.Fatalf("expected no stdout content")
+	}
+	// - - - - - - - - - //
+
+	expectRepresentation(t, directoryPath, `
+.
+├─input
+│ ├─a
+│ │ ├─random.html "file a"
+│ ├─b
+│ │ ├─random.html "file b"
+│ ├─nested
+│ │ ├─c
+│ │ │ ├─random.html "file c"
+├─output
+│ ├─random.689330a60f.md "file b"
+│ ├─random.f679b6e0c2.md "file c"
+│ ├─random.md "file a"
+	`)
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
 func TestExecute_FilePattern(t *testing.T) {

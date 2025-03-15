@@ -2,12 +2,15 @@ package cmd
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/andybalholm/cascadia"
+	"github.com/bmatcuk/doublestar/v4"
 )
 
 var (
@@ -163,6 +166,11 @@ func (cli *CLI) run() ([]error, error) {
 		return nil, err
 	}
 
+	err = calculateOutputPaths(cli.config.inputFilepath, inputs)
+	if err != nil {
+		return nil, err
+	}
+
 	for _, input := range inputs {
 		data, err := cli.readInput(input)
 		if err != nil {
@@ -174,11 +182,52 @@ func (cli *CLI) run() ([]error, error) {
 			return nil, err
 		}
 
-		err = cli.writeOutput(outputType, getOutputFileName(input.fullFilepath), markdown)
+		err = cli.writeOutput(outputType, input.outputFullFilepath, markdown)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	return nil, nil
+}
+
+func calculateOutputPaths(inputFilepath string, inputs []*input) error {
+	globBase, _ := doublestar.SplitPattern(inputFilepath)
+
+	allBasenames := make(map[string]int)
+	for _, input := range inputs {
+		basenameWithExt := filepath.Base(input.inputFullFilepath)
+		basename := fileNameWithoutExtension(basenameWithExt)
+
+		val := allBasenames[basename]
+		if val == 0 {
+			// -> The standard filename
+			input.outputFullFilepath = basename + ".md"
+		} else {
+			relativePath, err := filepath.Rel(globBase, input.inputFullFilepath)
+			if err != nil {
+				return err
+			}
+
+			// We hash the relative path (based from the globBase)
+			// since the globBase is *the same* for all files.
+			// Bonus: It makes testing easier as the temporary folder does not matter.
+			hash := hashData(relativePath)
+
+			// -> The filename for duplicates
+			input.outputFullFilepath = basename + "." + hash[:10] + ".md"
+		}
+
+		allBasenames[basename]++
+	}
+
+	return nil
+}
+
+func hashData(data string) string {
+	h := sha256.New()
+	h.Write([]byte(data))
+
+	bs := h.Sum(nil)
+	return fmt.Sprintf("%x", bs)
 }

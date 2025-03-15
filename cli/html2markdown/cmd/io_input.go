@@ -11,8 +11,9 @@ import (
 )
 
 type input struct {
-	fullFilepath string
-	data         []byte
+	inputFullFilepath  string
+	outputFullFilepath string
+	data               []byte
 }
 
 // E.g. "website.html" -> "website"
@@ -20,12 +21,8 @@ func fileNameWithoutExtension(fileName string) string {
 	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
 }
 
-func getOutputFileName(fullFilepath string) string {
-	basenameWithExt := filepath.Base(fullFilepath)
-	basename := fileNameWithoutExtension(basenameWithExt)
-
-	return basename + ".md"
-}
+// If the output is a file, it would be "output.md"
+var defaultBasename = "output"
 
 func (cli *CLI) listInputs() ([]*input, error) {
 	if cli.isStdinPipe && cli.config.inputFilepath != "" {
@@ -41,9 +38,8 @@ func (cli *CLI) listInputs() ([]*input, error) {
 		}
 		return []*input{
 			{
-				// If the output is a file, it would be "output.md"
-				fullFilepath: "output",
-				data:         data,
+				inputFullFilepath: defaultBasename,
+				data:              data,
 			},
 		}, nil
 	}
@@ -64,8 +60,8 @@ func (cli *CLI) listInputs() ([]*input, error) {
 		var inputs []*input
 		for _, match := range matches {
 			inputs = append(inputs, &input{
-				fullFilepath: match,
-				data:         nil,
+				inputFullFilepath: match,
+				data:              nil,
 			})
 		}
 
@@ -84,7 +80,7 @@ func (cli *CLI) readInput(in *input) ([]byte, error) {
 		return in.data, nil
 	}
 
-	data, err := os.ReadFile(in.fullFilepath)
+	data, err := os.ReadFile(in.inputFullFilepath)
 	if err != nil {
 		return nil, err
 	}
