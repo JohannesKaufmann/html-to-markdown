@@ -50,6 +50,16 @@ func (cli *CLI) listInputs() ([]*input, error) {
 			return nil, err
 		}
 		if len(matches) == 0 {
+			// The inputFilepath wasn't actually a glob but was pointing to an existing folder.
+			// The user probably wanted to convert all files in that folder — so we recommend the glob.
+			if outInfo, err := os.Stat(cli.config.inputFilepath); err == nil && outInfo.IsDir() {
+				return nil, NewCLIError(
+					fmt.Errorf("input path %q is a directory, not a file", cli.config.inputFilepath),
+					Paragraph("Here is how you can use a glob to match multiple files:"),
+					CodeBlock(`html2markdown --input "src/*.html" --output "dist/"`),
+				)
+			}
+
 			return nil, NewCLIError(
 				fmt.Errorf("no files found matching pattern %q", cli.config.inputFilepath),
 				Paragraph("Here is how you can use a glob to match multiple files:"),
