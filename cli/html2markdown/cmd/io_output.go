@@ -98,6 +98,14 @@ func calculateOutputPaths(inputFilepath string, inputs []*input) error {
 				return err
 			}
 
+			fmt.Printf("input:%q globBase:%q relativePath:%q\n", input.inputFullFilepath, globBase, relativePath)
+
+			relativePath2, err := filepath.Rel(filepath.FromSlash(globBase), input.inputFullFilepath)
+			if err != nil {
+				return err
+			}
+			fmt.Printf("relativePath2:%q\n", relativePath2)
+
 			// We hash the relative path (based from the globBase)
 			// since the globBase is *the same* for all files.
 			// Bonus: It makes testing easier as the temporary folder does not matter.
