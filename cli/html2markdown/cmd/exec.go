@@ -163,6 +163,11 @@ func (cli *CLI) run() ([]error, error) {
 		return nil, err
 	}
 
+	err = calculateOutputPaths(cli.config.inputFilepath, inputs)
+	if err != nil {
+		return nil, err
+	}
+
 	for _, input := range inputs {
 		data, err := cli.readInput(input)
 		if err != nil {
@@ -174,7 +179,7 @@ func (cli *CLI) run() ([]error, error) {
 			return nil, err
 		}
 
-		err = cli.writeOutput(outputType, getOutputFileName(input.fullFilepath), markdown)
+		err = cli.writeOutput(outputType, input.outputFullFilepath, markdown)
 		if err != nil {
 			return nil, err
 		}

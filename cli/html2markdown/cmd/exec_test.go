@@ -52,7 +52,7 @@ type CLIGoldenInput struct {
 	inputArgs  []string
 }
 
-func cliGoldenTester(t *testing.T, input CLIGoldenInput) {
+func cliGoldenTester(t *testing.T, folderpath string, input CLIGoldenInput) {
 	if input.modeStdin == modeTerminal && input.inputStdin != nil {
 		t.Fatal("invalid test: cannot provide stdin without pipe mode")
 	}
@@ -77,7 +77,7 @@ func cliGoldenTester(t *testing.T, input CLIGoldenInput) {
 		t.Fatal("neither stdout nor stderr have any content")
 	}
 
-	g := goldie.New(t)
+	g := goldie.New(t, goldie.WithFixtureDir(filepath.Join(folderpath, "testdata")))
 	g.Assert(t, filepath.Join(t.Name(), "stdout"), stdout.Bytes())
 	g.Assert(t, filepath.Join(t.Name(), "stderr"), stderr.Bytes())
 }
@@ -118,6 +118,14 @@ func cliSuccessTester(t *testing.T, tC CLITestCase) {
 func TestExecute(t *testing.T) {
 	directoryPath := newTestDirWithFiles(t)
 	defer os.RemoveAll(directoryPath)
+
+	originalDir, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	// By switching the directory we can work with relative paths.
+	// This makes it easier to test the output of error messages...
+	chdirWithCleanup(t, directoryPath)
 
 	testCases := []struct {
 		desc  string
@@ -513,6 +521,19 @@ func TestExecute(t *testing.T) {
 			},
 		},
 		{
+			desc: "[files] input directory",
+
+			input: CLIGoldenInput{
+				modeStdin:  modeTerminal,
+				modeStdout: modePipe,
+				modeStderr: modePipe,
+
+				inputStdin: nil,
+				inputArgs:  []string{"html2markdown", "--input", "input"}, // <-- "input" is a folder
+			},
+		},
+
+		{
 			desc: "[files] multiple values",
 
 			input: CLIGoldenInput{
@@ -539,7 +560,7 @@ func TestExecute(t *testing.T) {
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			cliGoldenTester(t, tC.input)
+			cliGoldenTester(t, originalDir, tC.input)
 		})
 	}
 }

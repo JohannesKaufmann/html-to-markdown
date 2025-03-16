@@ -1,11 +1,14 @@
 package cmd
 
 import (
+	"crypto/sha256"
 	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/bmatcuk/doublestar/v4"
 )
 
 type outputType string
@@ -75,6 +78,54 @@ func determineOutputType(_inputPath string, countInputs int, outputPath string) 
 
 	// Default to file for single input
 	return outputTypeFile, nil
+}
+
+func calculateOutputPaths(inputFilepath string, inputs []*input) error {
+	globBase, _ := doublestar.SplitPattern(
+		filepath.ToSlash(filepath.Clean(inputFilepath)),
+	)
+
+	allBasenames := make(map[string]int)
+	for _, input := range inputs {
+		basenameWithExt := filepath.Base(input.inputFullFilepath)
+		basename := fileNameWithoutExtension(basenameWithExt)
+
+		val := allBasenames[basename]
+		if val == 0 {
+			// -> The standard filename
+			input.outputFullFilepath = basename + ".md"
+		} else {
+			relativePath, err := filepath.Rel(globBase, input.inputFullFilepath)
+			if err != nil {
+				return err
+			}
+
+			// We hash the relative path (based from the globBase)
+			// since the globBase is *the same* for all files.
+			// Bonus: It makes testing easier as the temporary folder does not matter.
+			hash := hashFilepath(relativePath)
+
+			// -> The filename for duplicates
+			input.outputFullFilepath = basename + "." + hash[:10] + ".md"
+		}
+
+		allBasenames[basename]++
+	}
+
+	return nil
+}
+
+func hashFilepath(path string) string {
+	h := sha256.New()
+	h.Write([]byte(
+		// Ensure that regardless of operating system the path has the same format.
+		// Bonus: Easier testing as we always hash the same.
+		filepath.ToSlash(path),
+	))
+
+	bs := h.Sum(nil)
+
+	return fmt.Sprintf("%x", bs)
 }
 
 func ensureOutputDirectories(outputType outputType, outputFilepath string) error {
