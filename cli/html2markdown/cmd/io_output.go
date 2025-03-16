@@ -117,7 +117,11 @@ func calculateOutputPaths(inputFilepath string, inputs []*input) error {
 
 func hashFilepath(path string) string {
 	h := sha256.New()
-	h.Write([]byte(path))
+	h.Write([]byte(
+		// Ensure that regardless of operating system the path has the same format.
+		// Bonus: Easier testing as we always hash the same.
+		filepath.ToSlash(path),
+	))
 
 	bs := h.Sum(nil)
 
