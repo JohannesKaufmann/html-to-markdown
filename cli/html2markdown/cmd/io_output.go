@@ -81,12 +81,9 @@ func determineOutputType(_inputPath string, countInputs int, outputPath string) 
 }
 
 func calculateOutputPaths(inputFilepath string, inputs []*input) error {
-	globBase, pattern1 := doublestar.SplitPattern(inputFilepath)
-
-	globBase2, pattern2 := doublestar.SplitPattern(filepath.ToSlash(inputFilepath))
-
-	fmt.Printf("globase1:%q (%q)\n", globBase, pattern1)
-	fmt.Printf("globase2:%q (%q)\n", globBase2, pattern2)
+	globBase, _ := doublestar.SplitPattern(
+		filepath.ToSlash(filepath.Clean(inputFilepath)),
+	)
 
 	allBasenames := make(map[string]int)
 	for _, input := range inputs {
