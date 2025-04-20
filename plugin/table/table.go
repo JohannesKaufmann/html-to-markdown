@@ -40,6 +40,37 @@ func WithSpanCellBehavior(behavior SpanCellBehavior) option {
 	}
 }
 
+type NewlineBehavior string
+
+const (
+	// NewlineBehaviorSkip skips tables with newlines in cells (default).
+	NewlineBehaviorSkip NewlineBehavior = "skip"
+	// NewlineBehaviorPreserve preserves newlines in cells.
+	NewlineBehaviorPreserve NewlineBehavior = "preserve"
+)
+
+// WithNewlineBehavior configures how to handle newlines in table cells.
+// When set to NewlineBehaviorSkip (default), tables with newlines in cells are skipped.
+// When set to NewlineBehaviorPreserve, newlines are preserved in cells.
+//
+// Markdown tables don't support multiline content by default, so this provides a workaround to still convert tables with newlines.
+func WithNewlineBehavior(behavior NewlineBehavior) option {
+	return func(p *tablePlugin) error {
+		switch behavior {
+		case "":
+			// Allow empty string to default to Skip
+			return nil
+
+		case NewlineBehaviorSkip, NewlineBehaviorPreserve:
+			p.newlineBehavior = behavior
+			return nil
+
+		default:
+			return fmt.Errorf("unknown value %q for newline behavior", behavior)
+		}
+	}
+}
+
 // WithSkipEmptyRows configures the table plugin to omit empty rows from the output.
 // An empty row is defined as a row where all cells contain no content or only whitespace.
 // When set to true, empty rows will be omitted from the output. When false (default),
@@ -78,6 +109,7 @@ type tablePlugin struct {
 	err error
 
 	spanCellBehavior          SpanCellBehavior
+	newlineBehavior           NewlineBehavior
 	skipEmptyRows             bool
 	promoteFirstRowToHeader   bool
 	convertPresentationTables bool

@@ -619,3 +619,73 @@ B1 B2
 		})
 	}
 }
+
+func TestTableWithNewlines(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		input    string
+		options  []option
+		expected string
+	}{
+		{
+			desc: "with skip behavior (default)",
+			options: []option{
+				WithNewlineBehavior(NewlineBehaviorSkip),
+			},
+			input: `
+<table>
+	<tr>
+		<td>A11<br />A12</td>
+	</tr>
+</table>
+			`,
+			expected: `
+A11  
+A12
+			`,
+		},
+		{
+			desc: "with preserve behavior",
+			options: []option{
+				WithNewlineBehavior(NewlineBehaviorPreserve),
+			},
+			input: `
+<table>
+  <tr>
+    <td>A11<br>A12</td>
+    <td>B11<br />B12</td>
+  </tr>
+</table>
+			`,
+			expected: `
+|                |                |
+|----------------|----------------|
+| A11  <br />A12 | B11  <br />B12 |
+`,
+		},
+	}
+
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			conv := converter.NewConverter(
+				converter.WithPlugins(
+					base.NewBasePlugin(),
+					commonmark.NewCommonmarkPlugin(),
+					NewTablePlugin(tC.options...),
+				),
+			)
+
+			output, err := conv.ConvertString(tC.input)
+			if err != nil {
+				t.Error(err)
+			}
+
+			actual := strings.TrimSpace(output)
+			expected := strings.TrimSpace(tC.expected)
+
+			if actual != expected {
+				t.Errorf("expected\n%s\nbut got\n%s\n", expected, actual)
+			}
+		})
+	}
+}

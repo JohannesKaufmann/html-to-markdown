@@ -99,13 +99,15 @@ func (p *tablePlugin) collectTableContent(ctx converter.Context, node *html.Node
 		return nil
 	}
 
-	for _, cells := range rows {
-		for _, cell := range cells {
+	for i, cells := range rows {
+		for j, cell := range cells {
 			if containsNewline(cell) {
-				// Having newlines inside the content would break the table.
-				// So unfortunately we cannot convert the table.
-				//
-				// Note: We already trimmed the content earlier.
+				if p.newlineBehavior == NewlineBehaviorPreserve {
+					// Replace newlines with <br /> tags
+					rows[i][j] = bytes.ReplaceAll(cell, []byte("\n"), []byte("<br />"))
+					continue
+				}
+				// We're configured to skip tables with newlines, return nil
 				return nil
 			}
 		}
