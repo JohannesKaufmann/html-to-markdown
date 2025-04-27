@@ -35,12 +35,12 @@ jobs:
       #     files: ./coverage.txt
       #     token: ${{ secrets.CODECOV_TOKEN }}
 
-  # Test the latest three golang version
+  # Test the latest two golang version
   # on different operating systems.
   test_versions:
     strategy:
       matrix:
-        go: ['1.22']
+        go: ['1.23']
         os: [ubuntu-latest, macos-latest, windows-latest]
     name: Go ${{ matrix.go }} on ${{ matrix.os }}
 
