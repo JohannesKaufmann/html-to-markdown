@@ -11,8 +11,8 @@ require (
 	github.com/bmatcuk/doublestar/v4 v4.8.1
 	github.com/muesli/termenv v0.16.0
 	github.com/sebdah/goldie/v2 v2.5.5
-	github.com/yuin/goldmark v1.7.10
-	golang.org/x/net v0.35.0
+	github.com/yuin/goldmark v1.7.11
+	golang.org/x/net v0.39.0
 )
 
 require (
@@ -22,5 +22,5 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/sergi/go-diff v1.3.1 // indirect
-	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/sys v0.32.0 // indirect
 )
