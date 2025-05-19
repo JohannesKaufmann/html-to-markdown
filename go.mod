@@ -11,7 +11,7 @@ require (
 	github.com/bmatcuk/doublestar/v4 v4.8.1
 	github.com/muesli/termenv v0.16.0
 	github.com/sebdah/goldie/v2 v2.5.5
-	github.com/yuin/goldmark v1.7.11
+	github.com/yuin/goldmark v1.7.12
 	golang.org/x/net v0.39.0
 )
 
