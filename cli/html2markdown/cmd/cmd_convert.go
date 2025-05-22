@@ -111,6 +111,7 @@ func (cli *CLI) convert(input []byte) ([]byte, error) {
 				table.WithHeaderPromotion(cli.config.tableHeaderPromotion),
 				table.WithSpanCellBehavior(table.SpanCellBehavior(cli.config.tableSpanCellBehavior)),
 				table.WithPresentationTables(cli.config.tablePresentationTables),
+				table.WithNewlineBehavior(table.NewlineBehavior(cli.config.tableNewlineBehavior)),
 			),
 		)
 	}
