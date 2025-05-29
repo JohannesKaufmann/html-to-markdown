@@ -73,7 +73,11 @@ func (s *tablePlugin) writeHeaderUnderline(w converter.Writer, alignments []stri
 			w.WriteString("-")
 		}
 
-		w.WriteString(strings.Repeat("-", maxLength))
+		if s.padColumns {
+			w.WriteString(strings.Repeat("-", maxLength))
+		} else {
+			w.WriteString("-")
+		}
 
 		if align == "right" || align == "center" {
 			w.WriteString(":")
@@ -96,7 +100,7 @@ func (s *tablePlugin) writeRow(w converter.Writer, counts []int, cells [][]byte)
 		currentCount := utf8.RuneCount(cell)
 		filler := counts[i] - currentCount
 
-		if filler > 0 {
+		if s.padColumns && filler > 0 {
 			w.WriteString(strings.Repeat(" ", filler))
 		}
 
