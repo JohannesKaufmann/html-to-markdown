@@ -71,6 +71,16 @@ func WithNewlineBehavior(behavior NewlineBehavior) option {
 	}
 }
 
+// WithPadColumns configures how to handle padding in table cells.
+// When set to true (default), every column's text is padded to the width of the largest column in its row.
+// When set to false, no extra padding is applied to columns.
+func WithPadColumns(pad bool) option {
+	return func(p *tablePlugin) error {
+		p.padColumns = pad
+		return nil
+	}
+}
+
 // WithSkipEmptyRows configures the table plugin to omit empty rows from the output.
 // An empty row is defined as a row where all cells contain no content or only whitespace.
 // When set to true, empty rows will be omitted from the output. When false (default),
@@ -113,6 +123,7 @@ type tablePlugin struct {
 	skipEmptyRows             bool
 	promoteFirstRowToHeader   bool
 	convertPresentationTables bool
+	padColumns                bool
 }
 
 func (p *tablePlugin) setError(err error) {
