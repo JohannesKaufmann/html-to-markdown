@@ -98,7 +98,7 @@ func (s *tablePlugin) writeRow(w converter.Writer, counts []int, cells [][]byte)
 		currentCount := utf8.RuneCount(cell)
 		filler := counts[i] - currentCount
 
-		if s.padColumns == PadColumnsBehaviorOn {
+		if s.padColumns == PadColumnsBehaviorOn || s.padColumns == PadColumnsBehaviorSome {
 			w.WriteString(" ")
 		}
 
@@ -108,7 +108,7 @@ func (s *tablePlugin) writeRow(w converter.Writer, counts []int, cells [][]byte)
 			w.WriteString(strings.Repeat(" ", filler))
 		}
 
-		if s.padColumns == PadColumnsBehaviorOn {
+		if s.padColumns == PadColumnsBehaviorOn || s.padColumns == PadColumnsBehaviorSome {
 			w.WriteString(" ")
 		}
 

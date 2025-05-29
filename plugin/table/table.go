@@ -76,13 +76,16 @@ type PadColumnsBehavior string
 const (
 	// PadColumnsBehaviorOn adds visual padding to cells to make each column equal width (default).
 	PadColumnsBehaviorOn PadColumnsBehavior = "on"
+	// PadColumnsBehaviorSome keeps a very small amount of padding to balance table readability with reducing character count.
+	PadColumnsBehaviorSome PadColumnsBehavior = "some"
 	// PadColumnsBehaviorOff refrains from adding the padding to the cells.
 	PadColumnsBehaviorOff PadColumnsBehavior = "off"
 )
 
 // WithPadColumns configures how to handle padding in table cells.
-// When set to true (default), every column's text is padded to the width of the largest column in its row.
-// When set to false, no extra padding is applied to columns.
+// When set to "on" (default), every column's text is padded to the width of the largest column in its row.
+// When set to "some", every column gets a space at the beginning and end of the column for some minimal padding.
+// When set to "off", no extra padding is applied to columns.
 func WithPadColumns(behavior PadColumnsBehavior) option {
 	return func(p *tablePlugin) error {
 		switch behavior {
@@ -91,7 +94,7 @@ func WithPadColumns(behavior PadColumnsBehavior) option {
 			p.padColumns = PadColumnsBehavior(PadColumnsBehaviorOn)
 			return nil
 
-		case PadColumnsBehaviorOn, PadColumnsBehaviorOff:
+		case PadColumnsBehaviorOn, PadColumnsBehaviorSome, PadColumnsBehaviorOff:
 			p.padColumns = behavior
 			return nil
 
