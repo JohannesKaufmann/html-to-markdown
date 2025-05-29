@@ -73,7 +73,7 @@ func (s *tablePlugin) writeHeaderUnderline(w converter.Writer, alignments []stri
 			w.WriteString("-")
 		}
 
-		if s.padColumns == "on" {
+		if s.padColumns == PadColumnsBehaviorOn {
 			w.WriteString(strings.Repeat("-", maxLength))
 		} else {
 			w.WriteString("-")
@@ -100,7 +100,7 @@ func (s *tablePlugin) writeRow(w converter.Writer, counts []int, cells [][]byte)
 		currentCount := utf8.RuneCount(cell)
 		filler := counts[i] - currentCount
 
-		if s.padColumns == "on" && filler > 0 {
+		if s.padColumns == PadColumnsBehaviorOn && filler > 0 {
 			w.WriteString(strings.Repeat(" ", filler))
 		}
 
