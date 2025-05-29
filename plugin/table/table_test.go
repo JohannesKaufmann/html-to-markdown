@@ -17,7 +17,9 @@ func TestGoldenFiles(t *testing.T) {
 			converter.WithPlugins(
 				base.NewBasePlugin(),
 				commonmark.NewCommonmarkPlugin(),
-				NewTablePlugin(),
+				NewTablePlugin(
+					WithPadColumns(PadColumnsBehaviorOn),
+				),
 			),
 		)
 
@@ -34,6 +36,7 @@ func TestOptionFunc_Validation(t *testing.T) {
 			commonmark.NewCommonmarkPlugin(),
 			NewTablePlugin(
 				WithSpanCellBehavior("random"),
+				WithPadColumns(PadColumnsBehaviorOn),
 			),
 		),
 	)
@@ -63,6 +66,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 			desc: "default",
 			options: []option{
 				WithSpanCellBehavior(SpanBehaviorEmpty),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table>
@@ -84,6 +88,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 			desc: "colspan=3",
 			options: []option{
 				WithSpanCellBehavior(SpanBehaviorMirror),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table>
@@ -104,6 +109,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 			desc: "rowspan=3",
 			options: []option{
 				WithSpanCellBehavior(SpanBehaviorMirror),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table>
@@ -127,6 +133,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 			desc: "cell with colspan and rowspan",
 			options: []option{
 				WithSpanCellBehavior(SpanBehaviorMirror),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table>
@@ -149,6 +156,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 			desc: "shifting content",
 			options: []option{
 				WithSpanCellBehavior(SpanBehaviorMirror),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table>
@@ -176,6 +184,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 			desc: "rowspans overlap with colspans",
 			options: []option{
 				WithSpanCellBehavior(SpanBehaviorMirror),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table>
@@ -236,8 +245,10 @@ func TestOptionFunc_EmptyRows(t *testing.T) {
 	}{
 		// - - - - - - - - - - default - - - - - - - - - - //
 		{
-			desc:    "by default keep empty rows",
-			options: []option{},
+			desc: "by default keep empty rows",
+			options: []option{
+				WithPadColumns(PadColumnsBehaviorOn),
+			},
 			input: `
 <table>
   <tr>
@@ -266,6 +277,7 @@ func TestOptionFunc_EmptyRows(t *testing.T) {
 			desc: "some rows are empty",
 			options: []option{
 				WithSkipEmptyRows(true),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table>
@@ -298,6 +310,7 @@ func TestOptionFunc_EmptyRows(t *testing.T) {
 			desc: "all rows are empty",
 			options: []option{
 				WithSkipEmptyRows(true),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <p>Before</p>
@@ -332,6 +345,7 @@ After
 			desc: "element that is not rendered",
 			options: []option{
 				WithSkipEmptyRows(true),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <p>Before</p>
@@ -387,8 +401,10 @@ func TestOptionFunc_PromoteHeader(t *testing.T) {
 	}{
 		// - - - - - - - - - - default - - - - - - - - - - //
 		{
-			desc:    "default",
-			options: []option{},
+			desc: "default",
+			options: []option{
+				WithPadColumns(PadColumnsBehaviorOn),
+			},
 			input: `
 <table>
   <tr>
@@ -412,6 +428,7 @@ func TestOptionFunc_PromoteHeader(t *testing.T) {
 			desc: "not needed",
 			options: []option{
 				WithHeaderPromotion(true),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table>
@@ -441,6 +458,7 @@ func TestOptionFunc_PromoteHeader(t *testing.T) {
 			desc: "promote first row",
 			options: []option{
 				WithHeaderPromotion(true),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table>
@@ -464,6 +482,7 @@ func TestOptionFunc_PromoteHeader(t *testing.T) {
 			desc: "promote first row (but it is empty)",
 			options: []option{
 				WithHeaderPromotion(true),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table>
@@ -493,6 +512,7 @@ func TestOptionFunc_PromoteHeader(t *testing.T) {
 			options: []option{
 				WithHeaderPromotion(true),
 				WithSkipEmptyRows(true),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table>
@@ -550,8 +570,10 @@ func TestOptionFunc_PresentationTable(t *testing.T) {
 		expected string
 	}{
 		{
-			desc:    "default",
-			options: []option{},
+			desc: "default",
+			options: []option{
+				WithPadColumns(PadColumnsBehaviorOn),
+			},
 			input: `
 <table role="presentation">
   <tr>
@@ -574,6 +596,7 @@ B1 B2
 			desc: "keep the presentation table",
 			options: []option{
 				WithPresentationTables(true),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table role="presentation">
@@ -631,6 +654,7 @@ func TestTableWithNewlines(t *testing.T) {
 			desc: "with skip behavior (default)",
 			options: []option{
 				WithNewlineBehavior(NewlineBehaviorSkip),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table>
@@ -648,6 +672,7 @@ A12
 			desc: "with preserve behavior",
 			options: []option{
 				WithNewlineBehavior(NewlineBehaviorPreserve),
+				WithPadColumns(PadColumnsBehaviorOn),
 			},
 			input: `
 <table>
@@ -661,6 +686,88 @@ A12
 |                |                |
 |----------------|----------------|
 | A11  <br />A12 | B11  <br />B12 |
+`,
+		},
+	}
+
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			conv := converter.NewConverter(
+				converter.WithPlugins(
+					base.NewBasePlugin(),
+					commonmark.NewCommonmarkPlugin(),
+					NewTablePlugin(tC.options...),
+				),
+			)
+
+			output, err := conv.ConvertString(tC.input)
+			if err != nil {
+				t.Error(err)
+			}
+
+			actual := strings.TrimSpace(output)
+			expected := strings.TrimSpace(tC.expected)
+
+			if actual != expected {
+				t.Errorf("expected\n%s\nbut got\n%s\n", expected, actual)
+			}
+		})
+	}
+}
+
+func TestOptionFunc_PadColumns(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		input    string
+		options  []option
+		expected string
+	}{
+		{
+			desc: "with padding behavior (default)",
+			options: []option{
+				WithPadColumns(PadColumnsBehaviorOn),
+			},
+			input: `
+<table>
+  <tr>
+    <td>This line has some way longer text than the other line below it.</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td>B1</td>
+    <td>This one has longer text than the line above.</td>
+  </tr>
+</table>
+			`,
+			expected: `
+|                                                                  |                                               |
+|------------------------------------------------------------------|-----------------------------------------------|
+| This line has some way longer text than the other line below it. | A2                                            |
+| B1                                                               | This one has longer text than the line above. |
+			`,
+		},
+		{
+			desc: "without padding behavior",
+			options: []option{
+				WithPadColumns(PadColumnsBehaviorOff),
+			},
+			input: `
+<table>
+  <tr>
+    <td>This line has some way longer text than the other line below it.</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td>B1</td>
+    <td>This one has longer text than the line above.</td>
+  </tr>
+</table>
+			`,
+			expected: `
+|  |  |
+|---|---|
+| This line has some way longer text than the other line below it. | A2 |
+| B1 | This one has longer text than the line above. |
 `,
 		},
 	}
