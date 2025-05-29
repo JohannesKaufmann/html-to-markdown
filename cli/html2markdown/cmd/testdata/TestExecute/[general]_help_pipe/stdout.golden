@@ -78,6 +78,9 @@ Use a HTML sanitizer before displaying the HTML in the browser!
     --opt-table-newline-behavior
         [for --plugin-table] how tables containing newlines should be handled: "skip" or "preserve"
 
+    --opt-table-pad-columns
+        [for --plugin-table] whether columns in the tables should include extra padding for visual continuity
+
     --opt-table-presentation-tables
         [for --plugin-table] whether tables with role="presentation" should be converted
 
