@@ -71,13 +71,33 @@ func WithNewlineBehavior(behavior NewlineBehavior) option {
 	}
 }
 
+type PadColumnsBehavior string
+
+const (
+	// PadColumnsBehaviorOn adds visual padding to cells to make each column equal width (default).
+	PadColumnsBehaviorOn PadColumnsBehavior = "on"
+	// PadColumnsBehaviorOff refrains from adding the padding to the cells.
+	PadColumnsBehaviorOff PadColumnsBehavior = "off"
+)
+
 // WithPadColumns configures how to handle padding in table cells.
 // When set to true (default), every column's text is padded to the width of the largest column in its row.
 // When set to false, no extra padding is applied to columns.
-func WithPadColumns(pad bool) option {
+func WithPadColumns(behavior PadColumnsBehavior) option {
 	return func(p *tablePlugin) error {
-		p.padColumns = pad
-		return nil
+		switch behavior {
+		case "":
+			// Allow empty string to default to "on"
+			p.padColumns = PadColumnsBehavior(PadColumnsBehaviorOn)
+			return nil
+
+		case PadColumnsBehaviorOn, PadColumnsBehaviorOff:
+			p.padColumns = behavior
+			return nil
+
+		default:
+			return fmt.Errorf("unknown value %q for pad columns behavior", behavior)
+		}
 	}
 }
 
@@ -123,7 +143,7 @@ type tablePlugin struct {
 	skipEmptyRows             bool
 	promoteFirstRowToHeader   bool
 	convertPresentationTables bool
-	padColumns                bool
+	padColumns                PadColumnsBehavior
 }
 
 func (p *tablePlugin) setError(err error) {

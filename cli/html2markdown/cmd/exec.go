@@ -46,7 +46,7 @@ type Config struct {
 	tableSpanCellBehavior   string
 	tablePresentationTables bool
 	tableNewlineBehavior    string
-	tablePadColumns         bool
+	tablePadColumns         string
 }
 
 // Release holds the information (from the 3 ldflags) that goreleaser sets.
