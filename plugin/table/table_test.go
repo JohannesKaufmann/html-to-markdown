@@ -764,10 +764,10 @@ func TestOptionFunc_PadColumns(t *testing.T) {
 </table>
 			`,
 			expected: `
-|  |  |
+|||
 |---|---|
-| This line has some way longer text than the other line below it. | A2 |
-| B1 | This one has longer text than the line above. |
+|This line has some way longer text than the other line below it.|A2|
+|B1|This one has longer text than the line above.|
 `,
 		},
 	}
