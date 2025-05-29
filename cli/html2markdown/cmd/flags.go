@@ -94,7 +94,7 @@ func (cli *CLI) initFlags(progname string) {
 	cli.flags.StringVar(&cli.config.tableSpanCellBehavior, "opt-table-span-cell-behavior", "", `[for --plugin-table] how colspan/rowspan should be rendered: "empty" or "mirror"`)
 	cli.flags.BoolVar(&cli.config.tablePresentationTables, "opt-table-presentation-tables", false, `[for --plugin-table] whether tables with role="presentation" should be converted`)
 	cli.flags.StringVar(&cli.config.tableNewlineBehavior, "opt-table-newline-behavior", "", `[for --plugin-table] how tables containing newlines should be handled: "skip" or "preserve"`)
-	cli.flags.StringVar(&cli.config.tablePadColumns, "opt-table-pad-columns", "", `[for --plugin-table] whether columns in the tables should include extra padding for visual continuity`)
+	cli.flags.StringVar(&cli.config.tablePadColumns, "opt-table-pad-columns", "", `[for --plugin-table] whether columns in the tables should include extra padding for visual continuity: "on" or "off"`)
 }
 
 func (cli *CLI) parseFlags(args []string) error {
