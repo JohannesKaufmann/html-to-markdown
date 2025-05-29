@@ -94,16 +94,24 @@ func (s *tablePlugin) writeRow(w converter.Writer, counts []int, cells [][]byte)
 		if isFirstCell {
 			w.WriteString("|")
 		}
-		w.WriteString(" ")
-		w.Write(cell)
 
 		currentCount := utf8.RuneCount(cell)
 		filler := counts[i] - currentCount
+
+		if s.padColumns == PadColumnsBehaviorOn {
+			w.WriteString(" ")
+		}
+
+		w.Write(cell)
 
 		if s.padColumns == PadColumnsBehaviorOn && filler > 0 {
 			w.WriteString(strings.Repeat(" ", filler))
 		}
 
-		w.WriteString(" |")
+		if s.padColumns == PadColumnsBehaviorOn {
+			w.WriteString(" ")
+		}
+
+		w.WriteString("|")
 	}
 }
