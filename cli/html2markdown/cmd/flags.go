@@ -94,7 +94,7 @@ func (cli *CLI) initFlags(progname string) {
 	cli.flags.StringVar(&cli.config.tableSpanCellBehavior, "opt-table-span-cell-behavior", "", `[for --plugin-table] how colspan/rowspan should be rendered: "empty" or "mirror"`)
 	cli.flags.BoolVar(&cli.config.tablePresentationTables, "opt-table-presentation-tables", false, `[for --plugin-table] whether tables with role="presentation" should be converted`)
 	cli.flags.StringVar(&cli.config.tableNewlineBehavior, "opt-table-newline-behavior", "", `[for --plugin-table] how tables containing newlines should be handled: "skip" or "preserve"`)
-	cli.flags.StringVar(&cli.config.tablePadColumns, "opt-table-pad-columns", "", `[for --plugin-table] whether columns in the tables should include extra padding for visual continuity: "on", "some", or "off"`)
+	cli.flags.StringVar(&cli.config.tableCellPaddingBehavior, "opt-table-cell-padding", "", `[for --plugin-table] whether cells in the tables should include extra padding for visual continuity: "aligned", "minimal", or "none"`)
 }
 
 func (cli *CLI) parseFlags(args []string) error {
@@ -121,8 +121,8 @@ func (cli *CLI) parseFlags(args []string) error {
 	if cli.config.tableNewlineBehavior != "" && !cli.config.enablePluginTable {
 		return fmt.Errorf("--opt-table-newline-behavior requires --plugin-table to be enabled")
 	}
-	if cli.config.tablePadColumns != "" && !cli.config.enablePluginTable {
-		return fmt.Errorf("--opt-table-pad-columns requires --plugin-table to be enabled")
+	if cli.config.tableCellPaddingBehavior != "" && !cli.config.enablePluginTable {
+		return fmt.Errorf("--opt-table-cell-padding requires --plugin-table to be enabled")
 	}
 
 	// TODO: use constant for flag name & use formatFlag

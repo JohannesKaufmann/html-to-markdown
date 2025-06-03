@@ -71,31 +71,31 @@ func WithNewlineBehavior(behavior NewlineBehavior) option {
 	}
 }
 
-type PadColumnsBehavior string
+type CellPaddingBehavior string
 
 const (
-	// PadColumnsBehaviorOn adds visual padding to cells to make each column equal width (default).
-	PadColumnsBehaviorOn PadColumnsBehavior = "on"
-	// PadColumnsBehaviorSome keeps a very small amount of padding to balance table readability with reducing character count.
-	PadColumnsBehaviorSome PadColumnsBehavior = "some"
-	// PadColumnsBehaviorOff refrains from adding the padding to the cells.
-	PadColumnsBehaviorOff PadColumnsBehavior = "off"
+	// CellPaddingAligned adds visual padding to cells to make each column equal width (default).
+	CellPaddingAligned CellPaddingBehavior = "aligned"
+	// CellPaddingMinimal keeps a very small amount of padding to balance table readability while also reducing character count.
+	CellPaddingMinimal CellPaddingBehavior = "minimal"
+	// CellPaddingNone refrains from adding the padding to the cells.
+	CellPaddingNone CellPaddingBehavior = "none"
 )
 
 // WithPadColumns configures how to handle padding in table cells.
-// When set to "on" (default), every column's text is padded to the width of the largest column in its row.
-// When set to "some", every column gets a space at the beginning and end of the column for some minimal padding.
-// When set to "off", no extra padding is applied to columns.
-func WithPadColumns(behavior PadColumnsBehavior) option {
+// When set to "aligned" (default), every cell's text is padded to the width of the largest cell in its column.
+// When set to "minimal", every cell gets a space at the beginning and end of the cell for some minimal padding.
+// When set to "none", no extra padding is applied to cells.
+func WithCellPadding(behavior CellPaddingBehavior) option {
 	return func(p *tablePlugin) error {
 		switch behavior {
 		case "":
-			// Allow empty string to default to "on"
-			p.padColumns = PadColumnsBehavior(PadColumnsBehaviorOn)
+			// Allow empty string to default to "aligned"
+			p.cellPaddingBehavior = CellPaddingBehavior(CellPaddingAligned)
 			return nil
 
-		case PadColumnsBehaviorOn, PadColumnsBehaviorSome, PadColumnsBehaviorOff:
-			p.padColumns = behavior
+		case CellPaddingAligned, CellPaddingMinimal, CellPaddingNone:
+			p.cellPaddingBehavior = behavior
 			return nil
 
 		default:
@@ -146,7 +146,7 @@ type tablePlugin struct {
 	skipEmptyRows             bool
 	promoteFirstRowToHeader   bool
 	convertPresentationTables bool
-	padColumns                PadColumnsBehavior
+	cellPaddingBehavior       CellPaddingBehavior
 }
 
 func (p *tablePlugin) setError(err error) {

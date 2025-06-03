@@ -112,7 +112,7 @@ func (cli *CLI) convert(input []byte) ([]byte, error) {
 				table.WithSpanCellBehavior(table.SpanCellBehavior(cli.config.tableSpanCellBehavior)),
 				table.WithPresentationTables(cli.config.tablePresentationTables),
 				table.WithNewlineBehavior(table.NewlineBehavior(cli.config.tableNewlineBehavior)),
-				table.WithPadColumns(table.PadColumnsBehavior(cli.config.tablePadColumns)),
+				table.WithCellPadding(table.CellPaddingBehavior(cli.config.tableCellPaddingBehavior)),
 			),
 		)
 	}

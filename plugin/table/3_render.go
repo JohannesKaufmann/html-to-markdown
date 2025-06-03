@@ -73,7 +73,7 @@ func (s *tablePlugin) writeHeaderUnderline(w converter.Writer, alignments []stri
 			w.WriteString("-")
 		}
 
-		if s.padColumns == PadColumnsBehaviorOn {
+		if s.cellPaddingBehavior == CellPaddingAligned {
 			w.WriteString(strings.Repeat("-", maxLength))
 		} else {
 			w.WriteString("-")
@@ -98,17 +98,17 @@ func (s *tablePlugin) writeRow(w converter.Writer, counts []int, cells [][]byte)
 		currentCount := utf8.RuneCount(cell)
 		filler := counts[i] - currentCount
 
-		if s.padColumns == PadColumnsBehaviorOn || s.padColumns == PadColumnsBehaviorSome {
+		if s.cellPaddingBehavior == CellPaddingAligned || s.cellPaddingBehavior == CellPaddingMinimal {
 			w.WriteString(" ")
 		}
 
 		w.Write(cell)
 
-		if s.padColumns == PadColumnsBehaviorOn && filler > 0 {
+		if s.cellPaddingBehavior == CellPaddingAligned && filler > 0 {
 			w.WriteString(strings.Repeat(" ", filler))
 		}
 
-		if s.padColumns == PadColumnsBehaviorOn || s.padColumns == PadColumnsBehaviorSome {
+		if s.cellPaddingBehavior == CellPaddingAligned || s.cellPaddingBehavior == CellPaddingMinimal {
 			w.WriteString(" ")
 		}
 
