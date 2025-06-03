@@ -72,14 +72,14 @@ Use a HTML sanitizer before displaying the HTML in the browser!
         Make bold text. Should <strong> be indicated by two asterisks or two underscores?
         "**" or "__" (default: "**")
 
+    --opt-table-cell-padding
+        [for --plugin-table] whether cells in the tables should include extra padding for visual continuity: "aligned", "minimal", or "none"
+
     --opt-table-header-promotion
         [for --plugin-table] first row should be treated as a header
 
     --opt-table-newline-behavior
         [for --plugin-table] how tables containing newlines should be handled: "skip" or "preserve"
-
-    --opt-table-pad-columns
-        [for --plugin-table] whether columns in the tables should include extra padding for visual continuity: "on" or "off"
 
     --opt-table-presentation-tables
         [for --plugin-table] whether tables with role="presentation" should be converted
