@@ -18,7 +18,7 @@ func TestGoldenFiles(t *testing.T) {
 				base.NewBasePlugin(),
 				commonmark.NewCommonmarkPlugin(),
 				NewTablePlugin(
-					WithPadColumns(PadColumnsBehaviorOn),
+					WithCellPadding(CellPaddingAligned),
 				),
 			),
 		)
@@ -36,7 +36,7 @@ func TestOptionFunc_Validation(t *testing.T) {
 			commonmark.NewCommonmarkPlugin(),
 			NewTablePlugin(
 				WithSpanCellBehavior("random"),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			),
 		),
 	)
@@ -66,7 +66,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 			desc: "default",
 			options: []option{
 				WithSpanCellBehavior(SpanBehaviorEmpty),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -88,7 +88,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 			desc: "colspan=3",
 			options: []option{
 				WithSpanCellBehavior(SpanBehaviorMirror),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -109,7 +109,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 			desc: "rowspan=3",
 			options: []option{
 				WithSpanCellBehavior(SpanBehaviorMirror),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -133,7 +133,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 			desc: "cell with colspan and rowspan",
 			options: []option{
 				WithSpanCellBehavior(SpanBehaviorMirror),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -156,7 +156,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 			desc: "shifting content",
 			options: []option{
 				WithSpanCellBehavior(SpanBehaviorMirror),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -184,7 +184,7 @@ func TestOptionFunc_ColRowSpan(t *testing.T) {
 			desc: "rowspans overlap with colspans",
 			options: []option{
 				WithSpanCellBehavior(SpanBehaviorMirror),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -247,7 +247,7 @@ func TestOptionFunc_EmptyRows(t *testing.T) {
 		{
 			desc: "by default keep empty rows",
 			options: []option{
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -277,7 +277,7 @@ func TestOptionFunc_EmptyRows(t *testing.T) {
 			desc: "some rows are empty",
 			options: []option{
 				WithSkipEmptyRows(true),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -310,7 +310,7 @@ func TestOptionFunc_EmptyRows(t *testing.T) {
 			desc: "all rows are empty",
 			options: []option{
 				WithSkipEmptyRows(true),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <p>Before</p>
@@ -345,7 +345,7 @@ After
 			desc: "element that is not rendered",
 			options: []option{
 				WithSkipEmptyRows(true),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <p>Before</p>
@@ -403,7 +403,7 @@ func TestOptionFunc_PromoteHeader(t *testing.T) {
 		{
 			desc: "default",
 			options: []option{
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -428,7 +428,7 @@ func TestOptionFunc_PromoteHeader(t *testing.T) {
 			desc: "not needed",
 			options: []option{
 				WithHeaderPromotion(true),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -458,7 +458,7 @@ func TestOptionFunc_PromoteHeader(t *testing.T) {
 			desc: "promote first row",
 			options: []option{
 				WithHeaderPromotion(true),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -482,7 +482,7 @@ func TestOptionFunc_PromoteHeader(t *testing.T) {
 			desc: "promote first row (but it is empty)",
 			options: []option{
 				WithHeaderPromotion(true),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -512,7 +512,7 @@ func TestOptionFunc_PromoteHeader(t *testing.T) {
 			options: []option{
 				WithHeaderPromotion(true),
 				WithSkipEmptyRows(true),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -572,7 +572,7 @@ func TestOptionFunc_PresentationTable(t *testing.T) {
 		{
 			desc: "default",
 			options: []option{
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table role="presentation">
@@ -596,7 +596,7 @@ B1 B2
 			desc: "keep the presentation table",
 			options: []option{
 				WithPresentationTables(true),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table role="presentation">
@@ -654,7 +654,7 @@ func TestTableWithNewlines(t *testing.T) {
 			desc: "with skip behavior (default)",
 			options: []option{
 				WithNewlineBehavior(NewlineBehaviorSkip),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -672,7 +672,7 @@ A12
 			desc: "with preserve behavior",
 			options: []option{
 				WithNewlineBehavior(NewlineBehaviorPreserve),
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -725,7 +725,7 @@ func TestOptionFunc_PadColumns(t *testing.T) {
 		{
 			desc: "with padding behavior (default)",
 			options: []option{
-				WithPadColumns(PadColumnsBehaviorOn),
+				WithCellPadding(CellPaddingAligned),
 			},
 			input: `
 <table>
@@ -749,7 +749,7 @@ func TestOptionFunc_PadColumns(t *testing.T) {
 		{
 			desc: "without padding behavior",
 			options: []option{
-				WithPadColumns(PadColumnsBehaviorOff),
+				WithCellPadding(CellPaddingNone),
 			},
 			input: `
 <table>
@@ -771,9 +771,9 @@ func TestOptionFunc_PadColumns(t *testing.T) {
 `,
 		},
 		{
-			desc: "without padding behavior",
+			desc: "with minimal padding behavior",
 			options: []option{
-				WithPadColumns(PadColumnsBehaviorSome),
+				WithCellPadding(CellPaddingMinimal),
 			},
 			input: `
 <table>
