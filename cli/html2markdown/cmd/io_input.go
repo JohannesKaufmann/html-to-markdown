@@ -25,25 +25,11 @@ func fileNameWithoutExtension(fileName string) string {
 var defaultBasename = "output"
 
 func (cli *CLI) listInputs() ([]*input, error) {
-	if cli.isStdinPipe && cli.config.inputFilepath != "" {
-		return nil, NewCLIError(
-			fmt.Errorf("cannot use both stdin and --input at the same time. Use either stdin or specify an input file, but not both"),
-		)
-	}
 
-	if cli.isStdinPipe {
-		data, err := io.ReadAll(cli.Stdin)
-		if err != nil {
-			return nil, err
-		}
-		return []*input{
-			{
-				inputFullFilepath: defaultBasename,
-				data:              data,
-			},
-		}, nil
-	}
-
+	// NOTE: When both stdin and --input are specified,
+	// the explicit --file argument takes precedence.
+	// This improves interoperability with other tools like `xargs`.
+	// https://github.com/JohannesKaufmann/html-to-markdown/issues/170
 	if cli.config.inputFilepath != "" {
 		matches, err := doublestar.FilepathGlob(cli.config.inputFilepath, doublestar.WithFilesOnly(), doublestar.WithNoFollow())
 		if err != nil {
@@ -76,6 +62,19 @@ func (cli *CLI) listInputs() ([]*input, error) {
 		}
 
 		return inputs, nil
+	}
+
+	if cli.isStdinPipe {
+		data, err := io.ReadAll(cli.Stdin)
+		if err != nil {
+			return nil, err
+		}
+		return []*input{
+			{
+				inputFullFilepath: defaultBasename,
+				data:              data,
+			},
+		}, nil
 	}
 
 	return nil, NewCLIError(

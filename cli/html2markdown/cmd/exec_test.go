@@ -493,7 +493,7 @@ func TestExecute(t *testing.T) {
 				modeStderr: modePipe,
 
 				inputStdin: []byte("<strong>stdin content</strong>"),
-				inputArgs:  []string{"html2markdown", "--input", filepath.Join(directoryPath, "website_a.html")},
+				inputArgs:  []string{"html2markdown", "--input", filepath.Join(directoryPath, "input", "website_a.html")},
 			},
 		},
 		{

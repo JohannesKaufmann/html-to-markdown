@@ -134,7 +134,6 @@ func (cli *CLI) run() ([]error, error) {
 	}
 
 	if len(cli.config.args) != 0 {
-
 		return nil, NewCLIError(
 			fmt.Errorf("unknown arguments: %s", strings.Join(cli.config.args, " ")),
 			Paragraph("Here is how you can use the CLI:"),
