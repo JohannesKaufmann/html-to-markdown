@@ -1,8 +1,6 @@
 module github.com/JohannesKaufmann/html-to-markdown/v2
 
-go 1.23.0
-
-toolchain go1.24.0
+go 1.24.0
 
 require (
 	github.com/JohannesKaufmann/dom v0.2.0
@@ -12,7 +10,7 @@ require (
 	github.com/muesli/termenv v0.16.0
 	github.com/sebdah/goldie/v2 v2.7.1
 	github.com/yuin/goldmark v1.7.13
-	golang.org/x/net v0.43.0
+	golang.org/x/net v0.44.0
 )
 
 require (
@@ -22,5 +20,5 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/sergi/go-diff v1.4.0 // indirect
-	golang.org/x/sys v0.35.0 // indirect
+	golang.org/x/sys v0.36.0 // indirect
 )
