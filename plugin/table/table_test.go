@@ -689,7 +689,7 @@ A12
 	}
 }
 
-func TestOptionFunc_PadColumns(t *testing.T) {
+func TestOptionFunc_CellPadding(t *testing.T) {
 	testCases := []struct {
 		desc     string
 		input    string

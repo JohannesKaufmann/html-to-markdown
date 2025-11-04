@@ -82,7 +82,7 @@ const (
 	CellPaddingNone CellPaddingBehavior = "none"
 )
 
-// WithPadColumns configures how to handle padding in table cells.
+// WithCellPadding configures how to handle padding in table cells.
 // When set to "aligned" (default), every cell's text is padded to the width of the largest cell in its column.
 // When set to "minimal", every cell gets a space at the beginning and end of the cell for some minimal padding.
 // When set to "none", no extra padding is applied to cells.
