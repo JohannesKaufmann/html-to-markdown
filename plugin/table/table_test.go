@@ -719,30 +719,6 @@ func TestOptionFunc_PadColumns(t *testing.T) {
 			`,
 		},
 		{
-			desc: "without padding behavior",
-			options: []option{
-				WithCellPadding(CellPaddingNone),
-			},
-			input: `
-<table>
-  <tr>
-    <td>This line has some way longer text than the other line below it.</td>
-    <td>A2</td>
-  </tr>
-  <tr>
-    <td>B1</td>
-    <td>This one has longer text than the line above.</td>
-  </tr>
-</table>
-			`,
-			expected: `
-|||
-|---|---|
-|This line has some way longer text than the other line below it.|A2|
-|B1|This one has longer text than the line above.|
-`,
-		},
-		{
 			desc: "with minimal padding behavior",
 			options: []option{
 				WithCellPadding(CellPaddingMinimal),
@@ -764,6 +740,30 @@ func TestOptionFunc_PadColumns(t *testing.T) {
 |---|---|
 | This line has some way longer text than the other line below it. | A2 |
 | B1 | This one has longer text than the line above. |
+`,
+		},
+		{
+			desc: "without padding behavior",
+			options: []option{
+				WithCellPadding(CellPaddingNone),
+			},
+			input: `
+<table>
+  <tr>
+    <td>This line has some way longer text than the other line below it.</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td>B1</td>
+    <td>This one has longer text than the line above.</td>
+  </tr>
+</table>
+			`,
+			expected: `
+|||
+|---|---|
+|This line has some way longer text than the other line below it.|A2|
+|B1|This one has longer text than the line above.|
 `,
 		},
 	}
