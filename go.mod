@@ -1,6 +1,6 @@
 module github.com/JohannesKaufmann/html-to-markdown/v2
 
-go 1.23.0
+go 1.24.0
 
 toolchain go1.25.3
 
