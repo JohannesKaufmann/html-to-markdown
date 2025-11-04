@@ -99,7 +99,7 @@ func WithCellPadding(behavior CellPaddingBehavior) option {
 			return nil
 
 		default:
-			return fmt.Errorf("unknown value %q for pad columns behavior", behavior)
+			return fmt.Errorf("unknown value %q for cell padding behavior", behavior)
 		}
 	}
 }
