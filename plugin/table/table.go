@@ -91,7 +91,7 @@ func WithCellPadding(behavior CellPaddingBehavior) option {
 		switch behavior {
 		case "":
 			// Allow empty string to default to "aligned"
-			p.cellPaddingBehavior = CellPaddingBehavior(CellPaddingAligned)
+			p.cellPaddingBehavior = CellPaddingAligned
 			return nil
 
 		case CellPaddingAligned, CellPaddingMinimal, CellPaddingNone:
@@ -163,7 +163,9 @@ func (p *tablePlugin) getError() error {
 }
 
 func NewTablePlugin(opts ...option) converter.Plugin {
-	plugin := &tablePlugin{}
+	plugin := &tablePlugin{
+		cellPaddingBehavior: CellPaddingAligned,
+	}
 	for _, opt := range opts {
 		err := opt(plugin)
 		if err != nil {
