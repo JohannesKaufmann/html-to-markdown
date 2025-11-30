@@ -71,6 +71,39 @@ func WithNewlineBehavior(behavior NewlineBehavior) option {
 	}
 }
 
+type CellPaddingBehavior string
+
+const (
+	// CellPaddingBehaviorAligned adds visual padding to cells to make each column equal width (default).
+	CellPaddingBehaviorAligned CellPaddingBehavior = "aligned"
+	// CellPaddingBehaviorMinimal keeps a very small amount of padding to balance table readability while also reducing character count.
+	CellPaddingBehaviorMinimal CellPaddingBehavior = "minimal"
+	// CellPaddingBehaviorNone refrains from adding the padding to the cells.
+	CellPaddingBehaviorNone CellPaddingBehavior = "none"
+)
+
+// WithCellPaddingBehavior configures how to handle padding in table cells.
+// When set to "aligned" (default), every cell's text is padded to the width of the largest cell in its column.
+// When set to "minimal", every cell gets a space at the beginning and end of the cell for some minimal padding.
+// When set to "none", no extra padding is applied to cells.
+func WithCellPaddingBehavior(behavior CellPaddingBehavior) option {
+	return func(p *tablePlugin) error {
+		switch behavior {
+		case "":
+			// Allow empty string to default to "aligned"
+			p.cellPaddingBehavior = CellPaddingBehaviorAligned
+			return nil
+
+		case CellPaddingBehaviorAligned, CellPaddingBehaviorMinimal, CellPaddingBehaviorNone:
+			p.cellPaddingBehavior = behavior
+			return nil
+
+		default:
+			return fmt.Errorf("unknown value %q for cell padding behavior", behavior)
+		}
+	}
+}
+
 // WithSkipEmptyRows configures the table plugin to omit empty rows from the output.
 // An empty row is defined as a row where all cells contain no content or only whitespace.
 // When set to true, empty rows will be omitted from the output. When false (default),
@@ -113,6 +146,7 @@ type tablePlugin struct {
 	skipEmptyRows             bool
 	promoteFirstRowToHeader   bool
 	convertPresentationTables bool
+	cellPaddingBehavior       CellPaddingBehavior
 }
 
 func (p *tablePlugin) setError(err error) {
@@ -129,7 +163,9 @@ func (p *tablePlugin) getError() error {
 }
 
 func NewTablePlugin(opts ...option) converter.Plugin {
-	plugin := &tablePlugin{}
+	plugin := &tablePlugin{
+		cellPaddingBehavior: CellPaddingBehaviorAligned,
+	}
 	for _, opt := range opts {
 		err := opt(plugin)
 		if err != nil {

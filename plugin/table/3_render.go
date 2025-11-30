@@ -73,7 +73,11 @@ func (s *tablePlugin) writeHeaderUnderline(w converter.Writer, alignments []stri
 			w.WriteString("-")
 		}
 
-		w.WriteString(strings.Repeat("-", maxLength))
+		if s.cellPaddingBehavior == CellPaddingBehaviorAligned {
+			w.WriteString(strings.Repeat("-", maxLength))
+		} else {
+			w.WriteString("-")
+		}
 
 		if align == "right" || align == "center" {
 			w.WriteString(":")
@@ -90,16 +94,24 @@ func (s *tablePlugin) writeRow(w converter.Writer, counts []int, cells [][]byte)
 		if isFirstCell {
 			w.WriteString("|")
 		}
-		w.WriteString(" ")
-		w.Write(cell)
 
 		currentCount := utf8.RuneCount(cell)
 		filler := counts[i] - currentCount
 
-		if filler > 0 {
+		if s.cellPaddingBehavior == CellPaddingBehaviorAligned || s.cellPaddingBehavior == CellPaddingBehaviorMinimal {
+			w.WriteString(" ")
+		}
+
+		w.Write(cell)
+
+		if s.cellPaddingBehavior == CellPaddingBehaviorAligned && filler > 0 {
 			w.WriteString(strings.Repeat(" ", filler))
 		}
 
-		w.WriteString(" |")
+		if s.cellPaddingBehavior == CellPaddingBehaviorAligned || s.cellPaddingBehavior == CellPaddingBehaviorMinimal {
+			w.WriteString(" ")
+		}
+
+		w.WriteString("|")
 	}
 }

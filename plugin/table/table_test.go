@@ -620,7 +620,7 @@ B1 B2
 	}
 }
 
-func TestTableWithNewlines(t *testing.T) {
+func TestOptionFunc_NewlineBehavior(t *testing.T) {
 	testCases := []struct {
 		desc     string
 		input    string
@@ -661,6 +661,110 @@ A12
 |                |                |
 |----------------|----------------|
 | A11  <br />A12 | B11  <br />B12 |
+`,
+		},
+	}
+
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			conv := converter.NewConverter(
+				converter.WithPlugins(
+					base.NewBasePlugin(),
+					commonmark.NewCommonmarkPlugin(),
+					NewTablePlugin(tC.options...),
+				),
+			)
+
+			output, err := conv.ConvertString(tC.input)
+			if err != nil {
+				t.Error(err)
+			}
+
+			actual := strings.TrimSpace(output)
+			expected := strings.TrimSpace(tC.expected)
+
+			if actual != expected {
+				t.Errorf("expected\n%s\nbut got\n%s\n", expected, actual)
+			}
+		})
+	}
+}
+
+func TestOptionFunc_CellPaddingBehavior(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		input    string
+		options  []option
+		expected string
+	}{
+		{
+			desc:    "with padding behavior (default)",
+			options: []option{},
+			input: `
+<table>
+  <tr>
+    <td>This line has some way longer text than the other line below it.</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td>B1</td>
+    <td>This one has longer text than the line above.</td>
+  </tr>
+</table>
+			`,
+			expected: `
+|                                                                  |                                               |
+|------------------------------------------------------------------|-----------------------------------------------|
+| This line has some way longer text than the other line below it. | A2                                            |
+| B1                                                               | This one has longer text than the line above. |
+			`,
+		},
+		{
+			desc: "with minimal padding behavior",
+			options: []option{
+				WithCellPaddingBehavior(CellPaddingBehaviorMinimal),
+			},
+			input: `
+<table>
+  <tr>
+    <td>This line has some way longer text than the other line below it.</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td>B1</td>
+    <td>This one has longer text than the line above.</td>
+  </tr>
+</table>
+			`,
+			expected: `
+|  |  |
+|---|---|
+| This line has some way longer text than the other line below it. | A2 |
+| B1 | This one has longer text than the line above. |
+`,
+		},
+		{
+			desc: "without padding behavior",
+			options: []option{
+				WithCellPaddingBehavior(CellPaddingBehaviorNone),
+			},
+			input: `
+<table>
+  <tr>
+    <td>This line has some way longer text than the other line below it.</td>
+    <td>A2</td>
+  </tr>
+  <tr>
+    <td>B1</td>
+    <td>This one has longer text than the line above.</td>
+  </tr>
+</table>
+			`,
+			expected: `
+|||
+|---|---|
+|This line has some way longer text than the other line below it.|A2|
+|B1|This one has longer text than the line above.|
 `,
 		},
 	}
