@@ -266,11 +266,11 @@ before[**already bold**](/)after
 
 before**[middle](/)**after
 
-before**[*inside bold &amp; italic*](/)**after
+before**[*inside bold & italic*](/)**after
 
-before***[inside bold &amp; italic](/)a*b**after
+before***[inside bold & italic](/)a*b**after
 
-before**[inside bold &amp; italic](/)**after
+before**[inside bold & italic](/)**after
 
 before**a*b[c](/)d*e**after
 

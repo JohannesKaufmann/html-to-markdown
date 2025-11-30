@@ -103,7 +103,10 @@ var characterEntityReplacer = strings.NewReplacer(
 	// care about fewer characters
 	"<", "&lt;",
 	">", "&gt;",
-	"&", "&amp;",
+
+	// Note: We are not escaping "&" as "&amp;" anymore.
+	// In most cases the "&" is completely fine.
+	// https://github.com/JohannesKaufmann/html-to-markdown/issues/178
 )
 
 func (b *base) handleTextTransform(ctx converter.Context, content string) string {
