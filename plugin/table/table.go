@@ -74,27 +74,27 @@ func WithNewlineBehavior(behavior NewlineBehavior) option {
 type CellPaddingBehavior string
 
 const (
-	// CellPaddingAligned adds visual padding to cells to make each column equal width (default).
-	CellPaddingAligned CellPaddingBehavior = "aligned"
-	// CellPaddingMinimal keeps a very small amount of padding to balance table readability while also reducing character count.
-	CellPaddingMinimal CellPaddingBehavior = "minimal"
-	// CellPaddingNone refrains from adding the padding to the cells.
-	CellPaddingNone CellPaddingBehavior = "none"
+	// CellPaddingBehaviorAligned adds visual padding to cells to make each column equal width (default).
+	CellPaddingBehaviorAligned CellPaddingBehavior = "aligned"
+	// CellPaddingBehaviorMinimal keeps a very small amount of padding to balance table readability while also reducing character count.
+	CellPaddingBehaviorMinimal CellPaddingBehavior = "minimal"
+	// CellPaddingBehaviorNone refrains from adding the padding to the cells.
+	CellPaddingBehaviorNone CellPaddingBehavior = "none"
 )
 
-// WithCellPadding configures how to handle padding in table cells.
+// WithCellPaddingBehavior configures how to handle padding in table cells.
 // When set to "aligned" (default), every cell's text is padded to the width of the largest cell in its column.
 // When set to "minimal", every cell gets a space at the beginning and end of the cell for some minimal padding.
 // When set to "none", no extra padding is applied to cells.
-func WithCellPadding(behavior CellPaddingBehavior) option {
+func WithCellPaddingBehavior(behavior CellPaddingBehavior) option {
 	return func(p *tablePlugin) error {
 		switch behavior {
 		case "":
 			// Allow empty string to default to "aligned"
-			p.cellPaddingBehavior = CellPaddingAligned
+			p.cellPaddingBehavior = CellPaddingBehaviorAligned
 			return nil
 
-		case CellPaddingAligned, CellPaddingMinimal, CellPaddingNone:
+		case CellPaddingBehaviorAligned, CellPaddingBehaviorMinimal, CellPaddingBehaviorNone:
 			p.cellPaddingBehavior = behavior
 			return nil
 
@@ -164,7 +164,7 @@ func (p *tablePlugin) getError() error {
 
 func NewTablePlugin(opts ...option) converter.Plugin {
 	plugin := &tablePlugin{
-		cellPaddingBehavior: CellPaddingAligned,
+		cellPaddingBehavior: CellPaddingBehaviorAligned,
 	}
 	for _, opt := range opts {
 		err := opt(plugin)

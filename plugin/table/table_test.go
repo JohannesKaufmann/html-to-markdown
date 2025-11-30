@@ -17,6 +17,7 @@ func TestGoldenFiles(t *testing.T) {
 			converter.WithPlugins(
 				base.NewBasePlugin(),
 				commonmark.NewCommonmarkPlugin(),
+				NewTablePlugin(),
 			),
 		)
 
@@ -619,7 +620,7 @@ B1 B2
 	}
 }
 
-func TestTableWithNewlines(t *testing.T) {
+func TestOptionFunc_NewlineBehavior(t *testing.T) {
 	testCases := []struct {
 		desc     string
 		input    string
@@ -689,7 +690,7 @@ A12
 	}
 }
 
-func TestOptionFunc_CellPadding(t *testing.T) {
+func TestOptionFunc_CellPaddingBehavior(t *testing.T) {
 	testCases := []struct {
 		desc     string
 		input    string
@@ -721,7 +722,7 @@ func TestOptionFunc_CellPadding(t *testing.T) {
 		{
 			desc: "with minimal padding behavior",
 			options: []option{
-				WithCellPadding(CellPaddingMinimal),
+				WithCellPaddingBehavior(CellPaddingBehaviorMinimal),
 			},
 			input: `
 <table>
@@ -745,7 +746,7 @@ func TestOptionFunc_CellPadding(t *testing.T) {
 		{
 			desc: "without padding behavior",
 			options: []option{
-				WithCellPadding(CellPaddingNone),
+				WithCellPaddingBehavior(CellPaddingBehaviorNone),
 			},
 			input: `
 <table>
