@@ -24,9 +24,9 @@
 
 [](/no_content)
 
-<!--no content but fallback-->
+<!--no content but title-->
 
-[link title](/no_content "link title")
+[](/no_content "link title")
 
 * * *
 
@@ -121,6 +121,18 @@ before [A](/) middle [B](/) after
 before [A](/) middle [B](/) after
 
 <!--------------------------------------
+        Anchor Links in Headings
+--------------------------------------->
+
+# [Introduction](#intro)
+
+# [](#intro)Introduction
+
+# Introduction [#](#intro)
+
+# [🔗](#intro) Introduction
+
+<!--------------------------------------
         Content and Combinations
 --------------------------------------->
 
@@ -200,7 +212,7 @@ second text](/page.html)
 
 <!--link with an svg-->
 
-[title](/ "title")
+[](/ "title")
 
 <!-- link and strong inside word -->
 

@@ -71,10 +71,6 @@ func (c *commonmark) renderLink(ctx converter.Context, w converter.Writer, n *ht
 	ctx.RenderChildNodes(ctx, &buf, n)
 	content := buf.Bytes()
 
-	if len(bytes.TrimSpace(content)) == 0 {
-		// Fallback to the title
-		content = []byte(l.title)
-	}
 	if len(bytes.TrimSpace(content)) == 0 && c.config.LinkEmptyContentBehavior == LinkBehaviorSkip {
 		// There is *no content* inside the link. Now we have two options:
 		// Continue rendering as a link OR skip to let other renderers take over.
