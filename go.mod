@@ -9,7 +9,7 @@ require (
 	github.com/bmatcuk/doublestar/v4 v4.9.1
 	github.com/muesli/termenv v0.16.0
 	github.com/sebdah/goldie/v2 v2.8.0
-	github.com/yuin/goldmark v1.7.13
+	github.com/yuin/goldmark v1.7.16
 	golang.org/x/net v0.47.0
 )
 
