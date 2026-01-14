@@ -122,7 +122,7 @@ func Collapse(element *html.Node, domFuncs *DomFuncs) {
 			var text = replaceAnyWhitespaceWithSpace(node.Data)
 
 			if (prevText == nil || strings.HasSuffix(prevText.Data, " ")) &&
-				!keepLeadingWs && text[0] == ' ' {
+				!keepLeadingWs && text!= "" && text[0] == ' ' {
 				text = text[1:]
 			}
 
