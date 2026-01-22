@@ -101,8 +101,8 @@ func fillDefaultDomFuncs(domFuncs *DomFuncs) *DomFuncs {
 		domFuncs.IsPreformattedNode = defaultIsPreformattedNode
 	}
 	return domFuncs
-
 }
+
 func Collapse(element *html.Node, domFuncs *DomFuncs) {
 	domFuncs = fillDefaultDomFuncs(domFuncs)
 	// - - - - - - - - - - - - - - - - - - //
@@ -122,7 +122,7 @@ func Collapse(element *html.Node, domFuncs *DomFuncs) {
 			var text = replaceAnyWhitespaceWithSpace(node.Data)
 
 			if (prevText == nil || strings.HasSuffix(prevText.Data, " ")) &&
-				!keepLeadingWs && text!= "" && text[0] == ' ' {
+				!keepLeadingWs && text != "" && text[0] == ' ' {
 				text = text[1:]
 			}
 
