@@ -108,6 +108,35 @@ span
 	`)
 }
 
+func TestCollapse_EmptyTextNode(t *testing.T) {
+	input := `<html><body>  <span>Hello </span> <span> World </span></body></html>`
+
+	doc, err := html.Parse(strings.NewReader(input))
+	if err != nil {
+		t.Error(err)
+	}
+
+	for d := range doc.Descendants() {
+		if d.Type == html.TextNode {
+			d.Data = ""
+			break
+		}
+	}
+
+	Collapse(doc, nil)
+
+	tester.ExpectRepresentation(t, doc, "after", `
+#document
+├─html
+│ ├─head
+│ ├─body
+│ │ ├─span
+│ │ │ ├─#text "Hello "
+│ │ ├─span
+│ │ │ ├─#text "World"
+	`)
+}
+
 func TestCollapse_Table(t *testing.T) {
 	runs := []struct {
 		desc  string
