@@ -16,17 +16,20 @@ var (
 
 func main() {
 	// Fall back to build info when ldflags are not set by goreleaser.
-	// This makes `go install` report the correct module version and
-	// `go build` report the VCS commit hash.
+	// This makes `go install` and `go build` report some appropriate fallback values.
 	if info, ok := debug.ReadBuildInfo(); ok {
 		if version == "unknown" && info.Main.Version != "" && info.Main.Version != "(devel)" {
 			version = info.Main.Version
 		}
-		if commit == "unknown" {
-			for _, s := range info.Settings {
-				if s.Key == "vcs.revision" && len(s.Value) >= 7 {
+		for _, s := range info.Settings {
+			switch s.Key {
+			case "vcs.revision":
+				if commit == "unknown" && len(s.Value) >= 7 {
 					commit = s.Value[:7]
-					break
+				}
+			case "vcs.time":
+				if date == "unknown" && s.Value != "" {
+					date = s.Value // e.g. "2026-05-07T19:14:37Z"
 				}
 			}
 		}
