@@ -108,6 +108,46 @@ span
 	`)
 }
 
+func TestCollapse_EmptyTextNode(t *testing.T) {
+	bodyNode := &html.Node{
+		Type: html.ElementNode,
+		Data: "body",
+	}
+	emptyText := &html.Node{
+		Type: html.TextNode,
+		// An empty text node. This shouldn't happen normally
+		// by the native `html.Parse` but could happen when
+		// other libraries (like `go-trafilatura`) manipulate the dom.
+		Data: "",
+	}
+	spanNode := &html.Node{
+		Type: html.ElementNode,
+		Data: "span",
+	}
+	helloText := &html.Node{
+		Type: html.TextNode,
+		Data: "Hello",
+	}
+	spanNode.AppendChild(helloText)
+	bodyNode.AppendChild(emptyText)
+	bodyNode.AppendChild(spanNode)
+
+	tester.ExpectRepresentation(t, bodyNode, "before", `
+body
+├─#text ""
+├─span
+│ ├─#text "Hello"
+	`)
+
+	Collapse(bodyNode, nil)
+
+	tester.ExpectRepresentation(t, bodyNode, "after", `
+body
+├─span
+│ ├─#text "Hello"
+	`)
+}
+
 func TestCollapse_Table(t *testing.T) {
 	runs := []struct {
 		desc  string
