@@ -328,6 +328,14 @@ _(The cli does not support every option yet. Over time more customization will b
 
 ## FAQ
 
+### Character Encoding
+
+Regardless of which method you use (`ConvertString()`, `ConvertNode()`, etc.), the input is expected to _already_ be UTF-8 encoded. Under the hood, Go's `html.Parse()` is used to build the DOM and it requires UTF-8. It does not detect or convert other charsets.
+
+If your HTML uses a different charset (e.g. `ISO-8859-1`, `Windows-1252`), the replacement character `�` may appear in the output instead of the correct letters.
+
+This library does not handle charset detection or conversion. It is your responsibility to decode the HTML to UTF-8 before passing it in. When fetching HTML over HTTP, the `Content-Type` header tells you the charset. When reading from a file, you may need to detect it from `<meta>` tags or by inspecting the bytes. The [`golang.org/x/net/html/charset`](https://pkg.go.dev/golang.org/x/net/html/charset) package can help with these cases.
+
 ### Extending with Plugins
 
 - Need your own logic? Write your own code and then **register** it.
