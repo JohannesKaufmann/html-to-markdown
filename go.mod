@@ -3,14 +3,14 @@ module github.com/JohannesKaufmann/html-to-markdown/v2
 go 1.25.0
 
 require (
-	github.com/JohannesKaufmann/dom v0.2.0
+	github.com/JohannesKaufmann/dom v0.3.1
 	github.com/agnivade/levenshtein v1.2.1
-	github.com/andybalholm/cascadia v1.3.3
+	github.com/andybalholm/cascadia v1.3.4
 	github.com/bmatcuk/doublestar/v4 v4.10.0
 	github.com/muesli/termenv v0.16.0
 	github.com/sebdah/goldie/v2 v2.8.0
 	github.com/yuin/goldmark v1.8.2
-	golang.org/x/net v0.53.0
+	golang.org/x/net v0.55.0
 )
 
 require (
@@ -20,5 +20,5 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/sergi/go-diff v1.4.0 // indirect
-	golang.org/x/sys v0.43.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
 )
