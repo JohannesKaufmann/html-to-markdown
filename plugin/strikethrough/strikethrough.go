@@ -55,6 +55,8 @@ func (s *strikethroughPlugin) Init(conv *converter.Converter) error {
 func (s *strikethroughPlugin) handlePreRender(ctx converter.Context, doc *html.Node) {
 	domutils.RemoveRedundant(doc, nameIsBothStrikethough)
 	domutils.MergeAdjacent(doc, nameIsStrikethough)
+
+	domutils.MovePunctuation(ctx, doc, nameIsStrikethough)
 }
 
 func (s *strikethroughPlugin) handleUnEscapers(chars []byte, index int) int {

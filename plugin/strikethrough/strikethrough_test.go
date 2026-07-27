@@ -42,6 +42,21 @@ func TestNewStrikethroughPlugin(t *testing.T) {
 			input:    `<p><s>A</s><s>B</s> <s>C</s></p>`,
 			expected: `~~AB~~ ~~C~~`,
 		},
+		{
+			desc:     "punctuation at the start",
+			input:    `<p>before<s>.middle</s>after</p>`,
+			expected: `before.~~middle~~after`,
+		},
+		{
+			desc:     "punctuation at the end",
+			input:    `<p>before<s>middle.</s>after</p>`,
+			expected: `before~~middle~~.after`,
+		},
+		{
+			desc:     "a space already does the job",
+			input:    `<p>before <s>.middle.</s> after</p>`,
+			expected: `before ~~.middle.~~ after`,
+		},
 	}
 	for _, run := range runs {
 		t.Run(run.desc, func(t *testing.T) {
