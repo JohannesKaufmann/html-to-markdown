@@ -72,7 +72,7 @@ func (c *commonmark) handlePreRender(ctx converter.Context, doc *html.Node) {
 	domutils.RemoveRedundant(doc, nameIsBothBoldOrItalic)
 	domutils.MergeAdjacent(doc, nameIsBoldOrItalic)
 
-	// domutils.MovePunctuation(ctx, doc, nameIsBoldOrItalic)
+	domutils.MovePunctuation(ctx, doc, nameIsBoldOrItalic)
 
 	// - - - Code - - - //
 	domutils.RemoveEmptyCode(ctx, doc)

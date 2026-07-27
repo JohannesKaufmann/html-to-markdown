@@ -94,11 +94,11 @@ before*middle*after
 
 * * *
 
-before*.middle*after
+before.*middle*after
 
-before*middle.*after
+before*middle*.after
 
-before*.middle.*after
+before.*middle*.after
 
 * * *
 
@@ -110,25 +110,25 @@ before *.middle.* after
 
 * * *
 
-before*?!!middle?!!*after
+before?*!!middle?!*!after
 
 * * *
 
 before-*middle*-after
 
-before*-middle-*after
+before-*middle*-after
 
 * * *
 
-check it out*.*
+check it out.
 
-check it out*?*
+check it out?
 
-check it out*!!!*
+check it out!*!!*
 
-*!*just after
+!just after
 
-just before*!*
+just before!
 
 * * *
 
