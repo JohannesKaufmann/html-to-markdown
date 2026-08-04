@@ -5,7 +5,80 @@ import (
 	"testing"
 )
 
-func TestCalculateMaxCounts(t *testing.T) {
+func TestCellDisplayWidth(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		input    string
+		expected int
+	}{
+		{
+			desc:     "ascii",
+			input:    "abc",
+			expected: 3,
+		},
+		{
+			desc:     "cjk",
+			input:    "名稱",
+			expected: 4,
+		},
+		{
+			desc:     "combining sequence",
+			input:    "e\u0301",
+			expected: 1,
+		},
+		{
+			desc:     "emoji",
+			input:    "\U0001F60A",
+			expected: 2,
+		},
+		{
+			desc:     "zwj emoji",
+			input:    "\U0001F468\u200D\U0001F469\u200D\U0001F467\u200D\U0001F466",
+			expected: 2,
+		},
+		{
+			desc:     "empty",
+			input:    "",
+			expected: 0,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			output := cellDisplayWidth([]byte(tC.input))
+
+			if output != tC.expected {
+				t.Errorf("expected %d but got %d", tC.expected, output)
+			}
+		})
+	}
+}
+
+func TestCalculateMaxWidths_Unicode(t *testing.T) {
+	a := [][][]byte{
+		{
+			[]byte("Name"),       // 4
+			[]byte("\U0001F60A"), // 2
+			[]byte("e\u0301"),    // 1
+		},
+		{
+			[]byte("名稱"),   // 4
+			[]byte("abcd"), // 4 <--
+			[]byte("ab"),   // 2 <--
+		},
+		{
+			[]byte("名稱名稱"), // 8 <--
+		},
+	}
+
+	output := calculateMaxWidths(a)
+	expected := []int{8, 4, 2}
+
+	if !reflect.DeepEqual(output, expected) {
+		t.Errorf("expected %+v but got %v", expected, output)
+	}
+}
+
+func TestCalculateMaxWidths(t *testing.T) {
 	a := [][][]byte{
 		{
 			[]byte("Company A"),  //  9
@@ -22,7 +95,7 @@ func TestCalculateMaxCounts(t *testing.T) {
 		},
 	}
 
-	output := calculateMaxCounts(a)
+	output := calculateMaxWidths(a)
 	expected := []int{15, 10, 6}
 
 	if !reflect.DeepEqual(output, expected) {
@@ -48,11 +121,11 @@ func TestFillUpRows(t *testing.T) {
 		},
 	}
 
-	counts := calculateMaxCounts(input)
-	t.Log("counts:", counts)
+	widths := calculateMaxWidths(input)
+	t.Log("widths:", widths)
 
 	// - - - - - - - - - - - - - - - - - - - - //
-	maxColumnCount := len(counts)
+	maxColumnCount := len(widths)
 
 	output := fillUpRows(input, maxColumnCount)
 	expected := [][][]byte{

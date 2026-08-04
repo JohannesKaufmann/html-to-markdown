@@ -2,6 +2,7 @@ package table
 
 import (
 	"bytes"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -9,6 +10,7 @@ import (
 	"github.com/JohannesKaufmann/html-to-markdown/v2/internal/tester"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/base"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/plugin/commonmark"
+	"github.com/rivo/uniseg"
 )
 
 func TestGoldenFiles(t *testing.T) {
@@ -792,4 +794,168 @@ func TestOptionFunc_CellPaddingBehavior(t *testing.T) {
 			}
 		})
 	}
+}
+
+// Characters where the number of runes does *not* match
+// the width that is displayed in a monospace environment.
+const (
+	// "é" written as "e" followed by a combining accent. Two runes, one column.
+	combiningE = "e\u0301"
+	// "😊" is one rune but occupies two columns.
+	emojiSmile = "\U0001F60A"
+	// "👨‍👩‍👧‍👦" is a grapheme cluster of seven runes that occupies two columns.
+	emojiFamily = "\U0001F468\u200D\U0001F469\u200D\U0001F467\u200D\U0001F466"
+)
+
+func TestCellPaddingBehavior_DisplayWidth(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		input    string
+		options  []option
+		expected string
+
+		// Only the aligned behavior is supposed to line up the delimiters.
+		checkAlignment bool
+	}{
+		{
+			desc:           "cjk and ascii in the same column",
+			options:        []option{},
+			checkAlignment: true,
+			input: `
+<table>
+  <tr><th>Name</th><th>Value</th></tr>
+  <tr><td>名稱</td><td>1</td></tr>
+  <tr><td>abc</td><td>2</td></tr>
+</table>
+			`,
+			expected: `
+| Name | Value |
+|------|-------|
+| 名稱 | 1     |
+| abc  | 2     |
+			`,
+		},
+		{
+			desc:           "emoji, combining characters and ascii in the same column",
+			options:        []option{},
+			checkAlignment: true,
+			input: `
+<table>
+  <tr><th>Icon</th><th>Label</th></tr>
+  <tr><td>` + emojiSmile + `</td><td>emoji</td></tr>
+  <tr><td>` + emojiFamily + `</td><td>zwj</td></tr>
+  <tr><td>` + combiningE + `</td><td>combining</td></tr>
+  <tr><td>ab</td><td>ascii</td></tr>
+</table>
+			`,
+			expected: `
+| Icon | Label     |
+|------|-----------|
+| ` + emojiSmile + `   | emoji     |
+| ` + emojiFamily + `   | zwj       |
+| ` + combiningE + `    | combining |
+| ab   | ascii     |
+			`,
+		},
+		{
+			desc: "minimal padding is not affected by the display width",
+			options: []option{
+				WithCellPaddingBehavior(CellPaddingBehaviorMinimal),
+			},
+			input: `
+<table>
+  <tr><th>Name</th><th>Value</th></tr>
+  <tr><td>名稱</td><td>1</td></tr>
+  <tr><td>abc</td><td>2</td></tr>
+</table>
+			`,
+			expected: `
+| Name | Value |
+|---|---|
+| 名稱 | 1 |
+| abc | 2 |
+			`,
+		},
+		{
+			desc: "no padding is not affected by the display width",
+			options: []option{
+				WithCellPaddingBehavior(CellPaddingBehaviorNone),
+			},
+			input: `
+<table>
+  <tr><th>Name</th><th>Value</th></tr>
+  <tr><td>名稱</td><td>1</td></tr>
+  <tr><td>abc</td><td>2</td></tr>
+</table>
+			`,
+			expected: `
+|Name|Value|
+|---|---|
+|名稱|1|
+|abc|2|
+			`,
+		},
+	}
+
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			conv := converter.NewConverter(
+				converter.WithPlugins(
+					base.NewBasePlugin(),
+					commonmark.NewCommonmarkPlugin(),
+					NewTablePlugin(tC.options...),
+				),
+			)
+
+			output, err := conv.ConvertString(tC.input)
+			if err != nil {
+				t.Error(err)
+			}
+
+			actual := strings.TrimSpace(output)
+			expected := strings.TrimSpace(tC.expected)
+
+			if actual != expected {
+				t.Errorf("expected\n%s\nbut got\n%s\n", expected, actual)
+			}
+
+			if tC.checkAlignment {
+				assertDelimitersAligned(t, actual)
+			}
+		})
+	}
+}
+
+// assertDelimitersAligned checks that every "|" of the markdown table
+// is at the same display column in every line.
+func assertDelimitersAligned(t *testing.T, table string) {
+	t.Helper()
+
+	var firstLine string
+	var firstColumns []int
+	for _, line := range strings.Split(table, "\n") {
+		columns := delimiterColumns(line)
+
+		if firstColumns == nil {
+			firstLine = line
+			firstColumns = columns
+			continue
+		}
+		if !reflect.DeepEqual(columns, firstColumns) {
+			t.Errorf("the delimiters of\n%s\nare at the columns %v but the delimiters of\n%s\nare at the columns %v", firstLine, firstColumns, line, columns)
+		}
+	}
+}
+
+// delimiterColumns returns the display column of every "|" in the line.
+func delimiterColumns(line string) []int {
+	columns := make([]int, 0)
+
+	column := 0
+	for _, cluster := range strings.Split(line, "|") {
+		columns = append(columns, column+uniseg.StringWidth(cluster))
+		column += uniseg.StringWidth(cluster) + 1
+	}
+	// The part after the last "|" is not a delimiter.
+	return columns[:len(columns)-1]
 }

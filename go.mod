@@ -8,6 +8,7 @@ require (
 	github.com/andybalholm/cascadia v1.3.4
 	github.com/bmatcuk/doublestar/v4 v4.10.0
 	github.com/muesli/termenv v0.16.0
+	github.com/rivo/uniseg v0.4.7
 	github.com/sebdah/goldie/v2 v2.8.0
 	github.com/yuin/goldmark v1.8.2
 	golang.org/x/net v0.55.0
@@ -18,7 +19,6 @@ require (
 	github.com/lucasb-eyer/go-colorful v1.4.0 // indirect
 	github.com/mattn/go-isatty v0.0.22 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/sergi/go-diff v1.4.0 // indirect
 	golang.org/x/sys v0.45.0 // indirect
 )

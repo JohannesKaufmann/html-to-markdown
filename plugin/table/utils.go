@@ -3,9 +3,9 @@ package table
 import (
 	"slices"
 	"strconv"
-	"unicode/utf8"
 
 	"github.com/JohannesKaufmann/dom"
+	"github.com/rivo/uniseg"
 	"golang.org/x/net/html"
 )
 
@@ -13,23 +13,30 @@ import (
 // This also ensures that the table is correctly *recognized* as a markdown table.
 const defaultCellWidth = 1
 
-func calculateMaxCounts(rows [][][]byte) []int {
-	maxCounts := make([]int, 0)
+// cellDisplayWidth returns how many terminal cells the content occupies.
+// This differs from the number of runes for e.g. CJK characters, emojis
+// and combining characters.
+func cellDisplayWidth(cell []byte) int {
+	return uniseg.StringWidth(string(cell))
+}
+
+func calculateMaxWidths(rows [][][]byte) []int {
+	maxWidths := make([]int, 0)
 
 	for _, cells := range rows {
 		for index, cell := range cells {
-			count := utf8.RuneCount(cell)
+			width := cellDisplayWidth(cell)
 
-			if index >= len(maxCounts) {
-				maxCounts = append(maxCounts, defaultCellWidth)
+			if index >= len(maxWidths) {
+				maxWidths = append(maxWidths, defaultCellWidth)
 			}
-			currentMax := maxCounts[index]
-			if count > currentMax {
-				maxCounts[index] = count
+			currentMaxWidth := maxWidths[index]
+			if width > currentMaxWidth {
+				maxWidths[index] = width
 			}
 		}
 	}
-	return maxCounts
+	return maxWidths
 }
 
 func fillUpRows(rows [][][]byte, maxColumnCount int) [][][]byte {
