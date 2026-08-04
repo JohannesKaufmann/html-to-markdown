@@ -2,7 +2,6 @@ package table
 
 import (
 	"strings"
-	"unicode/utf8"
 
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
 	"golang.org/x/net/html"
@@ -19,24 +18,24 @@ func (p *tablePlugin) renderTable(ctx converter.Context, w converter.Writer, n *
 
 	// Sometimes we pad the cells with extra spaces (e.g. "| text    |").
 	// For that we first need to know the maximum width of every column.
-	counts := calculateMaxCounts(table.Rows)
+	widths := calculateMaxWidths(table.Rows)
 
 	// Sometimes a row contains less cells that another row.
 	// We then fill it up with empty cells (e.g. "| text |     |").
-	table.Rows = fillUpRows(table.Rows, len(counts))
+	table.Rows = fillUpRows(table.Rows, len(widths))
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
 	w.WriteString("\n\n")
 	// - - - Header - - - //
-	p.writeRow(w, counts, table.Rows[0])
+	p.writeRow(w, widths, table.Rows[0])
 	w.WriteString("\n")
-	p.writeHeaderUnderline(w, table.Alignments, counts)
+	p.writeHeaderUnderline(w, table.Alignments, widths)
 	w.WriteString("\n")
 
 	// - - - Body - - - //
 	for _, cells := range table.Rows[1:] {
-		p.writeRow(w, counts, cells)
+		p.writeRow(w, widths, cells)
 		w.WriteString("\n")
 	}
 
@@ -59,8 +58,8 @@ func getAlignmentFor(alignments []string, index int) string {
 
 	return alignments[index]
 }
-func (s *tablePlugin) writeHeaderUnderline(w converter.Writer, alignments []string, counts []int) {
-	for i, maxLength := range counts {
+func (s *tablePlugin) writeHeaderUnderline(w converter.Writer, alignments []string, widths []int) {
+	for i, maxWidth := range widths {
 		align := getAlignmentFor(alignments, i)
 
 		isFirstCell := i == 0
@@ -74,7 +73,7 @@ func (s *tablePlugin) writeHeaderUnderline(w converter.Writer, alignments []stri
 		}
 
 		if s.cellPaddingBehavior == CellPaddingBehaviorAligned {
-			w.WriteString(strings.Repeat("-", maxLength))
+			w.WriteString(strings.Repeat("-", maxWidth))
 		} else {
 			w.WriteString("-")
 		}
@@ -88,15 +87,15 @@ func (s *tablePlugin) writeHeaderUnderline(w converter.Writer, alignments []stri
 	}
 }
 
-func (s *tablePlugin) writeRow(w converter.Writer, counts []int, cells [][]byte) {
+func (s *tablePlugin) writeRow(w converter.Writer, widths []int, cells [][]byte) {
 	for i, cell := range cells {
 		isFirstCell := i == 0
 		if isFirstCell {
 			w.WriteString("|")
 		}
 
-		currentCount := utf8.RuneCount(cell)
-		filler := counts[i] - currentCount
+		currentWidth := cellDisplayWidth(cell)
+		filler := widths[i] - currentWidth
 
 		if s.cellPaddingBehavior == CellPaddingBehaviorAligned || s.cellPaddingBehavior == CellPaddingBehaviorMinimal {
 			w.WriteString(" ")
