@@ -7,7 +7,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-func hasTextChildNodes(startNode *html.Node) bool {
+func HasTextChildNodes(startNode *html.Node) bool {
 	var found bool
 
 	var finder func(*html.Node)
@@ -25,10 +25,28 @@ func hasTextChildNodes(startNode *html.Node) bool {
 	return found
 }
 
+func hasTextChildNodes(startNode *html.Node) bool {
+	return HasTextChildNodes(startNode)
+}
+
+func IsInsidePre(node *html.Node) bool {
+	for p := node.Parent; p != nil; p = p.Parent {
+		if dom.NodeName(p) == "pre" {
+			return true
+		}
+	}
+	return false
+}
+
 func RemoveEmptyCode(ctx context.Context, doc *html.Node) {
 	node := doc
 	for node != nil {
 		if dom.NodeName(node) == "code" && !hasTextChildNodes(node) {
+			if IsInsidePre(node) {
+				node = dom.GetNextNeighborNode(node)
+				continue
+			}
+
 			next := dom.GetNextNeighborNodeExcludingOwnChild(node)
 
 			dom.RemoveNode(node)

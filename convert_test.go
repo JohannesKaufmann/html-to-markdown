@@ -56,6 +56,71 @@ func ExampleConvertNode() {
 	// Output: **Bold Text**
 }
 
+func TestConvertString_MultiLineCodeNodes(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		input    string
+		expected string
+	}{
+		{
+			desc:     "multiple adjacent code tags in pre block",
+			input:    "<pre><code>c1</code><code>c2</code></pre>",
+			expected: "```\nc1\nc2\n```",
+		},
+		{
+			desc:     "code snippet with data-lang and nested span elements",
+			input:    `<section class="code-snippet__fix code-snippet__js"><ul class="code-snippet__line-index code-snippet__js"><li></li><li></li></ul><pre class="code-snippet__js" data-lang="javascript"><code><span leaf="">git config --<span class="code-snippet__variable">global</span>&nbsp;user.<span class="code-snippet__property">name</span>&nbsp;<span class="code-snippet__string">"Your Gitee Name"</span></span></code><code><span leaf="">git config --<span class="code-snippet__variable">global</span>&nbsp;user.<span class="code-snippet__property">email</span>&nbsp;<span class="code-snippet__string">"Your Gitee Email"</span></span></code></pre></section>`,
+			expected: "```javascript\ngit config --global\u00a0user.name\u00a0\"Your Gitee Name\"\ngit config --global\u00a0user.email\u00a0\"Your Gitee Email\"\n```",
+		},
+		{
+			desc:     "multiple code tags with empty line in between",
+			input:    "<pre><code>line 1</code><code></code><code>line 3</code></pre>",
+			expected: "```\nline 1\n\nline 3\n```",
+		},
+		{
+			desc:     "multiple code tags with existing newline separator",
+			input:    "<pre><code>line 1</code>\n<code>line 2</code></pre>",
+			expected: "```\nline 1\nline 2\n```",
+		},
+		{
+			desc:     "single code tag in pre block remains unchanged",
+			input:    "<pre><code>single line</code></pre>",
+			expected: "```\nsingle line\n```",
+		},
+		{
+			desc:     "pre block with data-language attribute",
+			input:    `<pre data-language="python"><code>def foo():</code><code>    pass</code></pre>`,
+			expected: "```python\ndef foo():\n    pass\n```",
+		},
+		{
+			desc:     "div elements inside pre block",
+			input:    "<pre><div>line 1</div><div>line 2</div></pre>",
+			expected: "```\nline 1\nline 2\n```",
+		},
+		{
+			desc:     "br element inside code block",
+			input:    "<pre><code>line 1<br>line 2</code></pre>",
+			expected: "```\nline 1\nline 2\n```",
+		},
+		{
+			desc:     "adjacent inline code outside pre block is still merged",
+			input:    "<div>before<code>A</code><code>B</code>after</div>",
+			expected: "before`AB`after",
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			output, err := htmltomarkdown.ConvertString(tC.input)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if output != tC.expected {
+				t.Errorf("expected %q but got %q", tC.expected, output)
+			}
+		})
+	}
+}
+
 func TestConvertString_WindowsCarriageReturn(t *testing.T) {
 	testCases := []struct {
 		desc string

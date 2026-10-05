@@ -7,6 +7,7 @@ import (
 
 	"github.com/JohannesKaufmann/dom"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/converter"
+	"github.com/JohannesKaufmann/html-to-markdown/v2/internal/domutils"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/internal/textutils"
 	"github.com/JohannesKaufmann/html-to-markdown/v2/marker"
 	"golang.org/x/net/html"
@@ -91,6 +92,13 @@ func (c *commonmark) renderBlockCode(_ converter.Context, w converter.Writer, n 
 }
 
 func getCodeLanguage(n *html.Node) string {
+	if lang := dom.GetAttributeOr(n, "data-lang", ""); lang != "" {
+		return lang
+	}
+	if lang := dom.GetAttributeOr(n, "data-language", ""); lang != "" {
+		return lang
+	}
+
 	class := dom.GetAttributeOr(n, "class", "")
 
 	parts := strings.Split(class, " ")
@@ -107,9 +115,31 @@ func getCodeLanguage(n *html.Node) string {
 
 	return ""
 }
+
+func countCodeElements(root *html.Node) int {
+	var count int
+	var f func(*html.Node)
+	f = func(n *html.Node) {
+		if n != root && n.Type == html.ElementNode && n.Data == "code" {
+			count++
+		}
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			f(c)
+		}
+	}
+	f(root)
+	return count
+}
+
 func getCodeWithoutTags(startNode *html.Node) ([]byte, string) {
 	var buf bytes.Buffer
 	var infoString string
+
+	isPre := startNode.Type == html.ElementNode && startNode.Data == "pre"
+	codeCount := 0
+	if isPre {
+		codeCount = countCodeElements(startNode)
+	}
 
 	var f func(*html.Node)
 	f = func(n *html.Node) {
@@ -126,8 +156,20 @@ func getCodeWithoutTags(startNode *html.Node) ([]byte, string) {
 		if n.Type == html.ElementNode && (n.Data == "style" || n.Data == "script" || n.Data == "textarea") {
 			return
 		}
-		if n.Type == html.ElementNode && (n.Data == "br" || n.Data == "div") {
-			buf.WriteString("\n")
+		if n.Type == html.ElementNode {
+			if n.Data == "br" {
+				buf.WriteString("\n")
+			} else if n.Data == "div" || n.Data == "p" || n.Data == "li" {
+				if buf.Len() > 0 && !bytes.HasSuffix(buf.Bytes(), []byte("\n")) {
+					buf.WriteString("\n")
+				}
+			} else if n.Data == "code" && isPre && codeCount > 1 {
+				if n.PrevSibling != nil && n.PrevSibling.Type == html.ElementNode && n.PrevSibling.Data == "code" && !domutils.HasTextChildNodes(n.PrevSibling) {
+					buf.WriteString("\n")
+				} else if buf.Len() > 0 && !bytes.HasSuffix(buf.Bytes(), []byte("\n")) {
+					buf.WriteString("\n")
+				}
+			}
 		}
 
 		if n.Type == html.TextNode {
