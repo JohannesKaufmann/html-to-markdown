@@ -35,6 +35,9 @@ func nameIsPre(node *html.Node) bool {
 	return name == "pre"
 }
 func nameIsInlineCode(node *html.Node) bool {
+	if domutils.IsInsidePre(node) {
+		return false
+	}
 	name := dom.NodeName(node)
 	return name == "code" || name == "var" || name == "samp" || name == "kbd" || name == "tt"
 }
