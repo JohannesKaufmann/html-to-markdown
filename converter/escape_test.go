@@ -53,3 +53,21 @@ func TestUnEscapeContent(t *testing.T) {
 		t.Error("expected different characters")
 	}
 }
+
+func TestLiteralBellRoundTrip(t *testing.T) {
+	conv := NewConverter()
+	conv.Register.EscapedChar('*')
+	conv.Register.UnEscaper(func(chars []byte, index int) int {
+		if index >= len(chars) || chars[index] != '*' {
+			return -1
+		}
+		return 1
+	}, PriorityStandard)
+
+	input := []byte{'a', placeholderByte, '*', 'b'}
+	got := conv.unEscapeContent(conv.escapeContent(input))
+	want := []byte{'a', placeholderByte, '\\', '*', 'b'}
+	if string(got) != string(want) {
+		t.Fatalf("got %q, want %q", got, want)
+	}
+}
