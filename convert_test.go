@@ -56,6 +56,29 @@ func ExampleConvertNode() {
 	// Output: **Bold Text**
 }
 
+func TestLiteralBellSurvives(t *testing.T) {
+	bell := "\a"
+	cases := []struct {
+		in   string
+		want string
+	}{
+		{in: "<p>a" + bell + "b</p>", want: "a" + bell + "b"},
+		{in: "<p>a" + bell + "*b</p>", want: "a" + bell + "\\*b"},
+		{in: "<p>" + bell + "</p>", want: bell},
+		{in: "<p>" + bell + bell + "</p>", want: bell + bell},
+		{in: "<p>a*b</p>", want: "a\\*b"},
+	}
+	for _, tc := range cases {
+		got, err := htmltomarkdown.ConvertString(tc.in)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got != tc.want {
+			t.Fatalf("ConvertString(%q) = %q, want %q", tc.in, got, tc.want)
+		}
+	}
+}
+
 func TestConvertString_WindowsCarriageReturn(t *testing.T) {
 	testCases := []struct {
 		desc string
